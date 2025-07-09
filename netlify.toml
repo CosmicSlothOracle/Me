@@ -1,0 +1,73 @@
+[build]
+  publish = "."
+  command = "echo 'Static site - no build process required'"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+# Optimierte Headers für bessere Performance
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; img-src 'self' data: https:; media-src 'self' data:; font-src 'self' https://cdn.jsdelivr.net"
+
+# Cache-Optimierung für Assets
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+
+# Gzip Compression für bessere Performance
+[[headers]]
+  for = "*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+
+[[headers]]
+  for = "*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+
+# Redirect-Regeln für bessere UX
+[[redirects]]
+  from = "/comfyui-optimized.html"
+  to = "/comfyui.html"
+  status = 301
+
+[[redirects]]
+  from = "/comfyui-backup.html"
+  to = "/comfyui.html"
+  status = 301
+
+# 404 Fallback
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 404
+
+# Form-Handling für potentielle Kontakt-Features
+[build.processing]
+  skip_processing = false
+
+[build.processing.css]
+  bundle = false
+  minify = true
+
+[build.processing.js]
+  bundle = false
+  minify = true
+
+[build.processing.html]
+  pretty_urls = true
+
+[build.processing.images]
+  compress = true

@@ -1,0 +1,23 @@
+# Netlify Redirect Rules für saubere URLs
+
+# Legacy ComfyUI Files redirect
+/comfyui-optimized.html    /comfyui.html    301
+/comfyui-backup.html       /comfyui.html    301
+
+# Clean URLs (ohne .html Extension)
+/comfyui      /comfyui.html      200
+/portfolio    /portfolio.html    200
+/home         /index.html        200
+
+# Assets optimization
+/assets/*     /assets/:splat     200
+
+# 404 Fallback
+/*            /index.html        404
+
+# API Routes (future expansion)
+/api/*        /api/:splat        200
+
+# Security Headers
+/assets/videos/comfyui/*    /assets/videos/comfyui/:splat    200
+/assets/workflows/*         /assets/workflows/:splat         200

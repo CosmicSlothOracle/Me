@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ComfyUI Workflows | AI Specialist Portfolio</title>
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --accent-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --warning-gradient: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --shadow-soft: 0 8px 32px rgba(31, 38, 135, 0.37);
+            --shadow-hover: 0 15px 45px rgba(31, 38, 135, 0.4);
+            --text-primary: #2c3e50;
+            --text-secondary: #7f8c8d;
+            --surface: #ffffff;
+            --background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Header Section */
+        .header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 40px;
+            padding: 12px 24px;
+            background: var(--surface);
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: 50px;
+            box-shadow: var(--shadow-soft);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+        }
+
+        .main-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto 40px;
+            font-weight: 400;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background: var(--glass-bg);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            min-width: 120px;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+
+        /* Workflow Grid */
+        .workflows-section {
+            margin-bottom: 80px;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 50px;
+            color: var(--text-primary);
+        }
+
+        .workflows-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .workflow-tile {
+            position: relative;
+            background: var(--surface);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: center;
+        }
+
+        .workflow-tile:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .workflow-tile::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 2;
+        }
+
+        .workflow-tile:hover::before {
+            left: 100%;
+        }
+
+        .tile-header {
+            position: relative;
+            padding: 30px;
+            background: var(--primary-gradient);
+            color: white;
+            overflow: hidden;
+        }
+
+        .tile-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(30px, -30px);
+        }
+
+        .workflow-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .workflow-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .workflow-type {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .tile-preview {
+            position: relative;
+            height: 280px;
+            overflow: hidden;
+            background: #f8f9fa;
+        }
+
+        .preview-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            height: 100%;
+        }
+
+        .preview-item {
+            position: relative;
+            overflow: hidden;
+            background: #e9ecef;
+        }
+
+        .preview-item img, .preview-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .workflow-tile:hover .preview-item img,
+        .workflow-tile:hover .preview-item video {
+            transform: scale(1.05);
+        }
+
+        .preview-label {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            z-index: 1;
+        }
+
+        .before-label {
+            background: rgba(52, 152, 219, 0.9);
+        }
+
+        .after-label {
+            background: rgba(155, 89, 182, 0.9);
+        }
+
+        .tile-content {
+            padding: 30px;
+        }
+
+        .workflow-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .tile-metrics {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .metric {
+            text-align: center;
+            flex: 1;
+        }
+
+        .metric-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .tile-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .complexity-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .complexity-advanced {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+        }
+
+        .complexity-expert {
+            background: linear-gradient(135deg, #a55eea, #8b5cf6);
+            color: white;
+        }
+
+        .view-details {
+            color: #007acc;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: var(--surface);
+            max-width: 1400px;
+            margin: 40px auto;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 40px;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 24px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-modal:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .modal-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .modal-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .modal-body {
+            padding: 40px;
+        }
+
+        .workflow-overview {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 40px;
+        }
+
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        .overview-item {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .overview-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .overview-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--text-primary);
+        }
+
+        .overview-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .comparisons-grid {
+            display: grid;
+            gap: 40px;
+        }
+
+        .comparison-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .comparison-media {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 350px;
+        }
+
+        .media-side {
+            position: relative;
+            overflow: hidden;
+            background: #f8f9fa;
+        }
+
+        .media-side img, .media-side video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .media-label {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .comparison-info {
+            padding: 25px;
+            background: white;
+        }
+
+        .comparison-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .comparison-desc {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .workflows-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+
+            .preview-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-media {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-bar {
+                gap: 20px;
+            }
+
+            .tile-metrics {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .modal-body {
+                padding: 20px;
+            }
+        }
+
+        /* Animations */
+        @keyframes shine {
+            0% { transform: translateX(-100%) skewX(-15deg); }
+            100% { transform: translateX(200%) skewX(-15deg); }
+        }
+
+        .workflow-tile::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.8s ease-in-out;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .workflow-tile:hover::after {
+            animation: shine 1s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <a href="index.html" class="back-link">
+                <span>←</span>
+                <span>Zurück zum Portfolio</span>
+            </a>
+
+            <h1 class="main-title">ComfyUI Workflows</h1>
+            <p class="subtitle">
+                Professionelle KI-gestützte Workflows für fortgeschrittene Bild- und Videoverarbeitung.
+                Innovative Lösungen für kreative Herausforderungen mit modernster AI-Technologie.
+            </p>
+
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-number">2</div>
+                    <div class="stat-label">Workflows</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">7</div>
+                    <div class="stat-label">Vergleiche</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">99.3%</div>
+                    <div class="stat-label">Erfolgsrate</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">41 FPS</div>
+                    <div class="stat-label">Performance</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Workflows Section -->
+        <section class="workflows-section">
+            <h2 class="section-title">Verfügbare Workflows</h2>
+
+            <div class="workflows-grid">
+                <!-- Pixel Art Workflow -->
+                <div class="workflow-tile" onclick="openModal('pixelart-modal')">
+                    <div class="tile-header">
+                        <span class="workflow-icon">🎮</span>
+                        <h3 class="workflow-title">Pixel Art Transformation</h3>
+                        <p class="workflow-type">Realistische Effekte → Retro Gaming Style</p>
+                    </div>
+
+                    <div class="tile-preview">
+                        <div class="preview-grid">
+                            <div class="preview-item">
+                                <div class="preview-label before-label">Original</div>
+                                <img src="assets/videos/comfyui/source1.gif" alt="Lightning Original" loading="lazy">
+                            </div>
+                            <div class="preview-item">
+                                <div class="preview-label after-label">Pixel Art</div>
+                                <img src="assets/videos/comfyui/result1.gif" alt="Lightning Pixel Art" loading="lazy">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tile-content">
+                        <p class="workflow-description">
+                            Transformation realistischer Effekte in charakteristische 8-16-Bit Pixel-Art-Darstellung
+                            mit Erhaltung der ursprünglichen Bewegungsdynamik und Gaming-Ästhetik.
+                        </p>
+
+                        <div class="tile-metrics">
+                            <div class="metric">
+                                <div class="metric-value">4</div>
+                                <div class="metric-label">Vergleiche</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">8-16 Bit</div>
+                                <div class="metric-label">Stil</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">GIF</div>
+                                <div class="metric-label">Format</div>
+                            </div>
+                        </div>
+
+                        <div class="tile-footer">
+                            <span class="complexity-badge complexity-advanced">Advanced</span>
+                            <span class="view-details">Details ansehen →</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SpriteFrame Workflow -->
+                <div class="workflow-tile" onclick="openModal('spriteframe-modal')">
+                    <div class="tile-header">
+                        <span class="workflow-icon">🎞️</span>
+                        <h3 class="workflow-title">SpriteFrame Pipeline</h3>
+                        <p class="workflow-type">Automatisierte Sprite-Optimierung & Qualitätskontrolle</p>
+                    </div>
+
+                    <div class="tile-preview">
+                        <div class="preview-grid">
+                            <div class="preview-item">
+                                <div class="preview-label before-label">Sprite Input</div>
+                                <img src="assets/workflows/spriteframe/comparisons/main_source.png" alt="Sprite Source" loading="lazy">
+                            </div>
+                            <div class="preview-item">
+                                <div class="preview-label after-label">Optimiert</div>
+                                <img src="assets/workflows/spriteframe/comparisons/main_result.gif" alt="Sprite Result" loading="lazy">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tile-content">
+                        <p class="workflow-description">
+                            Masteroptimierte Pipeline für Sprite-Sheet-Verarbeitung mit automatischer
+                            Anatomiekorrektur, Qualitätsbewertung und Sequenzierung von 6279 Frames.
+                        </p>
+
+                        <div class="tile-metrics">
+                            <div class="metric">
+                                <div class="metric-value">79.2%</div>
+                                <div class="metric-label">Filter-Rate</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">41 FPS</div>
+                                <div class="metric-label">Performance</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">6279</div>
+                                <div class="metric-label">Frames</div>
+                            </div>
+                        </div>
+
+                        <div class="tile-footer">
+                            <span class="complexity-badge complexity-expert">Expert</span>
+                            <span class="view-details">Details ansehen →</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Pixel Art Modal -->
+    <div id="pixelart-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close-modal" onclick="closeModal('pixelart-modal')">&times;</button>
+                <h2 class="modal-title">🎮 Pixel Art Transformation</h2>
+                <p class="modal-subtitle">Realistische Effekte in authentische Retro Gaming Ästhetik</p>
+            </div>
+
+            <div class="modal-body">
+                <div class="workflow-overview">
+                    <h3 style="margin-bottom: 20px; font-size: 1.4rem;">Workflow-Übersicht</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 25px;">
+                        Transformation verschiedener realistischer Effekte in charakteristische Pixel-Art-Darstellungen
+                        verschiedener Gaming-Epochen. Der Workflow erhält die ursprüngliche Bewegungsdynamik während
+                        die visuelle Darstellung zu nostalgischen 8-16-Bit-Stilen konvertiert wird.
+                    </p>
+
+                    <div class="overview-grid">
+                        <div class="overview-item">
+                            <span class="overview-icon">⚡</span>
+                            <div class="overview-title">Energieeffekte</div>
+                            <div class="overview-desc">Blitze & Energie-Orbs</div>
+                        </div>
+                        <div class="overview-item">
+                            <span class="overview-icon">🌪️</span>
+                            <div class="overview-title">Atmosphärische Effekte</div>
+                            <div class="overview-desc">Tornados & Rauchpartikel</div>
+                        </div>
+                        <div class="overview-item">
+                            <span class="overview-icon">🎨</span>
+                            <div class="overview-title">Stilkonvertierung</div>
+                            <div class="overview-desc">8-16 Bit Pixelästhetik</div>
+                        </div>
+                        <div class="overview-item">
+                            <span class="overview-icon">🔄</span>
+                            <div class="overview-title">Bewegungserhaltung</div>
+                            <div class="overview-desc">Animationsdynamik</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparisons-grid">
+                    <div class="comparison-card">
+                        <div class="comparison-media">
+                            <div class="media-side">
+                                <div class="media-label before-label">Original</div>
+                                <img src="assets/videos/comfyui/source1.gif" alt="Energyblast Original">
+                            </div>
+                            <div class="media-side">
+                                <div class="media-label after-label">Pixel Art</div>
+                                <img src="assets/videos/comfyui/result1.gif" alt="Energyblast Pixel Art">
+                            </div>
+                        </div>
+                        <div class="comparison-info">
+                            <h4 class="comparison-title">Energyblast Transformation</h4>
+                            <p class="comparison-desc">
+                                Konvertierung eines glatten Energiefelds in charakteristische 8-Bit Pixelstrukturen.
+                                Die ursprüngliche Strahlungsenergie wird durch blockartige Pixelformen dargestellt,
+                                während die zentrale Energie-Emission erhalten bleibt.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="comparison-card">
+                        <div class="comparison-media">
+                            <div class="media-side">
+                                <div class="media-label before-label">Original</div>
+                                <img src="assets/videos/comfyui/source2.gif" alt="Lightning Original">
+                            </div>
+                            <div class="media-side">
+                                <div class="media-label after-label">Pixel Art</div>
+                                <img src="assets/videos/comfyui/result2.gif" alt="Lightning Pixel Art">
+                            </div>
+                        </div>
+                        <div class="comparison-info">
+                            <h4 class="comparison-title">Lightning Effect</h4>
+                            <p class="comparison-desc">
+                                Transformation verzweigter Blitzstrukturen in 16-Bit Gaming-Style.
+                                Die komplexen elektrischen Verzweigungen werden durch geometrische
+                                Pixelmuster ersetzt, die den charakteristischen Retro-Gaming-Look erzeugen.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="comparison-card">
+                        <div class="comparison-media">
+                            <div class="media-side">
+                                <div class="media-label before-label">Original</div>
+                                <img src="assets/videos/comfyui/source3.gif" alt="Tornado Original">
+                            </div>
+                            <div class="media-side">
+                                <div class="media-label after-label">Pixel Art</div>
+                                <img src="assets/videos/comfyui/result3.gif" alt="Tornado Pixel Art">
+                            </div>
+                        </div>
+                        <div class="comparison-info">
+                            <h4 class="comparison-title">Tornado Wirbel</h4>
+                            <p class="comparison-desc">
+                                Umwandlung organischer Wirbelstrukturen in geometrische Pixelformen.
+                                Die spiralförmige Bewegung wird durch kubische Pixelblöcke dargestellt,
+                                die die charakteristische Bewegungsdynamik des Tornados beibehalten.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="comparison-card">
+                        <div class="comparison-media">
+                            <div class="media-side">
+                                <div class="media-label before-label">Original</div>
+                                <img src="assets/videos/comfyui/source4.gif" alt="Pink Smoke Original">
+                            </div>
+                            <div class="media-side">
+                                <div class="media-label after-label">Pixel Art</div>
+                                <img src="assets/videos/comfyui/result4.gif" alt="Pink Smoke Pixel Art">
+                            </div>
+                        </div>
+                        <div class="comparison-info">
+                            <h4 class="comparison-title">Pink Smoke Particles</h4>
+                            <p class="comparison-desc">
+                                Transformation organischer Rauchpartikel in kubische Pixelstrukturen.
+                                Die fließenden Rauchbewegungen werden durch einzelne Pixelblöcke ersetzt,
+                                die ein authentisches 8-Bit Gaming-Feeling vermitteln.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SpriteFrame Modal -->
+    <div id="spriteframe-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close-modal" onclick="closeModal('spriteframe-modal')">&times;</button>
+                <h2 class="modal-title">🎞️ SpriteFrame Pipeline</h2>
+                <p class="modal-subtitle">Masteroptimierte Cartoon-Stil Automationspipeline</p>
+            </div>
+
+            <div class="modal-body">
+                <div class="workflow-overview">
+                    <h3 style="margin-bottom: 20px; font-size: 1.4rem;">Technologie-Overview</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 25px;">
+                        ComfyUI-basierte Automationspipeline für Sprite-Sheet-Verarbeitung mit 79.2% Filter-Effizienz
+                        und 41 FPS Performance. Spezialisiert auf Cartoon-Stil-Optimierung (Archer TV Show) mit
+                        automatischer Anatomiekorrektur und Qualitätsbewertung.
+                    </p>
+
+                    <div class="overview-grid">
+                        <div class="overview-item">
+                            <span class="overview-icon">🚀</span>
+                            <div class="overview-title">Performance</div>
+                            <div class="overview-desc">41 FPS bei 6279 Frames</div>
+                        </div>
+                        <div class="overview-item">
+                            <span class="overview-icon">🎯</span>
+                            <div class="overview-title">Effizienz</div>
+                            <div class="overview-desc">79.2% Filter-Rate</div>
+                        </div>
+                        <div class="overview-item">
+                            <span class="overview-icon">🧠</span>
+                            <div class="overview-title">AI-Modelle</div>
+                            <div class="overview-desc">Custom LoRA + Stable Diffusion</div>
+                        </div>
+                        <div class="overview-item">
+                            <span class="overview-icon">⚙️</span>
+                            <div class="overview-title">Backend</div>
+                            <div class="overview-desc">Python 3.10 + PyTorch</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparisons-grid">
+                    <div class="comparison-card">
+                        <div class="comparison-media">
+                            <div class="media-side">
+                                <div class="media-label before-label">Raw Sprite Input</div>
+                                <img src="assets/workflows/spriteframe/comparisons/main_source.png" alt="Raw Sprite Sheet">
+                            </div>
+                            <div class="media-side">
+                                <div class="media-label after-label">Optimized Animation</div>
+                                <img src="assets/workflows/spriteframe/comparisons/main_result.gif" alt="Optimized Animation">
+                            </div>
+                        </div>
+                        <div class="comparison-info">
+                            <h4 class="comparison-title">Hauptvergleich: Sprite-Sheet Optimierung</h4>
+                            <p class="comparison-desc">
+                                Transformation eines rohen Sprite-Sheets in eine optimierte Animation mit verbesserter
+                                Qualität (0.79 → 0.94). Frame-Extraktion, Qualitätsbewertung und automatische Sequenzierung
+                                erzeugen konsistente Cartoon-Stil-Animationen.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="comparison-card">
+                        <div class="comparison-media">
+                            <div class="media-side">
+                                <div class="media-label before-label">Unfiltered Frames</div>
+                                <img src="assets/workflows/spriteframe/comparisons/source_1.png" alt="Unfiltered Quality">
+                            </div>
+                            <div class="media-side">
+                                <div class="media-label after-label">Quality Filtered</div>
+                                <img src="assets/workflows/spriteframe/comparisons/result_1.gif" alt="Quality Filtered">
+                            </div>
+                        </div>
+                        <div class="comparison-info">
+                            <h4 class="comparison-title">Qualitätsfilterung & Anatomiekorrektur</h4>
+                            <p class="comparison-desc">
+                                Automatische Erkennung und Entfernung anatomischer Fehler sowie Verbesserung der
+                                Bewegungslogik. Das 5-Metriken-System (Size, Aspect, Content, Sharpness, Noise)
+                                filtert Outlier-Frames für konsistente Animationsqualität.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="comparison-card">
+                        <div class="comparison-media">
+                            <div class="media-side">
+                                <div class="media-label before-label">Vaporwave Overload</div>
+                                <img src="assets/workflows/spriteframe/comparisons/source_2.png" alt="Vaporwave Style">
+                            </div>
+                            <div class="media-side">
+                                <div class="media-label after-label">Cartoon Style</div>
+                                <img src="assets/workflows/spriteframe/comparisons/result_2.gif" alt="Cartoon Style">
+                            </div>
+                        </div>
+                        <div class="comparison-info">
+                            <h4 class="comparison-title">Stilkorrektur: Vaporwave → Cartoon</h4>
+                            <p class="comparison-desc">
+                                Reduktion übermäßiger Vaporwave-Effekte auf 45% Intensität für konsistenten
+                                Cartoon-Stil im Archer TV Show Design. Automatische Stilanpassung erhält
+                                charakteristische Merkmale bei verbesserter visueller Kohärenz.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+
+            // Add opening animation
+            setTimeout(() => {
+                modal.style.opacity = '1';
+            }, 10);
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.style.opacity = '0';
+
+            setTimeout(() => {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }, 300);
+        }
+
+        // Close modal when clicking outside content
+        window.addEventListener('click', function(event) {
+            if (event.target.classList.contains('modal')) {
+                const modalId = event.target.id;
+                closeModal(modalId);
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const modals = document.querySelectorAll('.modal');
+                modals.forEach(modal => {
+                    if (modal.style.display === 'block') {
+                        closeModal(modal.id);
+                    }
+                });
+            }
+        });
+
+        // Add loading animation for images
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = document.querySelectorAll('img[loading="lazy"]');
+
+            images.forEach(img => {
+                img.addEventListener('load', function() {
+                    this.style.opacity = '1';
+                });
+            });
+        });
+
+        // Add smooth hover effects
+        document.querySelectorAll('.workflow-tile').forEach(tile => {
+            tile.addEventListener('mouseenter', function() {
+                this.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+            });
+        });
+    </script>
+</body>
+</html>

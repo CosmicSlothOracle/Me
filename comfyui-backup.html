@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ComfyUI Workflows | AI Specialist</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: #333;
+            background-color: #f8f8f8;
+        }
+
+        .workflow-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            margin-bottom: 80px;
+        }
+
+        @media (min-width: 768px) {
+            .workflow-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .workflow-item {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        @media (min-width: 1024px) {
+            .workflow-item {
+                grid-template-columns: 1fr 1fr;
+                gap: 30px;
+                align-items: start;
+            }
+        }
+
+        .media-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: white;
+            aspect-ratio: 1;
+            min-height: 300px;
+        }
+
+        .media-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .media-card img, .media-card video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 12px;
+        }
+
+        .workflow-description {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 300px;
+        }
+
+        .workflow-description h3 {
+            margin-bottom: 15px;
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .workflow-description p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .source-label, .result-label {
+            position: absolute;
+            top: 10px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .source-label {
+            left: 10px;
+            background: rgba(102, 126, 234, 0.8);
+        }
+
+        .result-label {
+            right: 10px;
+            background: rgba(118, 75, 162, 0.8);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin: 20px;
+            padding: 10px 20px;
+            background: white;
+            color: #333;
+            text-decoration: none;
+            border-radius: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90vh;
+            position: relative;
+        }
+
+        .modal-content img, .modal-content video {
+            max-width: 100%;
+            max-height: 80vh;
+            border-radius: 8px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-link">← Zurück zur Startseite</a>
+
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-light mb-8 text-center">ComfyUI Workflows</h1>
+        <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">
+            Eine Sammlung meiner KI-gestützten Workflows für Bild- und Videoverarbeitung mit ComfyUI.
+            Vergleiche die Quelldateien mit den prozessierten Ergebnissen.
+        </p>
+
+        <!-- Workflow 1: Lightning -->
+        <div class="workflow-container">
+            <div class="workflow-item">
+                <!-- Source Media -->
+                <div class="media-card">
+                    <span class="source-label">Original</span>
+                    <video autoplay loop muted playsinline preload="auto">
+                        <source src="assets/videos/comfyui/source2.mp4" type="video/mp4">
+                        Ihr Browser unterstützt das Video-Element nicht.
+                    </video>
+                </div>
+
+                <!-- Result Media -->
+                <div class="media-card">
+                    <span class="result-label">Pixel Art</span>
+                    <video autoplay loop muted playsinline preload="auto">
+                        <source src="assets/videos/comfyui/result2.mp4" type="video/mp4">
+                        Ihr Browser unterstützt das Video-Element nicht.
+                    </video>
+                </div>
+            </div>
+
+            <!-- Workflow Description -->
+            <div class="workflow-description">
+                <h3>Lightning Pixel Art Workflow</h3>
+                <p>
+                    Konvertierung realistischer Blitzeffekte in pixelierte Darstellung mit reduzierter Auflösung.
+                    Die feinen, verzweigten Blitzstrukturen werden in grobe, blockige Formen übersetzt, die an
+                    16-Bit-Videospiele erinnern. Die elektrische Intensität und das Zucken bleiben durch geschickte
+                    Farbwahl und Timing erhalten, während die gesamte Ästhetik nostalgische Gaming-Vibes vermittelt.
+                </p>
+                <div class="mt-4 flex justify-between items-center">
+                    <span class="text-sm text-gray-500">Workflow: Pixel Art ComfyUI</span>
+                    <a href="#" class="text-blue-600 hover:underline text-sm">Workflow herunterladen</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Workflow 2: Energyblast -->
+        <div class="workflow-container">
+            <div class="workflow-item">
+                <!-- Source Media -->
+                <div class="media-card">
+                    <span class="source-label">Original</span>
+                    <video autoplay loop muted playsinline preload="auto">
+                        <source src="assets/videos/comfyui/source1.mp4" type="video/mp4">
+                        Ihr Browser unterstützt das Video-Element nicht.
+                    </video>
+                </div>
+
+                <!-- Result Media -->
+                <div class="media-card">
+                    <span class="result-label">Pixel Art</span>
+                    <img src="assets/videos/comfyui/result1.gif" alt="Energyblast Pixel Art" loading="lazy">
+                </div>
+            </div>
+
+            <!-- Workflow Description -->
+            <div class="workflow-description">
+                <h3>Energyblast Pixel Art Workflow</h3>
+                <p>
+                    Transformation eines glatten, fließenden Energieblitzes in stilisierten 8-Bit-Pixel-Art-Stil.
+                    Das ursprünglich weiche, glühende Energiefeld wird in charakteristische quadratische Pixel umgewandelt,
+                    wobei die Farbpalette auf retro-gaming-typische Töne reduziert wird. Die Bewegungsdynamik bleibt erhalten,
+                    während die visuelle Ästhetik an klassische Arcade-Spiele erinnert.
+                </p>
+                <div class="mt-4 flex justify-between items-center">
+                    <span class="text-sm text-gray-500">Workflow: Pixel Art ComfyUI</span>
+                    <a href="#" class="text-blue-600 hover:underline text-sm">Workflow herunterladen</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Workflow 3: Tornado -->
+        <div class="workflow-container">
+            <div class="workflow-item">
+                <!-- Source Media -->
+                <div class="media-card">
+                    <span class="source-label">Original</span>
+                    <video autoplay loop muted playsinline preload="auto">
+                        <source src="assets/videos/comfyui/source3.mp4" type="video/mp4">
+                        Ihr Browser unterstützt das Video-Element nicht.
+                    </video>
+                </div>
+
+                <!-- Result Media -->
+                <div class="media-card">
+                    <span class="result-label">Pixel Art</span>
+                    <img src="assets/videos/comfyui/result3.gif" alt="Tornado Pixel Art" loading="lazy">
+                </div>
+            </div>
+
+            <!-- Workflow Description -->
+            <div class="workflow-description">
+                <h3>Tornado Pixel Art Workflow</h3>
+                <p>
+                    Umwandlung eines realistischen Tornados in eine stilisierte Pixel-Art-Darstellung.
+                    Die komplexen Wirbelstrukturen und Partikeleffekte werden in charakteristische rechteckige
+                    Pixel übersetzt, wobei die spiralförmige Bewegung durch vereinfachte geometrische Formen
+                    dargestellt wird. Die Farbpalette wird auf klassische 8-Bit-Töne reduziert, während die
+                    dramatische Bewegungsenergie des Tornados beibehalten wird.
+                </p>
+                <div class="mt-4 flex justify-between items-center">
+                    <span class="text-sm text-gray-500">Workflow: Pixel Art ComfyUI</span>
+                    <a href="#" class="text-blue-600 hover:underline text-sm">Workflow herunterladen</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Workflow 4: Pink Smoke -->
+        <div class="workflow-container">
+            <div class="workflow-item">
+                <!-- Source Media -->
+                <div class="media-card">
+                    <span class="source-label">Original</span>
+                    <video autoplay loop muted playsinline preload="auto">
+                        <source src="assets/videos/comfyui/source4.mp4" type="video/mp4">
+                        Ihr Browser unterstützt das Video-Element nicht.
+                    </video>
+                </div>
+
+                <!-- Result Media -->
+                <div class="media-card">
+                    <span class="result-label">Pixel Art</span>
+                    <img src="assets/videos/comfyui/result4.gif" alt="Pink Smoke Pixel Art" loading="lazy">
+                </div>
+            </div>
+
+            <!-- Workflow Description -->
+            <div class="workflow-description">
+                <h3>Pink Smoke Pixel Art Workflow</h3>
+                <p>
+                    Transformation von weichen, fließenden Rauchpartikeln in charakteristische Pixel-Art-Ästhetik.
+                    Die organischen, nebulösen Formen des ursprünglichen rosa Rauchs werden in kubische,
+                    blockige Strukturen umgewandelt. Die sanften Farbverläufe weichen einer reduzierten Palette
+                    mit klaren Farbgrenzen, wodurch eine nostalgische 16-Bit-Gaming-Atmosphäre entsteht,
+                    während die träumerische Qualität des Rauchs erhalten bleibt.
+                </p>
+                <div class="mt-4 flex justify-between items-center">
+                    <span class="text-sm text-gray-500">Workflow: Pixel Art ComfyUI</span>
+                    <a href="#" class="text-blue-600 hover:underline text-sm">Workflow herunterladen</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Media Modal -->
+    <div id="mediaModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div id="modalMediaContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        // Video playback management
+        const videos = document.querySelectorAll('video');
+
+        // Function to safely play video
+        async function safeVideoPlay(video) {
+            try {
+                await video.play();
+            } catch (error) {
+                // Ignore autoplay failures - they're expected in many browsers
+                console.log('Video autoplay prevented:', error);
+            }
+        }
+
+        // Function to safely pause video
+        function safeVideoPause(video) {
+            try {
+                if (!video.paused) {
+                    video.pause();
+                }
+            } catch (error) {
+                console.log('Video pause error:', error);
+            }
+        }
+
+        // Initialize videos with intersection observer for better performance
+        const videoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const video = entry.target;
+                if (entry.isIntersecting) {
+                    // Start playing when video comes into view
+                    setTimeout(() => safeVideoPlay(video), 100);
+                } else {
+                    // Pause when video goes out of view
+                    safeVideoPause(video);
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        // Observe all videos
+        videos.forEach(video => {
+            videoObserver.observe(video);
+
+            // Remove autoplay attribute to prevent conflicts
+            video.removeAttribute('autoplay');
+
+            // Add error handling
+            video.addEventListener('error', (e) => {
+                console.log('Video error:', e);
+            });
+        });
+
+        // Make media cards clickable to show in modal
+        document.querySelectorAll('.media-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const modal = document.getElementById('mediaModal');
+                const modalContainer = document.getElementById('modalMediaContainer');
+                const mediaElement = card.querySelector('img, video');
+
+                // Pause all page videos before showing modal
+                videos.forEach(video => safeVideoPause(video));
+
+                // Clone the media element for the modal
+                const clonedMedia = mediaElement.cloneNode(true);
+
+                // Clear previous content
+                modalContainer.innerHTML = '';
+
+                // Add the cloned media
+                modalContainer.appendChild(clonedMedia);
+
+                // If it's a video, setup and play it
+                if (clonedMedia.tagName === 'VIDEO') {
+                    clonedMedia.controls = true;
+                    clonedMedia.muted = false; // Allow sound in modal
+                    safeVideoPlay(clonedMedia);
+                }
+
+                // Show modal
+                modal.style.display = 'flex';
+            });
+        });
+
+        // Function to close modal and manage video playback
+        function closeModal() {
+            const modal = document.getElementById('mediaModal');
+            modal.style.display = 'none';
+
+            // Pause modal video
+            const modalVideo = document.querySelector('#modalMediaContainer video');
+            if (modalVideo) {
+                safeVideoPause(modalVideo);
+            }
+
+            // Resume autoplay for visible page videos after a short delay
+            setTimeout(() => {
+                videos.forEach(video => {
+                    const rect = video.getBoundingClientRect();
+                    const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+                    if (isVisible) {
+                        safeVideoPlay(video);
+                    }
+                });
+            }, 200);
+        }
+
+        // Close modal
+        document.querySelector('.close-modal').addEventListener('click', closeModal);
+
+        // Close modal when clicking outside content
+        document.getElementById('mediaModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('mediaModal')) {
+                closeModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && document.getElementById('mediaModal').style.display === 'flex') {
+                closeModal();
+            }
+        });
+
+        // Handle page visibility changes
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                videos.forEach(video => safeVideoPause(video));
+            } else {
+                // Resume videos when page becomes visible again
+                setTimeout(() => {
+                    videos.forEach(video => {
+                        const rect = video.getBoundingClientRect();
+                        const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+                        if (isVisible) {
+                            safeVideoPlay(video);
+                        }
+                    });
+                }, 100);
+            }
+        });
+    </script>
+</body>
+</html>

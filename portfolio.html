@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | AI Specialist</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: #333;
+            background-color: #f8f8f8;
+        }
+
+        .masonry-grid {
+            column-count: 1;
+            column-gap: 20px;
+        }
+
+        @media (min-width: 640px) {
+            .masonry-grid {
+                column-count: 2;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .masonry-grid {
+                column-count: 3;
+            }
+        }
+
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .masonry-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .masonry-item img, .masonry-item video {
+            width: 100%;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        /* Video tile hover effect */
+        .video-tile:hover video {
+            transform: scale(1.05);
+        }
+
+        /* Slideshow tile hover effect */
+        .slideshow-tile:hover .slide.active {
+            transform: scale(1.05);
+        }
+
+        .caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 12px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .masonry-item:hover .caption {
+            transform: translateY(0);
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90vh;
+            position: relative;
+        }
+
+        .modal-content img, .modal-content video {
+            max-width: 100%;
+            max-height: 80vh;
+            border-radius: 8px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .modal-caption {
+            color: white;
+            padding: 15px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        .slideshow-controls {
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-50%);
+            padding: 0 20px;
+        }
+
+        .slideshow-controls button {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .slideshow-controls button:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .slide {
+            display: none;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        .modal-slideshow .slide {
+            display: none;
+        }
+
+        .modal-slideshow .slide.active {
+            display: block;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin: 20px;
+            padding: 10px 20px;
+            background: white;
+            color: #333;
+            text-decoration: none;
+            border-radius: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-link">← Zurück zur Startseite</a>
+
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-light mb-8 text-center">Portfolio</h1>
+
+        <div class="masonry-grid">
+            <!-- Video Tile 1 -->
+            <div class="masonry-item video-tile" data-type="video">
+                <video loop muted poster="https://via.placeholder.com/600x800?text=Video+Project+1">
+                    <source src="assets/videos/video1.mp4" type="video/mp4">
+                </video>
+                <div class="caption">
+                    <h3 class="text-lg font-medium">Video Projekt 1</h3>
+                    <p class="text-sm">KI-generierte Animation</p>
+                </div>
+            </div>
+
+            <!-- Slideshow Tile 1 -->
+            <div class="masonry-item slideshow-tile" data-type="slideshow">
+                <div class="slideshow">
+                    <div class="slide active">
+                        <img src="assets/images/slide1-1.jpg" alt="Slide 1" onerror="this.src='https://via.placeholder.com/600x400?text=Slide+1.1'">
+                    </div>
+                    <div class="slide">
+                        <img src="assets/images/slide1-2.jpg" alt="Slide 2" onerror="this.src='https://via.placeholder.com/600x400?text=Slide+1.2'">
+                    </div>
+                    <div class="slide">
+                        <img src="assets/images/slide1-3.jpg" alt="Slide 3" onerror="this.src='https://via.placeholder.com/600x400?text=Slide+1.3'">
+                    </div>
+                </div>
+                <div class="caption">
+                    <h3 class="text-lg font-medium">Bildprojekt 1</h3>
+                    <p class="text-sm">KI-generierte Bilderserie</p>
+                </div>
+            </div>
+
+            <!-- Video Tile 2 -->
+            <div class="masonry-item video-tile" data-type="video">
+                <video loop muted poster="https://via.placeholder.com/600x600?text=Video+Project+2">
+                    <source src="assets/videos/video2.mp4" type="video/mp4">
+                </video>
+                <div class="caption">
+                    <h3 class="text-lg font-medium">Video Projekt 2</h3>
+                    <p class="text-sm">ComfyUI Workflow Demonstration</p>
+                </div>
+            </div>
+
+            <!-- Slideshow Tile 2 -->
+            <div class="masonry-item slideshow-tile" data-type="slideshow">
+                <div class="slideshow">
+                    <div class="slide active">
+                        <img src="assets/images/slide2-1.jpg" alt="Slide 1" onerror="this.src='https://via.placeholder.com/600x700?text=Slide+2.1'">
+                    </div>
+                    <div class="slide">
+                        <img src="assets/images/slide2-2.jpg" alt="Slide 2" onerror="this.src='https://via.placeholder.com/600x700?text=Slide+2.2'">
+                    </div>
+                    <div class="slide">
+                        <img src="assets/images/slide2-3.jpg" alt="Slide 3" onerror="this.src='https://via.placeholder.com/600x700?text=Slide+2.3'">
+                    </div>
+                </div>
+                <div class="caption">
+                    <h3 class="text-lg font-medium">Bildprojekt 2</h3>
+                    <p class="text-sm">Konzeptkunst Serie</p>
+                </div>
+            </div>
+
+            <!-- Video Tile 3 -->
+            <div class="masonry-item video-tile" data-type="video">
+                <video loop muted poster="https://via.placeholder.com/600x900?text=Video+Project+3">
+                    <source src="assets/videos/video3.mp4" type="video/mp4">
+                </video>
+                <div class="caption">
+                    <h3 class="text-lg font-medium">Video Projekt 3</h3>
+                    <p class="text-sm">KI-Animation mit Musik</p>
+                </div>
+            </div>
+
+            <!-- Slideshow Tile 3 -->
+            <div class="masonry-item slideshow-tile" data-type="slideshow">
+                <div class="slideshow">
+                    <div class="slide active">
+                        <img src="assets/images/slide3-1.jpg" alt="Slide 1" onerror="this.src='https://via.placeholder.com/600x500?text=Slide+3.1'">
+                    </div>
+                    <div class="slide">
+                        <img src="assets/images/slide3-2.jpg" alt="Slide 2" onerror="this.src='https://via.placeholder.com/600x500?text=Slide+3.2'">
+                    </div>
+                    <div class="slide">
+                        <img src="assets/images/slide3-3.jpg" alt="Slide 3" onerror="this.src='https://via.placeholder.com/600x500?text=Slide+3.3'">
+                    </div>
+                </div>
+                <div class="caption">
+                    <h3 class="text-lg font-medium">Bildprojekt 3</h3>
+                    <p class="text-sm">Experimentelle KI-Kunst</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Modal -->
+    <div id="videoModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <video controls>
+                <source src="" type="video/mp4">
+            </video>
+            <div class="modal-caption"></div>
+        </div>
+    </div>
+
+    <!-- Slideshow Modal -->
+    <div id="slideshowModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-slideshow">
+                <!-- Slides will be cloned here -->
+            </div>
+            <div class="slideshow-controls">
+                <button class="prev-slide">&lt;</button>
+                <button class="next-slide">&gt;</button>
+            </div>
+            <div class="modal-caption"></div>
+        </div>
+    </div>
+
+    <script>
+        // Handle video tiles
+        document.querySelectorAll('.video-tile').forEach(tile => {
+            const video = tile.querySelector('video');
+
+            // Play video on hover
+            tile.addEventListener('mouseenter', () => {
+                if (video.querySelector('source').src !== '#') {
+                    video.play();
+                }
+            });
+
+            tile.addEventListener('mouseleave', () => {
+                video.pause();
+            });
+
+            // Open modal on click
+            tile.addEventListener('click', () => {
+                const modal = document.getElementById('videoModal');
+                const modalVideo = modal.querySelector('video');
+                const modalCaption = modal.querySelector('.modal-caption');
+                const caption = tile.querySelector('.caption').innerHTML;
+
+                // Set video source
+                modalVideo.innerHTML = video.innerHTML;
+                modalCaption.innerHTML = caption;
+
+                modal.style.display = 'flex';
+
+                // Try to play the video if it has a real source
+                if (modalVideo.querySelector('source').src !== '#') {
+                    modalVideo.play();
+                }
+            });
+        });
+
+        // Handle slideshow tiles
+        document.querySelectorAll('.slideshow-tile').forEach(tile => {
+            const slideshow = tile.querySelector('.slideshow');
+            const slides = slideshow.querySelectorAll('.slide');
+
+            // Open modal on click
+            tile.addEventListener('click', () => {
+                const modal = document.getElementById('slideshowModal');
+                const modalSlideshow = modal.querySelector('.modal-slideshow');
+                const modalCaption = modal.querySelector('.modal-caption');
+                const caption = tile.querySelector('.caption').innerHTML;
+
+                // Clone slides to modal
+                modalSlideshow.innerHTML = '';
+                slides.forEach(slide => {
+                    modalSlideshow.appendChild(slide.cloneNode(true));
+                });
+
+                // Set active slide
+                modalSlideshow.querySelector('.slide').classList.add('active');
+                modalCaption.innerHTML = caption;
+
+                modal.style.display = 'flex';
+            });
+        });
+
+        // Close modals
+        document.querySelectorAll('.close-modal').forEach(closeBtn => {
+            closeBtn.addEventListener('click', () => {
+                closeBtn.closest('.modal').style.display = 'none';
+
+                // Pause video if it's a video modal
+                const video = closeBtn.closest('.modal').querySelector('video');
+                if (video) video.pause();
+            });
+        });
+
+        // Slideshow controls in modal
+        document.querySelector('.prev-slide').addEventListener('click', () => {
+            const modalSlideshow = document.querySelector('.modal-slideshow');
+            const slides = modalSlideshow.querySelectorAll('.slide');
+            let activeIndex = 0;
+
+            slides.forEach((slide, index) => {
+                if (slide.classList.contains('active')) {
+                    activeIndex = index;
+                    slide.classList.remove('active');
+                }
+            });
+
+            activeIndex = (activeIndex - 1 + slides.length) % slides.length;
+            slides[activeIndex].classList.add('active');
+        });
+
+        document.querySelector('.next-slide').addEventListener('click', () => {
+            const modalSlideshow = document.querySelector('.modal-slideshow');
+            const slides = modalSlideshow.querySelectorAll('.slide');
+            let activeIndex = 0;
+
+            slides.forEach((slide, index) => {
+                if (slide.classList.contains('active')) {
+                    activeIndex = index;
+                    slide.classList.remove('active');
+                }
+            });
+
+            activeIndex = (activeIndex + 1) % slides.length;
+            slides[activeIndex].classList.add('active');
+        });
+
+        // Close modal when clicking outside content
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+
+                    // Pause video if it's a video modal
+                    const video = modal.querySelector('video');
+                    if (video) video.pause();
+                }
+            });
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            const slideshowModal = document.getElementById('slideshowModal');
+
+            if (slideshowModal.style.display === 'flex') {
+                if (e.key === 'ArrowLeft') {
+                    document.querySelector('.prev-slide').click();
+                } else if (e.key === 'ArrowRight') {
+                    document.querySelector('.next-slide').click();
+                } else if (e.key === 'Escape') {
+                    slideshowModal.style.display = 'none';
+                }
+            }
+
+            const videoModal = document.getElementById('videoModal');
+            if (videoModal.style.display === 'flex' && e.key === 'Escape') {
+                videoModal.style.display = 'none';
+                const video = videoModal.querySelector('video');
+                if (video) video.pause();
+            }
+        });
+
+        // Auto-rotate slideshows on tiles
+        document.querySelectorAll('.slideshow-tile').forEach(tile => {
+            const slideshow = tile.querySelector('.slideshow');
+            const slides = slideshow.querySelectorAll('.slide');
+            let currentSlide = 0;
+
+            setInterval(() => {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add('active');
+            }, 3000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1933 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ComfyUI Workflows | AI Specialist</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background-color: #f8f8f8;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 30px;
+            padding: 12px 24px;
+            background: white;
+            color: #333;
+            text-decoration: none;
+            border-radius: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .back-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 300;
+            font-size: 2.8rem;
+            color: #333;
+        }
+
+        .intro {
+            text-align: center;
+            margin-bottom: 50px;
+            color: #666;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .workflows-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .workflow-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .workflow-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .workflow-header {
+            padding: 25px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .workflow-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .workflow-subtitle {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .comparison-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 300px;
+        }
+
+        .comparison-side {
+            position: relative;
+            overflow: hidden;
+            background: #f8f8f8;
+        }
+
+        .comparison-side img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .comparison-label {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(0, 0, 0, 0.75);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .before-label {
+            background: rgba(52, 152, 219, 0.85);
+        }
+
+        .after-label {
+            background: rgba(155, 89, 182, 0.85);
+        }
+
+        .workflow-description {
+            padding: 25px;
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .workflow-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 25px 25px;
+            font-size: 0.85rem;
+            color: #999;
+        }
+
+        .expand-hint {
+            color: #007acc;
+            font-weight: 500;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: white;
+            max-width: 1200px;
+            margin: 20px auto;
+            border-radius: 16px;
+            position: relative;
+        }
+
+        .modal-header {
+            padding: 30px;
+            border-bottom: 1px solid #eee;
+            position: relative;
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .modal-subtitle {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+            padding: 5px;
+            border-radius: 50%;
+            transition: background 0.2s ease;
+        }
+
+        .close-modal:hover {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .comparison-gallery {
+            display: grid;
+            gap: 40px;
+        }
+
+        .comparison-item {
+            background: #f8f8f8;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .comparison-item .comparison-container {
+            min-height: 400px;
+        }
+
+        .comparison-caption {
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .workflow-details {
+            background: #f8f8f8;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+
+        .workflow-details h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .workflow-details p {
+            color: #666;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .tech-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #007acc;
+        }
+
+        .tech-item strong {
+            display: block;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .tech-item span {
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        /* Tab Styles */
+        .tab-bar {
+            display: flex;
+            gap: 2px;
+            margin-bottom: 30px;
+            background: #f0f0f0;
+            border-radius: 8px;
+            padding: 4px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            background: transparent;
+            color: #666;
+            font-weight: 500;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn.active,
+        .tab-btn:hover {
+            background: white;
+            color: #333;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        /* Guide Styles */
+        .guide-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+        }
+
+        .guide-card h3 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            font-weight: 600;
+            border-bottom: 2px solid #007acc;
+            padding-bottom: 10px;
+        }
+
+        .guide-card h4 {
+            color: #007acc;
+            margin: 25px 0 15px 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .guide-status {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            list-style: none;
+        }
+
+        .guide-status li {
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .guide-status strong {
+            color: #007acc;
+        }
+
+        .guide-flow {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            flex-wrap: wrap;
+        }
+
+        .guide-flow span {
+            background: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            white-space: nowrap;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .guide-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .guide-table th,
+        .guide-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .guide-table th {
+            background: #007acc;
+            color: white;
+            font-weight: 600;
+        }
+
+        .guide-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .guide-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .guide-pre {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            margin: 20px 0;
+            white-space: pre;
+        }
+
+        .guide-lang-switch {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .lang-btn {
+            padding: 8px 16px;
+            border: 2px solid #007acc;
+            background: white;
+            color: #007acc;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .lang-btn.active,
+        .lang-btn:hover {
+            background: #007acc;
+            color: white;
+        }
+
+        .guide-content {
+            display: none;
+        }
+
+        .process-step {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-left: 4px solid #007acc;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .process-step h5 {
+            color: #007acc;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .metric-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #007acc;
+            margin-bottom: 5px;
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            color: #666;
+            text-transform: uppercase;
+        }
+
+        /* Frame Browser Styles */
+        .frame-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .frame-info {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .frame-info #frame-counter {
+            font-weight: 600;
+            color: #007acc;
+            font-size: 1.1rem;
+        }
+
+        .frame-details {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .frame-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .frame-btn {
+            padding: 10px 20px;
+            background: #007acc;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .frame-btn:hover {
+            background: #005da3;
+            transform: translateY(-1px);
+        }
+
+        .frame-btn.secondary {
+            background: #6c757d;
+        }
+
+        .frame-btn.secondary:hover {
+            background: #5a6268;
+        }
+
+        .frame-viewer {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .frame-navigation {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .frame-display {
+            flex: 1;
+            position: relative;
+            text-align: center;
+            background: #f8f9fa;
+            border-radius: 8px;
+            overflow: hidden;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .frame-display img {
+            max-width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .frame-display.zoomed img {
+            transform: scale(2);
+            cursor: zoom-out;
+        }
+
+        .frame-overlay {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 10;
+        }
+
+        .zoom-btn {
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .zoom-btn:hover {
+            background: rgba(0, 0, 0, 0.9);
+            transform: scale(1.1);
+        }
+
+        .nav-btn {
+            padding: 12px 20px;
+            background: #007acc;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: 120px;
+        }
+
+        .nav-btn:hover {
+            background: #005da3;
+            transform: translateY(-1px);
+        }
+
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .frame-gallery {
+            margin: 30px 0;
+        }
+
+        .frame-gallery h4 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 12px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .thumbnail {
+            position: relative;
+            aspect-ratio: 1;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 3px solid transparent;
+        }
+
+        .thumbnail:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .thumbnail.active {
+            border-color: #007acc;
+            box-shadow: 0 0 0 2px rgba(0, 122, 204, 0.2);
+        }
+
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .thumbnail-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 4px 8px;
+            font-size: 0.7rem;
+            text-align: center;
+        }
+
+        .frame-details-panel {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .frame-details-panel h4 {
+            color: #007acc;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .frame-details-panel ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .frame-details-panel li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .frame-details-panel li::before {
+            content: '•';
+            color: #007acc;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        @media (max-width: 768px) {
+            .frame-controls {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .frame-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .frame-navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .frame-display {
+                order: -1;
+            }
+
+            .nav-btn {
+                width: 100%;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+                gap: 8px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .workflows-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-container {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Zurück zur Startseite</a>
+
+        <h1>ComfyUI Workflows</h1>
+        <p class="intro">
+            Professionelle KI-gestützte Workflows für Bild- und Videoverarbeitung mit ComfyUI.
+            Klicken Sie auf eine Kachel, um alle Vergleiche des Workflows zu sehen.
+        </p>
+
+        <div class="workflows-grid">
+            <!-- Workflow 1: Pixel Art -->
+            <div class="workflow-card" onclick="openModal('pixelart-modal')">
+                <div class="workflow-header">
+                    <h2 class="workflow-title">🎮 Pixel Art Transformation</h2>
+                    <p class="workflow-subtitle">Realistische Effekte → Retro Gaming Style</p>
+                </div>
+
+                <div class="comparison-container">
+                    <div class="comparison-side">
+                        <div class="comparison-label before-label">Original</div>
+                        <img src="assets/videos/comfyui/source1.gif" alt="Lightning Original">
+                    </div>
+                    <div class="comparison-side">
+                        <div class="comparison-label after-label">Pixel Art</div>
+                        <img src="assets/videos/comfyui/result1.gif" alt="Lightning Pixel Art">
+                    </div>
+                </div>
+
+                <div class="workflow-description">
+                    Konvertierung realistischer Effekte (Blitze, Energie, Tornados) in charakteristische 8-16-Bit Pixel-Art-Darstellung.
+                    Erhaltung der Bewegungsdynamik bei stilistischer Transformation zu nostalgischer Gaming-Ästhetik.
+                </div>
+
+                <div class="workflow-meta">
+                    <span>4 Vergleiche verfügbar</span>
+                    <span class="expand-hint">Klicken für Details →</span>
+                </div>
+            </div>
+
+            <!-- Workflow 2: AI Spritesheet Frame Extraction -->
+            <div class="workflow-card" onclick="openModal('spriteframe-modal')">
+                <div class="workflow-header">
+                    <h2 class="workflow-title">🎞️ AI-Spritesheet-frame-extraction</h2>
+                    <p class="workflow-subtitle">Anatomische Korrektur & Qualitätsoptimierung</p>
+                </div>
+
+                <div class="comparison-container">
+                    <div class="comparison-side">
+                        <div class="comparison-label before-label">Sprite Input</div>
+                        <img src="assets/workflows/spriteframe/comparisons/main_source.png" alt="Sprite Source">
+                    </div>
+                    <div class="comparison-side">
+                        <div class="comparison-label after-label">Optimiert</div>
+                        <img src="assets/workflows/spriteframe/comparisons/main_result.gif" alt="Sprite Result">
+                    </div>
+                </div>
+
+                <div class="workflow-description">
+                    Masteroptimierter Workflow für Sprite-Sheet-Verarbeitung im Cartoon-Stil (Archer TV Show).
+                    Automatische Anatomiekorrektur, Qualitätsbewertung und Sequenzierung von 6279 Frames mit 79.2% Filter-Effizienz.
+                </div>
+
+                <div class="workflow-meta">
+                    <span>Verarbeitungsrate: 41 FPS</span>
+                    <span class="expand-hint">Klicken für Details →</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 1: Pixel Art Workflow -->
+    <div id="pixelart-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close-modal" onclick="closeModal('pixelart-modal')">&times;</button>
+                <h2 class="modal-title">🎮 Pixel Art Transformation Workflow</h2>
+                <p class="modal-subtitle">Realistische Effekte in Retro Gaming Style</p>
+            </div>
+
+            <div class="modal-body">
+                <div class="tab-bar">
+                    <button class="tab-btn active" onclick="showPixelTab('pixel-comparisons')">Vergleiche</button>
+                    <button class="tab-btn" onclick="showPixelTab('pixel-guide')">Technischer Guide</button>
+                </div>
+                <div id="pixel-comparisons" class="tab-content" style="display:block;">
+                    <div class="workflow-details">
+                        <h3>🎮 Workflow-Übersicht</h3>
+                        <p>
+                            Transformation realistischer Effekte in charakteristische Pixel-Art-Ästhetik verschiedener Gaming-Epochen.
+                            Der Workflow erhält die ursprüngliche Bewegungsdynamik während die visuelle Darstellung zu nostalgischen
+                            8-16-Bit-Stilen konvertiert wird.
+                        </p>
+                    </div>
+
+                <div class="comparison-gallery">
+                    <div class="comparison-item">
+                        <div class="comparison-container">
+                            <div class="comparison-side">
+                                <div class="comparison-label before-label">Original</div>
+                                <img src="assets/videos/comfyui/source1.gif" alt="Energyblast Original">
+                            </div>
+                            <div class="comparison-side">
+                                <div class="comparison-label after-label">Pixel Art</div>
+                                <img src="assets/videos/comfyui/result1.gif" alt="Energyblast Pixel Art">
+                            </div>
+                        </div>
+                        <div class="comparison-caption">Energyblast: Glattes Energiefeld → 8-Bit Pixelstruktur</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-container">
+                            <div class="comparison-side">
+                                <div class="comparison-label before-label">Original</div>
+                                <img src="assets/videos/comfyui/source2.gif" alt="Lightning Original">
+                            </div>
+                            <div class="comparison-side">
+                                <div class="comparison-label after-label">Pixel Art</div>
+                                <img src="assets/videos/comfyui/result2.gif" alt="Lightning Pixel Art">
+                            </div>
+                        </div>
+                        <div class="comparison-caption">Lightning: Verzweigte Blitzstrukturen → 16-Bit Gaming-Style</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-container">
+                            <div class="comparison-side">
+                                <div class="comparison-label before-label">Original</div>
+                                <img src="assets/videos/comfyui/source3.gif" alt="Tornado Original">
+                            </div>
+                            <div class="comparison-side">
+                                <div class="comparison-label after-label">Pixel Art</div>
+                                <img src="assets/videos/comfyui/result3.gif" alt="Tornado Pixel Art">
+                            </div>
+                        </div>
+                        <div class="comparison-caption">Tornado: Wirbelstrukturen → Geometrische Pixelformen</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-container">
+                            <div class="comparison-side">
+                                <div class="comparison-label before-label">Original</div>
+                                <img src="assets/videos/comfyui/source4.gif" alt="Pink Smoke Original">
+                            </div>
+                            <div class="comparison-side">
+                                <div class="comparison-label after-label">Pixel Art</div>
+                                <img src="assets/videos/comfyui/result4.gif" alt="Pink Smoke Pixel Art">
+                            </div>
+                        </div>
+                        <div class="comparison-caption">Pink Smoke: Organische Rauchpartikel → Kubische Pixelstrukturen</div>
+                    </div>
+                </div>
+                </div>
+                <div id="pixel-guide" class="tab-content" style="display:none;">
+                    <div class="guide-lang-switch">
+                        <button class="lang-btn active" onclick="showPixelGuideLang('de')">Deutsch</button>
+                        <button class="lang-btn" onclick="showPixelGuideLang('en')">English</button>
+                    </div>
+                    <div id="pixel-guide-de" class="guide-content" style="display:block;">
+                        <div class="guide-card">
+                            <h3>🎮 GIF-PIXEL-ART-CONVERSION – VOLLSTÄNDIGER LEITFADEN</h3>
+                            <ul class="guide-status">
+                                <li><strong>Status:</strong> Produktionsreif und vollständig getestet</li>
+                                <li><strong>Processing Speed:</strong> 5-120 Sekunden (abhängig von GIF-Größe)</li>
+                                <li><strong>Background Removal:</strong> 95%+ Genauigkeit bei klaren Motiven</li>
+                                <li><strong>Output Quality:</strong> Professionelle Pixel-Art-Konvertierung</li>
+                                <li><strong>Supported Styles:</strong> GameBoy, NES, SNES & Custom Palettes</li>
+                            </ul>
+
+                            <h4>1. 🧩 Pipeline-Übersicht</h4>
+                            <p>Diese professionelle GIF-zu-Pixel-Art Pipeline konvertiert realistische Animationen in authentische Retro-Gaming-Stile durch vier spezialisierte Verarbeitungsschritte:</p>
+                            <div class="process-step">
+                                <h5>Stufe 1: Intelligente Hintergrundentfernung</h5>
+                                <p>BiRefNet-HR (zhengpeng7/BiRefNet) für hochpräzise Objektsegmentierung mit BRIA RMBG-1.4 Fallback</p>
+                            </div>
+                            <div class="process-step">
+                                <h5>Stufe 2: Frame-by-Frame Extraktion</h5>
+                                <p>Automatische GIF-Zerlegung in Einzelframes mit Timing-Preservation für Animationsqualität</p>
+                            </div>
+                            <div class="process-step">
+                                <h5>Stufe 3: Retro-Palette Mapping</h5>
+                                <p>Historisch akkurate Farbpaletten (GameBoy 4-color, NES 8-color, SNES 16-color) mit Custom-Option</p>
+                            </div>
+                            <div class="process-step">
+                                <h5>Stufe 4: Pixel-Art Reconstruction</h5>
+                                <p>ComfyUI-basierte Rekonstruktion mit Bewegungserhaltung und authentischer Retro-Ästhetik</p>
+                            </div>
+
+                            <h4>2. 🏗 Systemarchitektur & Datenfluss</h4>
+                            <div class="guide-flow">
+                                <span>Input GIF</span>
+                                <span>→</span>
+                                <span>Background Removal</span>
+                                <span>→</span>
+                                <span>Frame Extraction</span>
+                                <span>→</span>
+                                <span>Palette Mapping</span>
+                                <span>→</span>
+                                <span>Pixel Art GIF</span>
+                            </div>
+                            <p><strong>Output-Namenskonvention:</strong> {original}_pixelart_converted.gif</p>
+
+                            <h4>3. 🧠 Technische Implementierung</h4>
+                            <div class="process-step">
+                                <h5>3.1 High-End Background Removal</h5>
+                                <p><strong>Primary Model:</strong> BiRefNet-HR (zhengpeng7/BiRefNet) - State-of-the-art Bildsegmentierung<br>
+                                <strong>Commercial Fallback:</strong> BRIA RMBG-1.4 (briaai/RMBG-1.4) - Enterprise-Grade Qualität<br>
+                                <strong>Backup:</strong> REMBG U2Net - Bewährtes Basis-Modell für Stabilität</p>
+                            </div>
+                            <div class="process-step">
+                                <h5>3.2 Retro Gaming Palettes</h5>
+                                <p><strong>GameBoy (1989):</strong> 4-color green monochrome (DMG-01 authentisch)<br>
+                                <strong>NES (1985):</strong> 8-color classic gaming palette (historisch korrekt)<br>
+                                <strong>SNES (1991):</strong> 16-color enhanced retro (16-bit Ära)<br>
+                                <strong>Custom:</strong> User-definierte Farbschemata für individuelle Projekte</p>
+                            </div>
+                            <div class="process-step">
+                                <h5>3.3 ComfyUI Workflow Integration</h5>
+                                <p><strong>Pipeline File:</strong> workflows/gif_pixel_art_conversion.json<br>
+                                <strong>Node Framework:</strong> Visual workflow mit Custom Nodes<br>
+                                <strong>Processing:</strong> Batch-fähige Frame-Verarbeitung mit Timing-Erhaltung</p>
+                            </div>
+
+                            <h4>4. 📦 Technische Abhängigkeiten</h4>
+                            <table class="guide-table">
+                                <tr><th>Core Framework</th><th>Funktion</th></tr>
+                                <tr><td>ComfyUI</td><td>Visual AI Workflow Framework</td></tr>
+                                <tr><td>PyTorch (CUDA)</td><td>GPU-beschleunigte AI-Verarbeitung</td></tr>
+                                <tr><td>Hugging Face Hub</td><td>Model Distribution & Loading</td></tr>
+                            </table>
+                            <table class="guide-table">
+                                <tr><th>AI Models</th><th>Zweck</th></tr>
+                                <tr><td>BiRefNet-HR</td><td>High-Resolution Background Removal</td></tr>
+                                <tr><td>BRIA RMBG-1.4</td><td>Commercial-Grade Segmentation</td></tr>
+                                <tr><td>REMBG U2Net</td><td>Reliable Fallback Solution</td></tr>
+                            </table>
+                            <table class="guide-table">
+                                <tr><th>Processing Libraries</th><th>Anwendung</th></tr>
+                                <tr><td>Pillow (PIL)</td><td>GIF I/O, Frame Manipulation</td></tr>
+                                <tr><td>OpenCV</td><td>Computer Vision, Frame Processing</td></tr>
+                                <tr><td>NumPy</td><td>Array Operations, Color Space</td></tr>
+                            </table>
+
+                            <h4>5. 📊 Performance & Qualitätskennzahlen</h4>
+                            <div class="metric-grid">
+                                <div class="metric-item">
+                                    <div class="metric-value">5-120s</div>
+                                    <div class="metric-label">Processing Time</div>
+                                </div>
+                                <div class="metric-item">
+                                    <div class="metric-value">95%+</div>
+                                    <div class="metric-label">Background Accuracy</div>
+                                </div>
+                                <div class="metric-item">
+                                    <div class="metric-value">4-16</div>
+                                    <div class="metric-label">Color Palettes</div>
+                                </div>
+                                <div class="metric-item">
+                                    <div class="metric-value">GPU</div>
+                                    <div class="metric-label">Acceleration</div>
+                                </div>
+                                <div class="metric-item">
+                                    <div class="metric-value">Auto</div>
+                                    <div class="metric-label">Frame Timing</div>
+                                </div>
+                                <div class="metric-item">
+                                    <div class="metric-value">Custom</div>
+                                    <div class="metric-label">Palette Support</div>
+                                </div>
+                            </div>
+
+                            <h4>6. 🎨 Retro Gaming Palette Details</h4>
+                            <table class="guide-table">
+                                <tr><th>Console</th><th>Jahr</th><th>Farben</th><th>Charakteristik</th></tr>
+                                <tr><td>GameBoy (DMG-01)</td><td>1989</td><td>4 Graustufen</td><td>Monochrome grün, nostalgia authentisch</td></tr>
+                                <tr><td>Nintendo NES</td><td>1985</td><td>8-color sets</td><td>Klassische 8-Bit Gaming Ästhetik</td></tr>
+                                <tr><td>Super Nintendo</td><td>1991</td><td>16-color enhanced</td><td>Erweiterte 16-Bit Farbtiefe</td></tr>
+                                <tr><td>Custom Palettes</td><td>Modern</td><td>Variable</td><td>Benutzerdefinierte Farbschemata</td></tr>
+                            </table>
+
+                            <h4>7. 🚀 Installation & Setup (Windows)</h4>
+                            <p><strong>Automatische Installation:</strong></p>
+                            <ol>
+                                <li><code>setup_gif_pixel_pipeline.bat</code> als Administrator ausführen</li>
+                                <li>Virtual Environment wird automatisch erstellt</li>
+                                <li>Alle Dependencies werden installiert (PyTorch, ComfyUI, Models)</li>
+                                <li>Pipeline ist sofort einsatzbereit</li>
+                            </ol>
+                            <p><strong>Manuelle Installation:</strong></p>
+                            <pre class="guide-pre">python -m venv pixel_art_env
+pixel_art_env\Scripts\activate
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+pip install comfyui
+pip install -r requirements_pixel_art.txt</pre>
+
+                            <h4>8. 📂 Projektstruktur & Dateien</h4>
+                            <pre class="guide-pre">gif_pixel_art_pipeline/
+├── setup_gif_pixel_pipeline.bat          # Windows Auto-Setup
+├── QUICK_START_GIF_PIXEL_ART.md          # 3-Minuten Anleitung
+├── PROFESSIONAL_GIF_PIXEL_ART_PIPELINE_GUIDE.md
+├── workflows/
+│   └── gif_pixel_art_conversion.json     # ComfyUI Workflow
+├── palettes/
+│   ├── gameboy_4color.json
+│   ├── nes_8color.json
+│   └── snes_16color.json
+└── output/
+    └── {filename}_pixelart_converted.gif</pre>
+
+                            <h4>9. 🎯 Verwendungsszenarien</h4>
+                            <ul>
+                                <li><strong>Game Development:</strong> Moderne Assets zu Retro-Style konvertieren</li>
+                                <li><strong>Animation Studios:</strong> Vintage Gaming Look für moderne Projekte</li>
+                                <li><strong>Content Creator:</strong> Nostalgische Effekte für Social Media</li>
+                                <li><strong>Digital Art:</strong> Authentische Pixel-Art aus Fotografien/Videos</li>
+                                <li><strong>Marketing:</strong> Retro Gaming Ästhetik für Werbematerial</li>
+                            </ul>
+
+                            <h4>10. 🧰 Troubleshooting & Support</h4>
+                            <table class="guide-table">
+                                <tr><th>Problem</th><th>Lösung</th></tr>
+                                <tr><td>Model Download Fehler</td><td>Hugging Face Token konfigurieren</td></tr>
+                                <tr><td>GPU nicht erkannt</td><td>CUDA Drivers aktualisieren</td></tr>
+                                <tr><td>Langsame Verarbeitung</td><td>Fallback auf U2Net aktivieren</td></tr>
+                                <tr><td>Schlechte Segmentierung</td><td>BiRefNet-HR Modell nachladen</td></tr>
+                                <tr><td>Palette nicht korrekt</td><td>Custom Palette JSON überprüfen</td></tr>
+                            </table>
+
+                            <h4>✅ Zusammenfassung</h4>
+                            <p>Die GIF-Pixel-Art-Conversion Pipeline ist eine state-of-the-art Lösung für professionelle Retro-Gaming Ästhetik:</p>
+                            <ul>
+                                <li><strong>Hochwertige AI-Models:</strong> BiRefNet-HR für präzise Segmentierung</li>
+                                <li><strong>Historisch akkurat:</strong> Authentische Gaming-Console Paletten</li>
+                                <li><strong>Production-Ready:</strong> Robuste Fallback-Systeme und Enterprise-Grade Qualität</li>
+                                <li><strong>User-Friendly:</strong> 3-Minuten Setup mit automatischer Installation</li>
+                            </ul>
+                            <p>Ideal für Game Development, Animation Studios und Content Creator, die authentische Retro-Gaming Ästhetik mit modernster AI-Technologie erreichen möchten.</p>
+                        </div>
+                    </div>
+                    <div id="pixel-guide-en" class="guide-content" style="display:none;">
+                        <div class="guide-card">
+                            <h3>🎮 GIF-PIXEL-ART-CONVERSION – COMPLETE GUIDE (EN)</h3>
+                            <ul class="guide-status">
+                                <li><strong>Status:</strong> Production-ready and fully tested</li>
+                                <li><strong>Processing Speed:</strong> 5-120 seconds (depending on GIF size)</li>
+                                <li><strong>Background Removal:</strong> 95%+ accuracy on clear subjects</li>
+                                <li><strong>Output Quality:</strong> Professional-grade pixel art conversion</li>
+                                <li><strong>Supported Styles:</strong> GameBoy, NES, SNES & Custom Palettes</li>
+                            </ul>
+
+                            <h4>1. 🧩 Pipeline Overview</h4>
+                            <p>This professional GIF-to-pixel-art pipeline converts realistic animations into authentic retro gaming styles through four specialized processing stages:</p>
+                            <div class="process-step">
+                                <h5>Stage 1: Intelligent Background Removal</h5>
+                                <p>BiRefNet-HR (zhengpeng7/BiRefNet) for high-precision object segmentation with BRIA RMBG-1.4 fallback</p>
+                            </div>
+                            <div class="process-step">
+                                <h5>Stage 2: Frame-by-Frame Extraction</h5>
+                                <p>Automatic GIF decomposition into individual frames with timing preservation for animation quality</p>
+                            </div>
+                            <div class="process-step">
+                                <h5>Stage 3: Retro Palette Mapping</h5>
+                                <p>Historically accurate color palettes (GameBoy 4-color, NES 8-color, SNES 16-color) with custom options</p>
+                            </div>
+                            <div class="process-step">
+                                <h5>Stage 4: Pixel Art Reconstruction</h5>
+                                <p>ComfyUI-based reconstruction with motion preservation and authentic retro aesthetics</p>
+                            </div>
+
+                            <h4>2. 🏗 System Architecture & Data Flow</h4>
+                            <div class="guide-flow">
+                                <span>Input GIF</span>
+                                <span>→</span>
+                                <span>Background Removal</span>
+                                <span>→</span>
+                                <span>Frame Extraction</span>
+                                <span>→</span>
+                                <span>Palette Mapping</span>
+                                <span>→</span>
+                                <span>Pixel Art GIF</span>
+                            </div>
+                            <p><strong>Output Naming Convention:</strong> {original}_pixelart_converted.gif</p>
+
+                            <h4>3. 🧠 Technical Implementation</h4>
+                            <div class="process-step">
+                                <h5>3.1 High-End Background Removal</h5>
+                                <p><strong>Primary Model:</strong> BiRefNet-HR (zhengpeng7/BiRefNet) - State-of-the-art image segmentation<br>
+                                <strong>Commercial Fallback:</strong> BRIA RMBG-1.4 (briaai/RMBG-1.4) - Enterprise-grade quality<br>
+                                <strong>Backup:</strong> REMBG U2Net - Proven baseline model for stability</p>
+                            </div>
+                            <div class="process-step">
+                                <h5>3.2 Retro Gaming Palettes</h5>
+                                <p><strong>GameBoy (1989):</strong> 4-color green monochrome (DMG-01 authentic)<br>
+                                <strong>NES (1985):</strong> 8-color classic gaming palette (historically accurate)<br>
+                                <strong>SNES (1991):</strong> 16-color enhanced retro (16-bit era)<br>
+                                <strong>Custom:</strong> User-defined color schemes for individual projects</p>
+                            </div>
+                            <div class="process-step">
+                                <h5>3.3 ComfyUI Workflow Integration</h5>
+                                <p><strong>Pipeline File:</strong> workflows/gif_pixel_art_conversion.json<br>
+                                <strong>Node Framework:</strong> Visual workflow with custom nodes<br>
+                                <strong>Processing:</strong> Batch-capable frame processing with timing preservation</p>
+                            </div>
+
+                            <h4>4. 📦 Technical Dependencies</h4>
+                            <table class="guide-table">
+                                <tr><th>Core Framework</th><th>Function</th></tr>
+                                <tr><td>ComfyUI</td><td>Visual AI workflow framework</td></tr>
+                                <tr><td>PyTorch (CUDA)</td><td>GPU-accelerated AI processing</td></tr>
+                                <tr><td>Hugging Face Hub</td><td>Model distribution & loading</td></tr>
+                            </table>
+                            <table class="guide-table">
+                                <tr><th>AI Models</th><th>Purpose</th></tr>
+                                <tr><td>BiRefNet-HR</td><td>High-resolution background removal</td></tr>
+                                <tr><td>BRIA RMBG-1.4</td><td>Commercial-grade segmentation</td></tr>
+                                <tr><td>REMBG U2Net</td><td>Reliable fallback solution</td></tr>
+                            </table>
+                            <table class="guide-table">
+                                <tr><th>Processing Libraries</th><th>Application</th></tr>
+                                <tr><td>Pillow (PIL)</td><td>GIF I/O, frame manipulation</td></tr>
+                                <tr><td>OpenCV</td><td>Computer vision, frame processing</td></tr>
+                                <tr><td>NumPy</td><td>Array operations, color space</td></tr>
+                            </table>
+
+                            <h4>5. 📊 Performance & Quality Metrics</h4>
+                            <div class="metric-grid">
+                                <div class="metric-item">
+                                    <div class="metric-value">5-120s</div>
+                                    <div class="metric-label">Processing Time</div>
+                                </div>
+                                <div class="metric-item">
+                                    <div class="metric-value">95%+</div>
+                                    <div class="metric-label">Background Accuracy</div>
+                                </div>
+                                <div class="metric-item">
+                                    <div class="metric-value">4-16</div>
+                                    <div class="metric-label">Color Palettes</div>
+                                </div>
+                                <div class="metric-item">
+                                    <div class="metric-value">GPU</div>
+                                    <div class="metric-label">Acceleration</div>
+                                </div>
+                                <div class="metric-item">
+                                    <div class="metric-value">Auto</div>
+                                    <div class="metric-label">Frame Timing</div>
+                                </div>
+                                <div class="metric-item">
+                                    <div class="metric-value">Custom</div>
+                                    <div class="metric-label">Palette Support</div>
+                                </div>
+                            </div>
+
+                            <h4>6. 🎨 Retro Gaming Palette Details</h4>
+                            <table class="guide-table">
+                                <tr><th>Console</th><th>Year</th><th>Colors</th><th>Characteristics</th></tr>
+                                <tr><td>GameBoy (DMG-01)</td><td>1989</td><td>4 grayscale</td><td>Monochrome green, authentic nostalgia</td></tr>
+                                <tr><td>Nintendo NES</td><td>1985</td><td>8-color sets</td><td>Classic 8-bit gaming aesthetics</td></tr>
+                                <tr><td>Super Nintendo</td><td>1991</td><td>16-color enhanced</td><td>Advanced 16-bit color depth</td></tr>
+                                <tr><td>Custom Palettes</td><td>Modern</td><td>Variable</td><td>User-defined color schemes</td></tr>
+                            </table>
+
+                            <h4>7. 🚀 Installation & Setup (Windows)</h4>
+                            <p><strong>Automatic Installation:</strong></p>
+                            <ol>
+                                <li>Run <code>setup_gif_pixel_pipeline.bat</code> as Administrator</li>
+                                <li>Virtual environment is created automatically</li>
+                                <li>All dependencies are installed (PyTorch, ComfyUI, Models)</li>
+                                <li>Pipeline is immediately ready for use</li>
+                            </ol>
+                            <p><strong>Manual Installation:</strong></p>
+                            <pre class="guide-pre">python -m venv pixel_art_env
+pixel_art_env\Scripts\activate
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+pip install comfyui
+pip install -r requirements_pixel_art.txt</pre>
+
+                            <h4>8. 📂 Project Structure & Files</h4>
+                            <pre class="guide-pre">gif_pixel_art_pipeline/
+├── setup_gif_pixel_pipeline.bat          # Windows Auto-Setup
+├── QUICK_START_GIF_PIXEL_ART.md          # 3-Minute Guide
+├── PROFESSIONAL_GIF_PIXEL_ART_PIPELINE_GUIDE.md
+├── workflows/
+│   └── gif_pixel_art_conversion.json     # ComfyUI Workflow
+├── palettes/
+│   ├── gameboy_4color.json
+│   ├── nes_8color.json
+│   └── snes_16color.json
+└── output/
+    └── {filename}_pixelart_converted.gif</pre>
+
+                            <h4>9. 🎯 Use Cases</h4>
+                            <ul>
+                                <li><strong>Game Development:</strong> Convert modern assets to retro style</li>
+                                <li><strong>Animation Studios:</strong> Vintage gaming look for modern projects</li>
+                                <li><strong>Content Creators:</strong> Nostalgic effects for social media</li>
+                                <li><strong>Digital Art:</strong> Authentic pixel art from photos/videos</li>
+                                <li><strong>Marketing:</strong> Retro gaming aesthetics for advertising</li>
+                            </ul>
+
+                            <h4>10. 🧰 Troubleshooting & Support</h4>
+                            <table class="guide-table">
+                                <tr><th>Problem</th><th>Solution</th></tr>
+                                <tr><td>Model download error</td><td>Configure Hugging Face token</td></tr>
+                                <tr><td>GPU not detected</td><td>Update CUDA drivers</td></tr>
+                                <tr><td>Slow processing</td><td>Enable U2Net fallback</td></tr>
+                                <tr><td>Poor segmentation</td><td>Reload BiRefNet-HR model</td></tr>
+                                <tr><td>Incorrect palette</td><td>Check custom palette JSON</td></tr>
+                            </table>
+
+                            <h4>✅ Summary</h4>
+                            <p>The GIF-Pixel-Art-Conversion Pipeline is a state-of-the-art solution for professional retro gaming aesthetics:</p>
+                            <ul>
+                                <li><strong>High-Quality AI Models:</strong> BiRefNet-HR for precise segmentation</li>
+                                <li><strong>Historically Accurate:</strong> Authentic gaming console palettes</li>
+                                <li><strong>Production-Ready:</strong> Robust fallback systems and enterprise-grade quality</li>
+                                <li><strong>User-Friendly:</strong> 3-minute setup with automatic installation</li>
+                            </ul>
+                            <p>Ideal for game development, animation studios, and content creators seeking authentic retro gaming aesthetics with cutting-edge AI technology.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2: AI Spritesheet Frame Extraction -->
+    <div id="spriteframe-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close-modal" onclick="closeModal('spriteframe-modal')">&times;</button>
+                <h2 class="modal-title">🎞️ AI-Spritesheet-frame-extraction</h2>
+                <p class="modal-subtitle">Professionelle Sprite-Verarbeitung & Optimierung</p>
+            </div>
+            <div class="modal-body">
+                <div class="tab-bar">
+                    <button class="tab-btn active" onclick="showSpriteTab('sprite-comparisons')">Vergleiche</button>
+                    <button class="tab-btn" onclick="showSpriteTab('sprite-frames')">Frame-Browser</button>
+                    <button class="tab-btn" onclick="showSpriteTab('sprite-guide')">Funktionsweise</button>
+                </div>
+                <div id="sprite-comparisons" class="tab-content" style="display:block;">
+                    <div class="workflow-details">
+                        <h3>🚀 Überblick</h3>
+                        <p>
+                            Diese ComfyUI-basierte Automationspipeline verarbeitet Sprite-Sheets in mehreren Phasen, um Animationen
+                            im Stil hochwertiger Cartoons (z. B. Archer TV Show) zu stabilisieren, zu säubern und optisch zu verbessern.
+                            In Iteration 3 wurde der Workflow weiter verfeinert, um insbesondere Konsistenz, Anatomie und Bildqualität
+                            für AI-generierte Framefolgen zu maximieren.
+                        </p>
+
+                        <h3>🛠️ Technologie-Stack</h3>
+                        <div class="tech-stack">
+                            <div class="tech-item">
+                                <strong>Framework</strong>
+                                <span>ComfyUI (Node-basierte Pipeline-Engine)</span>
+                            </div>
+                            <div class="tech-item">
+                                <strong>Backend</strong>
+                                <span>Python 3.10 mit PyTorch</span>
+                            </div>
+                            <div class="tech-item">
+                                <strong>Modelle</strong>
+                                <span>Custom LoRA-optimierte Stable Diffusion</span>
+                            </div>
+                            <div class="tech-item">
+                                <strong>Performance</strong>
+                                <span>41 FPS bei 6279 Frames (8 Threads)</span>
+                            </div>
+                        </div>
+
+                        <h3>🔍 Funktionsweise</h3>
+                        <p>
+                            <strong>1. Frame-Extraktion:</strong> Automatische Zerlegung der Sprite-Sheets in Einzelbilder (1024×1024 px)<br>
+                            <strong>2. Qualitätsbewertung:</strong> 5-Metriken-System (Size, Aspect, Content, Sharpness, Noise)<br>
+                            <strong>3. Outlier-Detection:</strong> 79.2% Filter-Effizienz (1309 Frames entfernt)<br>
+                            <strong>4. Anatomische Sequenzierung:</strong> Bewegungslogik-Rekonstruktion<br>
+                            <strong>5. Vaporwave-Reduktion:</strong> Stilkorrektur auf 45% Intensität
+                        </p>
+                    </div>
+
+                    <div class="comparison-gallery">
+                        <div class="comparison-item">
+                            <div class="comparison-container">
+                                <div class="comparison-side">
+                                    <div class="comparison-label before-label">Raw Sprite Input</div>
+                                    <img src="assets/workflows/spriteframe/comparisons/main_source.png" alt="Raw Sprite Sheet">
+                                </div>
+                                <div class="comparison-side">
+                                    <div class="comparison-label after-label">Optimized Animation</div>
+                                    <img src="assets/workflows/spriteframe/comparisons/main_result.gif" alt="Optimized Animation">
+                                </div>
+                            </div>
+                            <div class="comparison-caption">Hauptvergleich: Rohes Sprite-Sheet → Optimierte Animation (Qualität 0.79 → 0.94)</div>
+                        </div>
+
+                        <div class="comparison-item">
+                            <div class="comparison-container">
+                                <div class="comparison-side">
+                                    <div class="comparison-label before-label">Unfiltered Frames</div>
+                                    <img src="assets/workflows/spriteframe/comparisons/source_1.png" alt="Unfiltered Quality">
+                                </div>
+                                <div class="comparison-side">
+                                    <div class="comparison-label after-label">Quality Filtered</div>
+                                    <img src="assets/workflows/spriteframe/comparisons/result_1.gif" alt="Quality Filtered">
+                                </div>
+                            </div>
+                            <div class="comparison-caption">Qualitätsfilterung: Anatomische Fehler entfernt, Bewegungslogik verbessert</div>
+                        </div>
+
+                        <div class="comparison-item">
+                            <div class="comparison-container">
+                                <div class="comparison-side">
+                                    <div class="comparison-label before-label">Vaporwave Overload</div>
+                                    <img src="assets/workflows/spriteframe/comparisons/source_2.png" alt="Vaporwave Style">
+                                </div>
+                                <div class="comparison-side">
+                                    <div class="comparison-label after-label">Cartoon Style</div>
+                                    <img src="assets/workflows/spriteframe/comparisons/result_2.gif" alt="Cartoon Style">
+                                </div>
+                            </div>
+                            <div class="comparison-caption">Stilkorrektur: Vaporwave-Effekte → Konsistenter Cartoon-Stil (45% Intensitätsreduktion)</div>
+                        </div>
+                    </div>
+                </div>
+                <div id="sprite-frames" class="tab-content" style="display:none;">
+                    <div class="workflow-details">
+                        <h3>🖼️ Extrahierte Frames für Weiterbearbeitung</h3>
+                        <p>
+                            Diese Einzelframes wurden aus dem optimierten Sprite-Sheet extrahiert und können individuell für
+                            Detailkorrekturen in Bildbearbeitungssoftware verwendet werden. Kleine AI-generierte Fehler
+                            lassen sich so präzise manuell korrigieren.
+                        </p>
+
+                        <div class="frame-controls">
+                            <div class="frame-info">
+                                <span id="frame-counter">Frame 1 von 8</span>
+                                <span class="frame-details">1024×1024 px, PNG</span>
+                            </div>
+                            <div class="frame-actions">
+                                <button class="frame-btn" onclick="downloadCurrentFrame()">
+                                    📥 Aktuellen Frame herunterladen
+                                </button>
+                                <button class="frame-btn secondary" onclick="downloadAllFrames()">
+                                    📦 Alle Frames herunterladen
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="frame-viewer">
+                            <div class="frame-navigation">
+                                <button class="nav-btn" onclick="previousFrame()" id="prev-btn">
+                                    ← Vorheriger
+                                </button>
+                                <div class="frame-display">
+                                    <img id="current-frame" src="assets/workflows/spriteframe/comparisons/result_1_frames/frame_000.png" alt="Frame 0">
+                                    <div class="frame-overlay">
+                                        <button class="zoom-btn" onclick="toggleZoom()">🔍</button>
+                                    </div>
+                                </div>
+                                <button class="nav-btn" onclick="nextFrame()" id="next-btn">
+                                    Nächster →
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="frame-gallery">
+                            <h4>Frame-Galerie</h4>
+                            <div class="gallery-grid" id="frame-thumbnails">
+                                <!-- Thumbnails werden per JavaScript generiert -->
+                            </div>
+                        </div>
+
+                        <div class="frame-details-panel">
+                            <h4>Verwendungshinweise</h4>
+                            <ul>
+                                <li><strong>Bildbearbeitung:</strong> Frames können in Photoshop, GIMP oder ähnlicher Software geöffnet werden</li>
+                                <li><strong>Typische Korrekturen:</strong> Anatomische Details, Farbkonsistenz, Artefakte entfernen</li>
+                                <li><strong>Format:</strong> PNG mit Transparenz für einfache Weiterverarbeitung</li>
+                                <li><strong>Auflösung:</strong> 1024×1024 px für hohe Detailgenauigkeit</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div id="sprite-guide" class="tab-content" style="display:none;">
+                    <div class="guide-lang-switch">
+                        <button class="lang-btn active" onclick="showGuideLang('de')">Deutsch</button>
+                        <button class="lang-btn" onclick="showGuideLang('en')">English</button>
+                    </div>
+                    <div id="guide-de" class="guide-content" style="display:block;">
+                        <!-- DEUTSCHER GUIDE ALS HTML, visuell gegliedert -->
+                        <div class="guide-card">
+                            <h3>🔧 AI-SPRITESHEET-FRAME-EXTRACTION – VOLLSTÄNDIGER LEITFADEN</h3>
+                            <ul class="guide-status">
+                                <li><strong>Status:</strong> Produktionsreif und vollständig getestet</li>
+                                <li><strong>Zielqualität:</strong> 0.681–0.693 (durchgehend erreicht)</li>
+                                <li><strong>Erfolgsrate:</strong> 412 von 415 Bildern (99,3%)</li>
+                                <li><strong>Performance:</strong> 2,1 Sekunden pro Bild</li>
+                                <li><strong>GPU-Beschleunigung:</strong> Verfügbar für alle Hauptmodule</li>
+                            </ul>
+
+                            <h4>1. 🧩 Pipeline-Übersicht</h4>
+                            <p>Diese professionelle Bildverarbeitungspipeline optimiert Sprite-Grafiken durch fünf aufeinander aufbauende Prozessstufen:</p>
+                            <div class="process-step">
+                                <h5>Stufe 1: Intelligente Hintergrundentfernung</h5>
+                                <p>REMBG U2Net (Salient Object Detection) mit OpenCV-Fallback für maximale Zuverlässigkeit</p>
+                            </div>
+                            <div class="process-step">
+                                <h5>Stufe 2: AI-gestützte Posenanalyse</h5>
+                                <p>MediaPipe BlazePose für 33 3D-Landmarks zur anatomischen Qualitätskontrolle</p>
+                            </div>
+                            <div class="process-step">
+                                <h5>Stufe 3: Intelligente Frame-Extraktion</h5>
+                                <p>Canny-Algorithmus mit Konturerkennung für präzise Sprite-Separation</p>
+                            </div>
+                            <div class="process-step">
+                                <h5>Stufe 4: Hochwertiges Upscaling</h5>
+                                <p>Lanczos4-Interpolation mit nachgelagerter Schärfung für optimale Qualität</p>
+                            </div>
+                            <div class="process-step">
+                                <h5>Stufe 5: Multiformat-Export</h5>
+                                <p>PNG-Einzelbilder und optimierte animierte GIFs in 1x und 2x Auflösung</p>
+                            </div>
+
+                            <h4>2. 🏗 Systemarchitektur & Datenfluss</h4>
+                            <div class="guide-flow">
+                                <span>Eingabebild</span>
+                                <span>→</span>
+                                <span>Hintergrundentfernung</span>
+                                <span>→</span>
+                                <span>AI-Posenanalyse</span>
+                                <span>→</span>
+                                <span>Frame-Erkennung</span>
+                                <span>→</span>
+                                <span>2x-Upscaling</span>
+                                <span>→</span>
+                                <span>4 Ausgabeformate</span>
+                            </div>
+                            <p><strong>Ausgabeformate:</strong> Einzelbilder (1x), Einzelbilder (2x), Animiertes GIF (1x), Animiertes GIF (2x)</p>
+
+                            <h4>3. 🧠 Technische Implementierung</h4>
+                            <div class="process-step">
+                                <h5>3.1 Hintergrundentfernung (REMBG + Fallback)</h5>
+                                <p><strong>Hauptmodell:</strong> U2Net (Salient Object Detection) mit PyTorch<br>
+                                <strong>Fallback:</strong> OpenCV mit Zonen- & Farbclustering (RGB + HSV)<br>
+                                <strong>Erkennungslogik:</strong> 12 Zonen, adaptiver Toleranzwert (20–50 je nach Komplexität)</p>
+                            </div>
+                            <div class="process-step">
+                                <h5>3.2 Posenanalyse (MediaPipe BlazePose)</h5>
+                                <p><strong>Modell:</strong> BlazePose (33 3D-Landmarks)<br>
+                                <strong>Framework:</strong> Google MediaPipe<br>
+                                <strong>Ausgabe:</strong> x/y/z + Sichtbarkeit für jeden Punkt</p>
+                            </div>
+                            <div class="process-step">
+                                <h5>3.3 Intelligente Frame-Extraktion</h5>
+                                <p><strong>Kantenalgorithmus:</strong> Canny (Schwellen 50–150)<br>
+                                <strong>Konturfilter:</strong> Nur externe Umrisse, >2% Bildfläche<br>
+                                <strong>Sortierung:</strong> Oben–unten, links–rechts</p>
+                            </div>
+                            <div class="process-step">
+                                <h5>3.4 Hochwertiges Upscaling</h5>
+                                <p><strong>Interpolation:</strong> Lanczos4 (8x8 Kernel)<br>
+                                <strong>Faktor:</strong> 2x<br>
+                                <strong>Nachbearbeitung:</strong> Schärfungsfilter (3x3-Kern)</p>
+                            </div>
+                            <div class="process-step">
+                                <h5>3.5 Animiertes GIF</h5>
+                                <p><strong>Tool:</strong> Pillow (PIL)<br>
+                                <strong>Optimierung:</strong> Interne Farbkompression<br>
+                                <strong>Loop:</strong> Endlos (0), Dauer pro Frame: 500ms</p>
+                            </div>
+
+                            <h4>4. 📦 Technische Abhängigkeiten</h4>
+                            <table class="guide-table">
+                                <tr><th>Hauptbibliotheken</th><th>Zweck</th></tr>
+                                <tr><td>OpenCV</td><td>Bildverarbeitung, Konturen, Filter</td></tr>
+                                <tr><td>NumPy</td><td>Arraymanipulation, Statistiken</td></tr>
+                                <tr><td>Pillow</td><td>PNG/GIF I/O, Farbraum-Konvertierung</td></tr>
+                            </table>
+                            <table class="guide-table">
+                                <tr><th>AI/ML Framework</th><th>Funktion</th></tr>
+                                <tr><td>PyTorch + REMBG</td><td>Hintergrundentfernung mit GPU</td></tr>
+                                <tr><td>ONNXRuntime</td><td>GPU-beschleunigte Modell-Ausführung</td></tr>
+                                <tr><td>mediapipe</td><td>BlazePose zur Körperanalyse</td></tr>
+                            </table>
+                            <p><strong>Optimierung:</strong> Speicherverwaltung durch Chunk-Verarbeitung, gc.collect(), torch.cuda.empty_cache()<br>
+                            <strong>GPU-Erkennung:</strong> torch.cuda.is_available()</p>
+
+                            <h4>5. 📊 Leistungskennzahlen</h4>
+                            <div class="metric-grid">
+                                <div class="metric-item">
+                                    <div class="metric-value">2,1s</div>
+                                    <div class="metric-label">Verarbeitungszeit / Bild</div>
+                                </div>
+                                <div class="metric-item">
+                                    <div class="metric-value">0.681</div>
+                                    <div class="metric-label">Durchschnittsqualität</div>
+                                </div>
+                                <div class="metric-item">
+                                    <div class="metric-value">99,3%</div>
+                                    <div class="metric-label">Erfolgsrate</div>
+                                </div>
+                                <div class="metric-item">
+                                    <div class="metric-value">4,2 GB</div>
+                                    <div class="metric-label">Spitzen-RAM-Nutzung</div>
+                                </div>
+                                <div class="metric-item">
+                                    <div class="metric-value">75%</div>
+                                    <div class="metric-label">GPU-Auslastung (REMBG)</div>
+                                </div>
+                                <div class="metric-item">
+                                    <div class="metric-value">4x</div>
+                                    <div class="metric-label">Ausgabengröße vs. Input</div>
+                                </div>
+                            </div>
+
+                            <h4>6. ✅ Fehlerbehandlung & Validierung</h4>
+                            <p><strong>Fallback-Kette bei Fehlern:</strong></p>
+                            <div class="guide-flow">
+                                <span>REMBG U2Net</span>
+                                <span>→</span>
+                                <span>OpenCV (Zonenclustering)</span>
+                                <span>→</span>
+                                <span>Originalbild (Qualität 0.1)</span>
+                            </div>
+                            <p><strong>Validierung von Eingabedateien:</strong> Format, Größe, Mindestauflösung, RGB-Check</p>
+
+                            <h4>7. 📂 Ausgabe & Dateistruktur</h4>
+                            <pre class="guide-pre">output/ultimate_sprites/
+├── sprite1/
+│   ├── frames_1x/         # Einzelbilder original
+│   ├── frames_2x/         # Einzelbilder 2x hochskaliert
+│   ├── sprite1_animated_1x.gif
+│   └── sprite1_animated_2x.gif
+├── sprite2/
+│   └── ...
+└── ULTIMATE_SPRITE_PROCESSING_REPORT.json</pre>
+
+                            <h4>8. 🧪 Qualitätsbewertungssystem</h4>
+                            <table class="guide-table">
+                                <tr><th>Bewertung (0.0–1.0)</th><th>Qualitätsstufe</th></tr>
+                                <tr><td>0.0–0.3</td><td>Schlecht</td></tr>
+                                <tr><td>0.3–0.5</td><td>Akzeptabel</td></tr>
+                                <tr><td>0.5–0.7</td><td>Gut</td></tr>
+                                <tr><td>0.7–1.0</td><td>Exzellent</td></tr>
+                            </table>
+                            <p><strong>Testlauf mit 415 Bildern:</strong> 99,3% Erfolgsquote, Durchschnittsqualität: 0.681–0.693</p>
+
+                            <h4>9. 🚀 Installation & Start (Windows)</h4>
+                            <p><strong>Schnellstart:</strong></p>
+                            <ol>
+                                <li><code>install_ultimate_pipeline_windows.bat</code> ausführen</li>
+                                <li>Sprites in <code>input/</code> kopieren</li>
+                                <li><code>run_ultimate_pipeline.bat</code> starten</li>
+                                <li>Ergebnisse unter <code>output/ultimate_sprites/</code> einsehen</li>
+                            </ol>
+                            <p><strong>Manuelle Installation (CMD):</strong></p>
+                            <pre class="guide-pre">pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+pip install "rembg[gpu]>=2.0.50"
+pip install -r requirements_ultimate.txt</pre>
+
+                            <h4>10. 🧰 Troubleshooting (Fehlerbehebung)</h4>
+                            <table class="guide-table">
+                                <tr><th>Problem</th><th>Lösung</th></tr>
+                                <tr><td>REMBG-Fehler</td><td>Automatischer OpenCV-Fallback</td></tr>
+                                <tr><td>MediaPipe-Importfehler</td><td>Nur visuelle Posen fehlen – keine Qualitätsminderung</td></tr>
+                                <tr><td>Speicherfehler (RAM)</td><td>Verarbeitung in kleineren Batches</td></tr>
+                                <tr><td>Schlechte Qualität</td><td>Höhere Auflösung verwenden, Qualitätspreset prüfen</td></tr>
+                            </table>
+
+                            <h4>✅ Zusammenfassung</h4>
+                            <p>Die AI-Spritesheet-frame-extraction Pipeline ist eine produktreife, GPU-beschleunigte und modulare Verarbeitungsumgebung, ideal für:</p>
+                            <ul>
+                                <li><strong>Game Assets:</strong> Sprite-Optimierung für Spiele</li>
+                                <li><strong>Animationen:</strong> Frame-by-Frame Verbesserung</li>
+                                <li><strong>Sprite-Kompositionen:</strong> Batch-Verarbeitung großer Sprite-Sheets</li>
+                                <li><strong>Video-to-Sprite-Workflows:</strong> Konvertierung von Videos zu Sprites</li>
+                            </ul>
+                            <p>Mit 99% Erfolgsquote, stilistisch sauberem Output und optimierter Leistung auf Windows ist sie ein verlässlicher Kern für jede KI-unterstützte Animationsproduktion.</p>
+                        </div>
+                    </div>
+                    <div id="guide-en" class="guide-content" style="display:none;">
+                        <div class="guide-card">
+                            <h3>🔧 ULTIMATE SPRITE PROCESSING PIPELINE – COMPLETE GUIDE (EN)</h3>
+                            <p><em>English translation coming soon.</em></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside content
+        window.addEventListener('click', function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const modals = document.querySelectorAll('.modal');
+                modals.forEach(modal => {
+                    if (modal.style.display === 'block') {
+                        modal.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+            }
+        });
+
+        // Tab functionality for sprite modal
+        function showSpriteTab(tabId) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => {
+                content.style.display = 'none';
+            });
+
+            // Remove active class from all tab buttons
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show selected tab content
+            document.getElementById(tabId).style.display = 'block';
+
+            // Add active class to clicked tab button
+            event.target.classList.add('active');
+
+            // Initialize frame browser if frames tab is selected
+            if (tabId === 'sprite-frames') {
+                setTimeout(initFrameBrowser, 100);
+            }
+        }
+
+        // Tab functionality for pixel art modal
+        function showPixelTab(tabId) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('#pixelart-modal .tab-content');
+            tabContents.forEach(content => {
+                content.style.display = 'none';
+            });
+
+            // Remove active class from all tab buttons
+            const tabButtons = document.querySelectorAll('#pixelart-modal .tab-btn');
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show selected tab content
+            document.getElementById(tabId).style.display = 'block';
+
+            // Add active class to clicked tab button
+            event.target.classList.add('active');
+        }
+
+        // Language switching for pixel art guide
+        function showPixelGuideLang(lang) {
+            // Hide all guide contents
+            const guideContents = document.querySelectorAll('#pixelart-modal .guide-content');
+            guideContents.forEach(content => {
+                content.style.display = 'none';
+            });
+
+            // Remove active class from all language buttons
+            const langButtons = document.querySelectorAll('#pixelart-modal .lang-btn');
+            langButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show selected language content
+            document.getElementById('pixel-guide-' + lang).style.display = 'block';
+
+            // Add active class to clicked language button
+            event.target.classList.add('active');
+        }
+
+        // Language switching functionality
+        function showGuideLang(lang) {
+            // Hide all guide contents
+            const guideContents = document.querySelectorAll('.guide-content');
+            guideContents.forEach(content => {
+                content.style.display = 'none';
+            });
+
+            // Remove active class from all language buttons
+            const langButtons = document.querySelectorAll('.lang-btn');
+            langButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show selected language content
+            document.getElementById('guide-' + lang).style.display = 'block';
+
+            // Add active class to clicked language button
+            event.target.classList.add('active');
+        }
+
+        // Frame Browser functionality
+        let currentFrameIndex = 0;
+        const totalFrames = 8;
+        const frameBasePath = 'assets/workflows/spriteframe/comparisons/result_1_frames/frame_';
+        let isZoomed = false;
+
+        // Initialize frame browser when tab is opened
+        function initFrameBrowser() {
+            generateThumbnails();
+            updateFrameDisplay();
+        }
+
+        // Generate thumbnail gallery
+        function generateThumbnails() {
+            const gallery = document.getElementById('frame-thumbnails');
+            gallery.innerHTML = '';
+
+            for (let i = 0; i < totalFrames; i++) {
+                const thumbnail = document.createElement('div');
+                thumbnail.className = 'thumbnail';
+                if (i === 0) thumbnail.classList.add('active');
+
+                thumbnail.innerHTML = `
+                    <img src="${frameBasePath}${String(i).padStart(3, '0')}.png" alt="Frame ${i}">
+                    <div class="thumbnail-label">Frame ${i + 1}</div>
+                `;
+
+                thumbnail.onclick = () => selectFrame(i);
+                gallery.appendChild(thumbnail);
+            }
+        }
+
+        // Update main frame display
+        function updateFrameDisplay() {
+            const frameImg = document.getElementById('current-frame');
+            const frameCounter = document.getElementById('frame-counter');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+
+            frameImg.src = `${frameBasePath}${String(currentFrameIndex).padStart(3, '0')}.png`;
+            frameCounter.textContent = `Frame ${currentFrameIndex + 1} von ${totalFrames}`;
+
+            // Update button states
+            prevBtn.disabled = currentFrameIndex === 0;
+            nextBtn.disabled = currentFrameIndex === totalFrames - 1;
+
+            // Update active thumbnail
+            const thumbnails = document.querySelectorAll('.thumbnail');
+            thumbnails.forEach((thumb, index) => {
+                thumb.classList.toggle('active', index === currentFrameIndex);
+            });
+
+            // Reset zoom when changing frames
+            if (isZoomed) {
+                toggleZoom();
+            }
+        }
+
+        // Navigate to previous frame
+        function previousFrame() {
+            if (currentFrameIndex > 0) {
+                currentFrameIndex--;
+                updateFrameDisplay();
+            }
+        }
+
+        // Navigate to next frame
+        function nextFrame() {
+            if (currentFrameIndex < totalFrames - 1) {
+                currentFrameIndex++;
+                updateFrameDisplay();
+            }
+        }
+
+        // Select specific frame from thumbnail
+        function selectFrame(index) {
+            currentFrameIndex = index;
+            updateFrameDisplay();
+        }
+
+        // Toggle zoom functionality
+        function toggleZoom() {
+            const frameDisplay = document.querySelector('.frame-display');
+            const zoomBtn = document.querySelector('.zoom-btn');
+
+            isZoomed = !isZoomed;
+            frameDisplay.classList.toggle('zoomed', isZoomed);
+            zoomBtn.textContent = isZoomed ? '🔍-' : '🔍';
+        }
+
+        // Download current frame
+        function downloadCurrentFrame() {
+            const frameUrl = `${frameBasePath}${String(currentFrameIndex).padStart(3, '0')}.png`;
+            const link = document.createElement('a');
+            link.href = frameUrl;
+            link.download = `sprite_frame_${String(currentFrameIndex + 1).padStart(3, '0')}.png`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Download all frames (simplified - creates individual downloads)
+        function downloadAllFrames() {
+            if (confirm('Dies wird 8 separate Downloads starten. Fortfahren?')) {
+                for (let i = 0; i < totalFrames; i++) {
+                    setTimeout(() => {
+                        const frameUrl = `${frameBasePath}${String(i).padStart(3, '0')}.png`;
+                        const link = document.createElement('a');
+                        link.href = frameUrl;
+                        link.download = `sprite_frame_${String(i + 1).padStart(3, '0')}.png`;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    }, i * 200); // Stagger downloads
+                }
+            }
+        }
+
+        // Keyboard navigation for frames
+        document.addEventListener('keydown', function(event) {
+            // Only handle keyboard navigation if frame browser is active
+            const frameTab = document.getElementById('sprite-frames');
+            if (frameTab && frameTab.style.display !== 'none') {
+                switch(event.key) {
+                    case 'ArrowLeft':
+                        event.preventDefault();
+                        previousFrame();
+                        break;
+                    case 'ArrowRight':
+                        event.preventDefault();
+                        nextFrame();
+                        break;
+                    case ' ':
+                        event.preventDefault();
+                        toggleZoom();
+                        break;
+                }
+            }
+        });
+
+
+    </script>
+</body>
+</html>
