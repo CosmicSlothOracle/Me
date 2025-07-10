@@ -730,6 +730,58 @@
             left: 0;
         }
 
+        /* Frame Set Selector Styles */
+        .frame-set-selector {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .frame-set-selector h4 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .frame-set-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .frame-set-btn {
+            padding: 10px 16px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .frame-set-btn:hover {
+            border-color: #007acc;
+            background: #f0f8ff;
+        }
+
+        .frame-set-btn.active {
+            background: #007acc;
+            color: white;
+            border-color: #007acc;
+        }
+
+        .frame-set-name {
+            font-size: 0.8rem;
+            color: #007acc;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
         @media (max-width: 768px) {
             .frame-controls {
                 flex-direction: column;
@@ -758,6 +810,16 @@
             .gallery-grid {
                 grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
                 gap: 8px;
+            }
+
+            .frame-set-buttons {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .frame-set-btn {
+                width: 100%;
+                justify-content: center;
             }
         }
 
@@ -806,12 +868,13 @@
                 </div>
 
                 <div class="workflow-description">
-                    Konvertierung realistischer Effekte (Blitze, Energie, Tornados) in charakteristische 8-16-Bit Pixel-Art-Darstellung.
-                    Erhaltung der Bewegungsdynamik bei stilistischer Transformation zu nostalgischer Gaming-Ästhetik.
+                    Umfassende Konvertierung realistischer Effekte (Energie, Blitze, Naturkräfte, Magie, Partikel, kosmische Phänomene)
+                    in charakteristische 8-16-Bit Pixel-Art-Darstellung. Erhaltung der Bewegungsdynamik bei stilistischer
+                    Transformation zu nostalgischer Gaming-Ästhetik verschiedener Konsolen-Epochen.
                 </div>
 
                 <div class="workflow-meta">
-                    <span>4 Vergleiche verfügbar</span>
+                    <span>10 Vergleiche verfügbar</span>
                     <span class="expand-hint">Klicken für Details →</span>
                 </div>
             </div>
@@ -826,11 +889,11 @@
                 <div class="comparison-container">
                     <div class="comparison-side">
                         <div class="comparison-label before-label">Sprite Input</div>
-                        <img src="assets/workflows/spriteframe/comparisons/main_source.png" alt="Sprite Source">
+                        <img src="assets/workflows/spriteframe/comparisons/source_main.png" alt="Sprite Source">
                     </div>
                     <div class="comparison-side">
                         <div class="comparison-label after-label">Optimiert</div>
-                        <img src="assets/workflows/spriteframe/comparisons/main_result.gif" alt="Sprite Result">
+                        <img src="assets/workflows/spriteframe/comparisons/result_main.gif" alt="Sprite Result">
                     </div>
                 </div>
 
@@ -840,7 +903,7 @@
                 </div>
 
                 <div class="workflow-meta">
-                    <span>Verarbeitungsrate: 41 FPS</span>
+                    <span>6 Vergleiche verfügbar</span>
                     <span class="expand-hint">Klicken für Details →</span>
                 </div>
             </div>
@@ -862,14 +925,25 @@
                     <button class="tab-btn" onclick="showPixelTab('pixel-guide')">Technischer Guide</button>
                 </div>
                 <div id="pixel-comparisons" class="tab-content" style="display:block;">
-                    <div class="workflow-details">
+                <div class="workflow-details">
                         <h3>🎮 Workflow-Übersicht</h3>
-                        <p>
-                            Transformation realistischer Effekte in charakteristische Pixel-Art-Ästhetik verschiedener Gaming-Epochen.
-                            Der Workflow erhält die ursprüngliche Bewegungsdynamik während die visuelle Darstellung zu nostalgischen
-                            8-16-Bit-Stilen konvertiert wird.
-                        </p>
+                    <p>
+                        Umfassende Transformation realistischer Effekte in charakteristische Pixel-Art-Ästhetik verschiedener Gaming-Epochen.
+                        Der Workflow verarbeitet eine breite Palette von Elementen: Energiefelder, Blitze, Naturphänomene (Tornados, Feuer, Wasser, Eis),
+                        magische Effekte und kosmische Phänomene. Dabei wird die ursprüngliche Bewegungsdynamik erhalten, während die visuelle
+                        Darstellung zu nostalgischen 8-16-Bit-Stilen konvertiert wird.
+                    </p>
+
+                    <div style="background: linear-gradient(135deg, #e8f4fd, #f1f8ff); padding: 20px; border-radius: 12px; margin: 20px 0;">
+                        <h4 style="color: #007acc; margin-bottom: 15px;">🎨 Verarbeitete Effekt-Kategorien</h4>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                            <div><strong>⚡ Energie:</strong> Energyblast, Lightning, Mystical Aura</div>
+                            <div><strong>🌪️ Naturkräfte:</strong> Tornados, Feuer, Wasser, Eis</div>
+                            <div><strong>💨 Partikel:</strong> Rauch, Dampf, Spritzer</div>
+                            <div><strong>🌌 Mystik:</strong> Portale, Kosmische Stürme</div>
+                        </div>
                     </div>
+                </div>
 
                 <div class="comparison-gallery">
                     <div class="comparison-item">
@@ -927,13 +1001,97 @@
                         </div>
                         <div class="comparison-caption">Pink Smoke: Organische Rauchpartikel → Kubische Pixelstrukturen</div>
                     </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-container">
+                            <div class="comparison-side">
+                                <div class="comparison-label before-label">Original</div>
+                                <img src="assets/videos/comfyui/source5.gif" alt="Mystical Energy Original">
                 </div>
+                            <div class="comparison-side">
+                                <div class="comparison-label after-label">Pixel Art</div>
+                                <img src="assets/videos/comfyui/result5.gif" alt="Mystical Energy Pixel Art">
+            </div>
+        </div>
+                        <div class="comparison-caption">Mystical Energy: Fließende Energieaura → Klassische 8-Bit Magie-Effekte</div>
+    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-container">
+                            <div class="comparison-side">
+                                <div class="comparison-label before-label">Original</div>
+                                <img src="assets/videos/comfyui/source6.gif" alt="Fire Effects Original">
+                            </div>
+                            <div class="comparison-side">
+                                <div class="comparison-label after-label">Pixel Art</div>
+                                <img src="assets/videos/comfyui/result6.gif" alt="Fire Effects Pixel Art">
+                            </div>
+                        </div>
+                        <div class="comparison-caption">Fire Effects: Realistische Flammen → Retro Gaming Feuer-Animation</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-container">
+                            <div class="comparison-side">
+                                <div class="comparison-label before-label">Original</div>
+                                <img src="assets/videos/comfyui/source7.gif" alt="Water Splash Original">
+                            </div>
+                            <div class="comparison-side">
+                                <div class="comparison-label after-label">Pixel Art</div>
+                                <img src="assets/videos/comfyui/result7.gif" alt="Water Splash Pixel Art">
+                            </div>
+                        </div>
+                        <div class="comparison-caption">Water Splash: Flüssige Wasserspritzer → Pixel-basierte Wasser-Physik</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-container">
+                            <div class="comparison-side">
+                                <div class="comparison-label before-label">Original</div>
+                                <img src="assets/videos/comfyui/source8.gif" alt="Ice Crystal Original">
+                            </div>
+                            <div class="comparison-side">
+                                <div class="comparison-label after-label">Pixel Art</div>
+                                <img src="assets/videos/comfyui/result8.gif" alt="Ice Crystal Pixel Art">
+                            </div>
+                        </div>
+                        <div class="comparison-caption">Ice Crystal: Kristalline Eisformationen → SNES-Stil Eis-Magie</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-container">
+                            <div class="comparison-side">
+                                <div class="comparison-label before-label">Original</div>
+                                <img src="assets/videos/comfyui/source9.gif" alt="Portal Effect Original">
+                            </div>
+                            <div class="comparison-side">
+                                <div class="comparison-label after-label">Pixel Art</div>
+                                <img src="assets/videos/comfyui/result9.gif" alt="Portal Effect Pixel Art">
+                            </div>
+                        </div>
+                        <div class="comparison-caption">Portal Effect: Dimensionale Portale → GameBoy-Style Teleportation</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-container">
+                            <div class="comparison-side">
+                                <div class="comparison-label before-label">Original</div>
+                                <img src="assets/videos/comfyui/source10.gif" alt="Cosmic Storm Original">
+                            </div>
+                            <div class="comparison-side">
+                                <div class="comparison-label after-label">Pixel Art</div>
+                                <img src="assets/videos/comfyui/result10.gif" alt="Cosmic Storm Pixel Art">
+                            </div>
+                        </div>
+                        <div class="comparison-caption">Cosmic Storm: Galaktische Stürme → 16-Bit Space-Game Aesthetik</div>
+                    </div>
                 </div>
+            </div>
                 <div id="pixel-guide" class="tab-content" style="display:none;">
                     <div class="guide-lang-switch">
                         <button class="lang-btn active" onclick="showPixelGuideLang('de')">Deutsch</button>
                         <button class="lang-btn" onclick="showPixelGuideLang('en')">English</button>
-                    </div>
+        </div>
                     <div id="pixel-guide-de" class="guide-content" style="display:block;">
                         <div class="guide-card">
                             <h3>🎮 GIF-PIXEL-ART-CONVERSION – VOLLSTÄNDIGER LEITFADEN</h3>
@@ -962,7 +1120,7 @@
                             <div class="process-step">
                                 <h5>Stufe 4: Pixel-Art Reconstruction</h5>
                                 <p>ComfyUI-basierte Rekonstruktion mit Bewegungserhaltung und authentischer Retro-Ästhetik</p>
-                            </div>
+    </div>
 
                             <h4>2. 🏗 Systemarchitektur & Datenfluss</h4>
                             <div class="guide-flow">
@@ -1321,8 +1479,8 @@ pip install -r requirements_pixel_art.txt</pre>
                         <p>
                             Diese ComfyUI-basierte Automationspipeline verarbeitet Sprite-Sheets in mehreren Phasen, um Animationen
                             im Stil hochwertiger Cartoons (z. B. Archer TV Show) zu stabilisieren, zu säubern und optisch zu verbessern.
-                            In Iteration 3 wurde der Workflow weiter verfeinert, um insbesondere Konsistenz, Anatomie und Bildqualität
-                            für AI-generierte Framefolgen zu maximieren.
+                            Die Pipeline umfasst verschiedene Spezialisierungen: Hauptverarbeitung, Qualitätsfilterung, Stilentwicklung,
+                            Posenverfeinerung und Farbkorrektur für maximale Vielseitigkeit.
                         </p>
 
                         <h3>🛠️ Technologie-Stack</h3>
@@ -1345,13 +1503,13 @@ pip install -r requirements_pixel_art.txt</pre>
                             </div>
                         </div>
 
-                        <h3>🔍 Funktionsweise</h3>
+                        <h3>🔍 Verarbeitungstypen</h3>
                         <p>
-                            <strong>1. Frame-Extraktion:</strong> Automatische Zerlegung der Sprite-Sheets in Einzelbilder (1024×1024 px)<br>
-                            <strong>2. Qualitätsbewertung:</strong> 5-Metriken-System (Size, Aspect, Content, Sharpness, Noise)<br>
-                            <strong>3. Outlier-Detection:</strong> 79.2% Filter-Effizienz (1309 Frames entfernt)<br>
-                            <strong>4. Anatomische Sequenzierung:</strong> Bewegungslogik-Rekonstruktion<br>
-                            <strong>5. Vaporwave-Reduktion:</strong> Stilkorrektur auf 45% Intensität
+                            <strong>1. Hauptverarbeitung:</strong> Vollständige Sprite-Sheet-Optimierung mit allen Features<br>
+                            <strong>2. Qualitätsfilterung:</strong> Anatomische Fehlerkorrektur und Bewegungslogik-Rekonstruktion<br>
+                            <strong>3. Stilentwicklung:</strong> Konsistenzoptimierung zwischen verschiedenen Animationsphasen<br>
+                            <strong>4. Posenverfeinerung:</strong> Anatomische Korrekturen für natürliche Bewegungsabläufe<br>
+                            <strong>5. Farbkorrektur:</strong> Konsistente Farbgebung und Beleuchtung über alle Frames
                         </p>
                     </div>
 
@@ -1360,11 +1518,11 @@ pip install -r requirements_pixel_art.txt</pre>
                             <div class="comparison-container">
                                 <div class="comparison-side">
                                     <div class="comparison-label before-label">Raw Sprite Input</div>
-                                    <img src="assets/workflows/spriteframe/comparisons/main_source.png" alt="Raw Sprite Sheet">
+                                    <img src="assets/workflows/spriteframe/comparisons/source_main.png" alt="Raw Sprite Sheet">
                                 </div>
                                 <div class="comparison-side">
                                     <div class="comparison-label after-label">Optimized Animation</div>
-                                    <img src="assets/workflows/spriteframe/comparisons/main_result.gif" alt="Optimized Animation">
+                                    <img src="assets/workflows/spriteframe/comparisons/result_main.gif" alt="Optimized Animation">
                                 </div>
                             </div>
                             <div class="comparison-caption">Hauptvergleich: Rohes Sprite-Sheet → Optimierte Animation (Qualität 0.79 → 0.94)</div>
@@ -1387,15 +1545,57 @@ pip install -r requirements_pixel_art.txt</pre>
                         <div class="comparison-item">
                             <div class="comparison-container">
                                 <div class="comparison-side">
-                                    <div class="comparison-label before-label">Vaporwave Overload</div>
-                                    <img src="assets/workflows/spriteframe/comparisons/source_2.png" alt="Vaporwave Style">
+                                    <div class="comparison-label before-label">Style Evolution</div>
+                                    <img src="assets/workflows/spriteframe/comparisons/source2.png" alt="Style Evolution">
                                 </div>
                                 <div class="comparison-side">
-                                    <div class="comparison-label after-label">Cartoon Style</div>
-                                    <img src="assets/workflows/spriteframe/comparisons/result_2.gif" alt="Cartoon Style">
+                                    <div class="comparison-label after-label">Optimized Style</div>
+                                    <img src="assets/workflows/spriteframe/comparisons/result2.gif" alt="Optimized Style">
                                 </div>
                             </div>
-                            <div class="comparison-caption">Stilkorrektur: Vaporwave-Effekte → Konsistenter Cartoon-Stil (45% Intensitätsreduktion)</div>
+                            <div class="comparison-caption">Stilentwicklung: Konsistenzoptimierung zwischen verschiedenen Animationsphasen</div>
+                        </div>
+
+                        <div class="comparison-item">
+                            <div class="comparison-container">
+                                <div class="comparison-side">
+                                    <div class="comparison-label before-label">Pose Refinement</div>
+                                    <img src="assets/workflows/spriteframe/comparisons/source3.png" alt="Pose Refinement">
+                                </div>
+                                <div class="comparison-side">
+                                    <div class="comparison-label after-label">Refined Poses</div>
+                                    <img src="assets/workflows/spriteframe/comparisons/result3.gif" alt="Refined Poses">
+                                </div>
+                            </div>
+                            <div class="comparison-caption">Posenverfeinerung: Anatomische Korrekturen für natürliche Bewegungsabläufe</div>
+                        </div>
+
+                        <div class="comparison-item">
+                            <div class="comparison-container">
+                                <div class="comparison-side">
+                                    <div class="comparison-label before-label">Detail Enhancement</div>
+                                    <img src="assets/workflows/spriteframe/comparisons/source5.png" alt="Detail Enhancement">
+                                </div>
+                                <div class="comparison-side">
+                                    <div class="comparison-label after-label">Enhanced Details</div>
+                                    <img src="assets/workflows/spriteframe/comparisons/result5.gif" alt="Enhanced Details">
+                                </div>
+                            </div>
+                            <div class="comparison-caption">Detailverbesserung: Schärfung und Qualitätssteigerung kleiner visueller Elemente</div>
+                        </div>
+
+                        <div class="comparison-item">
+                            <div class="comparison-container">
+                                <div class="comparison-side">
+                                    <div class="comparison-label before-label">Color Correction</div>
+                                    <img src="assets/workflows/spriteframe/comparisons/source6.png" alt="Color Correction">
+                                </div>
+                                <div class="comparison-side">
+                                    <div class="comparison-label after-label">Corrected Colors</div>
+                                    <img src="assets/workflows/spriteframe/comparisons/result6.gif" alt="Corrected Colors">
+                                </div>
+                            </div>
+                            <div class="comparison-caption">Farbkorrektur: Konsistente Farbgebung und Beleuchtung über alle Frames</div>
                         </div>
                     </div>
                 </div>
@@ -1403,15 +1603,37 @@ pip install -r requirements_pixel_art.txt</pre>
                     <div class="workflow-details">
                         <h3>🖼️ Extrahierte Frames für Weiterbearbeitung</h3>
                         <p>
-                            Diese Einzelframes wurden aus dem optimierten Sprite-Sheet extrahiert und können individuell für
+                            Diese Einzelframes wurden aus verschiedenen optimierten Sprite-Sheets extrahiert und können individuell für
                             Detailkorrekturen in Bildbearbeitungssoftware verwendet werden. Kleine AI-generierte Fehler
                             lassen sich so präzise manuell korrigieren.
                         </p>
+
+                        <div class="frame-set-selector">
+                            <h4>Frame-Set auswählen:</h4>
+                            <div class="frame-set-buttons">
+                                <button class="frame-set-btn active" onclick="selectFrameSet('main')">
+                                    🎯 Hauptvergleich
+                                </button>
+                                <button class="frame-set-btn" onclick="selectFrameSet('1')">
+                                    📊 Qualitätsfilterung
+                                </button>
+                                <button class="frame-set-btn" onclick="selectFrameSet('2')">
+                                    🎨 Stilentwicklung
+                                </button>
+                                <button class="frame-set-btn" onclick="selectFrameSet('3')">
+                                    🤸 Posenverfeinerung
+                                </button>
+                                <button class="frame-set-btn" onclick="selectFrameSet('6')">
+                                    🌈 Farbkorrektur
+                                </button>
+                            </div>
+                        </div>
 
                         <div class="frame-controls">
                             <div class="frame-info">
                                 <span id="frame-counter">Frame 1 von 8</span>
                                 <span class="frame-details">1024×1024 px, PNG</span>
+                                <span id="frame-set-name" class="frame-set-name">Hauptvergleich</span>
                             </div>
                             <div class="frame-actions">
                                 <button class="frame-btn" onclick="downloadCurrentFrame()">
@@ -1789,9 +2011,37 @@ pip install -r requirements_ultimate.txt</pre>
 
         // Frame Browser functionality
         let currentFrameIndex = 0;
-        const totalFrames = 8;
-        const frameBasePath = 'assets/workflows/spriteframe/comparisons/result_1_frames/frame_';
+        let currentFrameSet = 'main';
         let isZoomed = false;
+
+        // Frame set configurations
+        const frameSets = {
+            'main': {
+                path: 'assets/workflows/spriteframe/comparisons/result_main_frames/frame_',
+                totalFrames: 8,
+                name: 'Hauptvergleich'
+            },
+            '1': {
+                path: 'assets/workflows/spriteframe/comparisons/result_1_frames/frame_',
+                totalFrames: 8,
+                name: 'Qualitätsfilterung'
+            },
+            '2': {
+                path: 'assets/workflows/spriteframe/comparisons/result_2_frames/frame_',
+                totalFrames: 8,
+                name: 'Stilentwicklung'
+            },
+            '3': {
+                path: 'assets/workflows/spriteframe/comparisons/result_3_frames/frame_',
+                totalFrames: 8,
+                name: 'Posenverfeinerung'
+            },
+            '6': {
+                path: 'assets/workflows/spriteframe/comparisons/result_6_frames/frame_',
+                totalFrames: 8,
+                name: 'Farbkorrektur'
+            }
+        };
 
         // Initialize frame browser when tab is opened
         function initFrameBrowser() {
@@ -1804,13 +2054,15 @@ pip install -r requirements_ultimate.txt</pre>
             const gallery = document.getElementById('frame-thumbnails');
             gallery.innerHTML = '';
 
-            for (let i = 0; i < totalFrames; i++) {
+            const frameSet = frameSets[currentFrameSet];
+
+            for (let i = 0; i < frameSet.totalFrames; i++) {
                 const thumbnail = document.createElement('div');
                 thumbnail.className = 'thumbnail';
                 if (i === 0) thumbnail.classList.add('active');
 
                 thumbnail.innerHTML = `
-                    <img src="${frameBasePath}${String(i).padStart(3, '0')}.png" alt="Frame ${i}">
+                    <img src="${frameSet.path}${String(i).padStart(3, '0')}.png" alt="Frame ${i}">
                     <div class="thumbnail-label">Frame ${i + 1}</div>
                 `;
 
@@ -1823,15 +2075,19 @@ pip install -r requirements_ultimate.txt</pre>
         function updateFrameDisplay() {
             const frameImg = document.getElementById('current-frame');
             const frameCounter = document.getElementById('frame-counter');
+            const frameSetName = document.getElementById('frame-set-name');
             const prevBtn = document.getElementById('prev-btn');
             const nextBtn = document.getElementById('next-btn');
 
-            frameImg.src = `${frameBasePath}${String(currentFrameIndex).padStart(3, '0')}.png`;
-            frameCounter.textContent = `Frame ${currentFrameIndex + 1} von ${totalFrames}`;
+            const frameSet = frameSets[currentFrameSet];
+
+            frameImg.src = `${frameSet.path}${String(currentFrameIndex).padStart(3, '0')}.png`;
+            frameCounter.textContent = `Frame ${currentFrameIndex + 1} von ${frameSet.totalFrames}`;
+            frameSetName.textContent = frameSet.name;
 
             // Update button states
             prevBtn.disabled = currentFrameIndex === 0;
-            nextBtn.disabled = currentFrameIndex === totalFrames - 1;
+            nextBtn.disabled = currentFrameIndex === frameSet.totalFrames - 1;
 
             // Update active thumbnail
             const thumbnails = document.querySelectorAll('.thumbnail');
@@ -1855,7 +2111,8 @@ pip install -r requirements_ultimate.txt</pre>
 
         // Navigate to next frame
         function nextFrame() {
-            if (currentFrameIndex < totalFrames - 1) {
+            const frameSet = frameSets[currentFrameSet];
+            if (currentFrameIndex < frameSet.totalFrames - 1) {
                 currentFrameIndex++;
                 updateFrameDisplay();
             }
@@ -1879,10 +2136,11 @@ pip install -r requirements_ultimate.txt</pre>
 
         // Download current frame
         function downloadCurrentFrame() {
-            const frameUrl = `${frameBasePath}${String(currentFrameIndex).padStart(3, '0')}.png`;
+            const frameSet = frameSets[currentFrameSet];
+            const frameUrl = `${frameSet.path}${String(currentFrameIndex).padStart(3, '0')}.png`;
             const link = document.createElement('a');
             link.href = frameUrl;
-            link.download = `sprite_frame_${String(currentFrameIndex + 1).padStart(3, '0')}.png`;
+            link.download = `sprite_${currentFrameSet}_frame_${String(currentFrameIndex + 1).padStart(3, '0')}.png`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -1890,19 +2148,35 @@ pip install -r requirements_ultimate.txt</pre>
 
         // Download all frames (simplified - creates individual downloads)
         function downloadAllFrames() {
-            if (confirm('Dies wird 8 separate Downloads starten. Fortfahren?')) {
-                for (let i = 0; i < totalFrames; i++) {
+            const frameSet = frameSets[currentFrameSet];
+            if (confirm(`Dies wird ${frameSet.totalFrames} separate Downloads starten. Fortfahren?`)) {
+                for (let i = 0; i < frameSet.totalFrames; i++) {
                     setTimeout(() => {
-                        const frameUrl = `${frameBasePath}${String(i).padStart(3, '0')}.png`;
+                        const frameUrl = `${frameSet.path}${String(i).padStart(3, '0')}.png`;
                         const link = document.createElement('a');
                         link.href = frameUrl;
-                        link.download = `sprite_frame_${String(i + 1).padStart(3, '0')}.png`;
+                        link.download = `sprite_${currentFrameSet}_frame_${String(i + 1).padStart(3, '0')}.png`;
                         document.body.appendChild(link);
                         link.click();
                         document.body.removeChild(link);
                     }, i * 200); // Stagger downloads
                 }
             }
+        }
+
+        // Select frame set
+        function selectFrameSet(frameSetId) {
+            currentFrameSet = frameSetId;
+            currentFrameIndex = 0; // Reset to first frame
+
+            // Update active button
+            const frameSetButtons = document.querySelectorAll('.frame-set-btn');
+            frameSetButtons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Regenerate thumbnails and update display
+            generateThumbnails();
+            updateFrameDisplay();
         }
 
         // Keyboard navigation for frames
