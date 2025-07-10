@@ -1,11 +1,24 @@
+# Netlify Configuration für AI Chatbot Portfolio
+
 [build]
+  # Build command für Static Site
+  command = "echo 'Static site build complete'"
+  # Publish directory (Hauptverzeichnis da alles bereits dort liegt)
   publish = "."
-  command = "echo 'Static site - no build process required'"
+  # Functions directory für Serverless Functions
+  functions = "netlify/functions"
 
 [build.environment]
+  # Node.js Version
   NODE_VERSION = "18"
 
-# Optimierte Headers für bessere Performance
+# Redirect Rules für SPA-ähnliches Verhalten
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# Headers für bessere Sicherheit und Performance
 [[headers]]
   for = "/*"
   [headers.values]
@@ -13,61 +26,69 @@
     X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; img-src 'self' data: https:; media-src 'self' data:; font-src 'self' https://cdn.jsdelivr.net"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
 
-# Cache-Optimierung für Assets
+# Headers für statische Assets (Caching)
 [[headers]]
   for = "/assets/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000"
+    Cache-Control = "public, max-age=31536000, immutable"
 
-# Gzip Compression für bessere Performance
+# Headers für HTML-Dateien (kürzeres Caching)
 [[headers]]
-  for = "*.html"
+  for = "/*.html"
   [headers.values]
-    Cache-Control = "public, max-age=0, must-revalidate"
+    Cache-Control = "public, max-age=3600"
+
+# Headers für JavaScript/CSS
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
 
 [[headers]]
-  for = "*.css"
+  for = "/*.css"
   [headers.values]
-    Cache-Control = "public, max-age=31536000"
+    Cache-Control = "public, max-age=86400"
 
+# CORS für API-Endpoints
 [[headers]]
-  for = "*.js"
+  for = "/.netlify/functions/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000"
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, POST, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type, Authorization"
 
-# Redirect-Regeln für bessere UX
-[[redirects]]
-  from = "/comfyui-optimized.html"
-  to = "/comfyui.html"
-  status = 301
-
-[[redirects]]
-  from = "/comfyui-backup.html"
-  to = "/comfyui.html"
-  status = 301
-
-# 404 Fallback
+# Error Pages
 [[redirects]]
   from = "/*"
-  to = "/index.html"
+  to = "/404.html"
   status = 404
 
-# Form-Handling für potentielle Kontakt-Features
+# Development settings (lokal mit netlify dev)
+[dev]
+  command = "echo 'Development server ready'"
+  port = 3000
+  targetPort = 8888
+  publish = "."
+  functions = "netlify/functions"
+
+# Form handling (falls später benötigt)
 [build.processing]
   skip_processing = false
 
 [build.processing.css]
   bundle = false
-  minify = true
+  minify = false
 
 [build.processing.js]
   bundle = false
-  minify = true
+  minify = false
 
 [build.processing.html]
   pretty_urls = true
 
-[build.processing.images]
-  compress = true
+# Edge Functions Configuration (optional für erweiterte Features)
+[[edge_functions]]
+  function = "geo-location"
+  path = "/api/location"

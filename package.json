@@ -1,0 +1,23 @@
+{
+  "name": "cv-website-chatbot",
+  "version": "1.0.0",
+  "description": "GPT-Chatbot Integration für AI Specialist Portfolio",
+  "main": "index.js",
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "echo 'Static site - no build required'",
+    "deploy": "netlify deploy --prod",
+    "test": "echo 'No tests specified'"
+  },
+  "keywords": ["chatbot", "openai", "gpt", "portfolio", "netlify"],
+  "author": "AI Specialist",
+  "license": "MIT",
+  "dependencies": {
+    "@netlify/functions": "^2.8.1",
+    "openai": "^4.62.1",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "netlify-cli": "^17.34.2"
+  }
+}
