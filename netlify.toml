@@ -67,9 +67,7 @@
 
 # Development settings (lokal mit netlify dev)
 [dev]
-  command = "echo 'Development server ready'"
-  port = 3000
-  targetPort = 8888
+  port = 8888
   publish = "."
   functions = "netlify/functions"
 

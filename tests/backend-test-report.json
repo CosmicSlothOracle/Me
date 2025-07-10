@@ -1,0 +1,197 @@
+{
+  "timestamp": "2025-07-10T11:49:12.146Z",
+  "summary": {
+    "totalTests": 8,
+    "passedTests": 6,
+    "failedTests": 2,
+    "totalDuration": 28960
+  },
+  "tests": [
+    {
+      "name": "CORS Headers Validation",
+      "passed": true,
+      "duration": 10,
+      "details": [
+        {
+          "check": "OPTIONS Status 200",
+          "passed": true
+        },
+        {
+          "check": "Access-Control-Allow-Origin: *",
+          "passed": true
+        },
+        {
+          "check": "Access-Control-Allow-Methods includes POST",
+          "passed": true
+        },
+        {
+          "check": "Access-Control-Allow-Headers includes Content-Type",
+          "passed": true
+        }
+      ],
+      "error": null,
+      "timestamp": "2025-07-10T11:48:43.240Z"
+    },
+    {
+      "name": "HTTP Method Validation",
+      "passed": true,
+      "duration": 26,
+      "details": [
+        {
+          "check": "GET returns 405 Method Not Allowed",
+          "passed": true
+        },
+        {
+          "check": "Correct error message",
+          "passed": true
+        },
+        {
+          "check": "PUT returns 405 Method Not Allowed",
+          "passed": true
+        }
+      ],
+      "error": null,
+      "timestamp": "2025-07-10T11:48:43.266Z"
+    },
+    {
+      "name": "Request Body Validation",
+      "passed": true,
+      "duration": 51,
+      "details": [
+        {
+          "check": "Invalid JSON returns 400",
+          "passed": true
+        },
+        {
+          "check": "Empty body returns 400",
+          "passed": true
+        },
+        {
+          "check": "Correct \"required\" error message",
+          "passed": true
+        },
+        {
+          "check": "Empty message string returns 400",
+          "passed": true
+        },
+        {
+          "check": "Whitespace-only message returns 400",
+          "passed": true
+        }
+      ],
+      "error": null,
+      "timestamp": "2025-07-10T11:48:43.317Z"
+    },
+    {
+      "name": "API Key Validation",
+      "passed": true,
+      "duration": 2264,
+      "details": [
+        {
+          "check": "Error response has correct structure",
+          "passed": true
+        },
+        {
+          "check": "No sensitive data in response",
+          "passed": true
+        }
+      ],
+      "error": null,
+      "timestamp": "2025-07-10T11:48:45.581Z"
+    },
+    {
+      "name": "Valid OpenAI Request",
+      "passed": false,
+      "duration": 2182,
+      "details": [
+        {
+          "check": "Status 200 OK",
+          "passed": false
+        },
+        {
+          "check": "Response contains reply field",
+          "passed": false
+        }
+      ],
+      "error": null,
+      "timestamp": "2025-07-10T11:48:47.764Z"
+    },
+    {
+      "name": "Input Sanitization",
+      "passed": true,
+      "duration": 11520,
+      "details": [
+        {
+          "check": "Malicious input handled: <script>alert(\"XSS\")...",
+          "passed": true
+        },
+        {
+          "check": "Malicious input handled: javascript:alert(\"XS...",
+          "passed": true
+        },
+        {
+          "check": "Malicious input handled: \"; DROP TABLE users;...",
+          "passed": true
+        },
+        {
+          "check": "Malicious input handled: <img src=x onerror=a...",
+          "passed": true
+        },
+        {
+          "check": "Malicious input handled: ../../etc/passwd...",
+          "passed": true
+        }
+      ],
+      "error": null,
+      "timestamp": "2025-07-10T11:48:59.285Z"
+    },
+    {
+      "name": "Rate Limiting",
+      "passed": true,
+      "duration": 2181,
+      "details": [
+        {
+          "check": "Long message (>1000 chars) rejected",
+          "passed": true
+        },
+        {
+          "check": "Correct \"too long\" error message",
+          "passed": true
+        },
+        {
+          "check": "Exact 1000 chars accepted",
+          "passed": true
+        }
+      ],
+      "error": null,
+      "timestamp": "2025-07-10T11:49:01.467Z"
+    },
+    {
+      "name": "Response Performance",
+      "passed": false,
+      "duration": 10670,
+      "details": [
+        {
+          "check": "Average response time < 10s",
+          "passed": true
+        },
+        {
+          "check": "Max response time < 15s",
+          "passed": true
+        },
+        {
+          "check": "All requests successful",
+          "passed": false
+        }
+      ],
+      "error": null,
+      "timestamp": "2025-07-10T11:49:12.138Z"
+    }
+  ],
+  "environment": {
+    "baseUrl": "http://localhost:8888",
+    "apiEndpoint": "/.netlify/functions/chat",
+    "nodeVersion": "v22.13.1",
+    "platform": "win32"
+  }
+}

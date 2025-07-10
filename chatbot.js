@@ -407,21 +407,51 @@ class AIChatbot {
         body: JSON.stringify({ message }),
       });
 
+      // Prüfe ob Response gültig ist
+      if (!response.ok) {
+        let errorMessage = 'Request failed';
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.error || errorMessage;
+        } catch (parseError) {
+          console.warn('Failed to parse error response:', parseError);
+        }
+        throw new Error(`${response.status}: ${errorMessage}`);
+      }
+
       const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.error || 'Request failed');
+      // Validiere Response-Daten
+      if (!data || !data.reply) {
+        throw new Error('Invalid response format');
       }
 
       // Bot Response hinzufügen
       this.addMessage(data.reply, 'bot');
 
     } catch (error) {
-      console.error('Chatbot Error:', error);
-      this.addMessage(
-        'Entschuldigung, es ist ein Fehler aufgetreten. Bitte versuche es später erneut. 🤖',
-        'bot'
-      );
+      console.error('Chatbot Error Details:', {
+        message: error.message,
+        stack: error.stack,
+        timestamp: new Date().toISOString()
+      });
+
+      // Benutzerfreundliche Error-Messages basierend auf Fehlertyp
+      let userMessage = 'Entschuldigung, es ist ein Fehler aufgetreten. 🤖';
+
+      if (error.message.includes('NetworkError') || error.message.includes('fetch')) {
+        userMessage = 'Verbindungsproblem. Bitte prüfe deine Internetverbindung. 🌐';
+      } else if (error.message.includes('429')) {
+        userMessage = 'Zu viele Anfragen. Bitte warte einen Moment und versuche es erneut. ⏳';
+      } else if (error.message.includes('401') || error.message.includes('403')) {
+        userMessage = 'Authentifizierungsfehler. Bitte lade die Seite neu. 🔑';
+      } else if (error.message.includes('500')) {
+        userMessage = 'Server-Fehler. Bitte versuche es in ein paar Minuten erneut. ⚙️';
+      } else if (error.message.includes('503')) {
+        userMessage = 'Service temporär nicht verfügbar. Bitte versuche es später erneut. 🔧';
+      }
+
+      this.addMessage(userMessage, 'bot');
     } finally {
       this.hideLoading();
     }

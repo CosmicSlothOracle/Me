@@ -7,17 +7,25 @@
     "dev": "netlify dev",
     "build": "echo 'Static site - no build required'",
     "deploy": "netlify deploy --prod",
-    "test": "echo 'No tests specified'"
+    "test": "echo 'No tests specified'",
+    "functions:build": "echo 'Functions build complete'",
+    "test:chatbot": "node tests/run-all-tests.js",
+    "test:backend": "node tests/backend-api-tests.js",
+    "test:frontend": "echo 'Öffne tests/frontend-tests.html im Browser für interaktive Tests'",
+    "test:quick": "node tests/backend-api-tests.js --quiet",
+    "test:server": "netlify dev --port 8888"
   },
   "keywords": ["chatbot", "openai", "gpt", "portfolio", "netlify"],
   "author": "AI Specialist",
   "license": "MIT",
   "dependencies": {
     "@netlify/functions": "^2.8.1",
-    "openai": "^4.62.1",
-    "dotenv": "^16.4.5"
+    "openai": "^4.62.1"
   },
   "devDependencies": {
     "netlify-cli": "^17.34.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
