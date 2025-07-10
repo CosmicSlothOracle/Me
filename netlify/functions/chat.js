@@ -86,14 +86,14 @@ Sei professionell, hilfsbereit und technisch versiert. Antworte auf Deutsch.`;
 
     console.log('Processing message:', message.substring(0, 50) + '...');
 
-    // OpenAI API Anfrage
+    // OpenAI API Anfrage - Kostenoptimiert mit gpt-3.5-turbo
     const completion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
         { role: 'system', content: SYSTEM_PROMPT },
         { role: 'user', content: message.trim() }
       ],
-      max_tokens: 500,
+      max_tokens: 300, // Reduziert für Kosteneinsparung
       temperature: 0.7,
     });
 
