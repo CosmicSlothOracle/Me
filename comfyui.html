@@ -116,6 +116,32 @@
             display: block;
         }
 
+        /* Sprite Sheet specific scaling - show complete image */
+        #spriteframe-modal .comparison-side img {
+            object-fit: contain;
+            background: #f8f8f8;
+            padding: 10px;
+        }
+
+        /* Ensure sprite sheet source images are fully visible */
+        .comparison-side img[src*="spriteframe/comparisons/source"] {
+            object-fit: contain;
+            background: #f8f8f8;
+            padding: 10px;
+        }
+
+        /* Main workflow card sprite sheet images */
+        .workflow-card .comparison-side img[src*="spriteframe/comparisons/source"] {
+            object-fit: contain;
+            background: #f8f8f8;
+            padding: 8px;
+        }
+
+        /* Better contrast for sprite sheet backgrounds */
+        .comparison-side img[src*="spriteframe"] {
+            border: 1px solid #e0e0e0;
+        }
+
         .comparison-label {
             position: absolute;
             top: 12px;
