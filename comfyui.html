@@ -20,7 +20,7 @@
             overflow-x: hidden;
         }
 
-        /* ComfyUI themed pulsating background */
+                /* Realistischer Purple Milchglas Regen-Effekt - 50% Opacity */
         body::before {
             content: '';
             position: fixed;
@@ -29,23 +29,142 @@
             width: 100%;
             height: 100%;
             background:
-                radial-gradient(circle at 25% 25%, rgba(139, 92, 246, 0.04) 0%, transparent 50%),
-                radial-gradient(circle at 75% 50%, rgba(124, 58, 237, 0.04) 0%, transparent 50%),
-                radial-gradient(circle at 50% 75%, rgba(147, 51, 234, 0.04) 0%, transparent 50%),
-                radial-gradient(circle at 20% 80%, rgba(168, 85, 247, 0.04) 0%, transparent 50%);
+                radial-gradient(circle at 25% 25%, rgba(139, 92, 246, 0.04) 0%, transparent 40%),
+                radial-gradient(circle at 75% 50%, rgba(124, 58, 237, 0.035) 0%, transparent 40%),
+                radial-gradient(circle at 50% 75%, rgba(147, 51, 234, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 20% 80%, rgba(168, 85, 247, 0.035) 0%, transparent 40%);
+            backdrop-filter: blur(2px);
             animation: comfyPulse 10s ease-in-out infinite;
+            z-index: -3;
+            pointer-events: none;
+        }
+
+        /* Realistische Purple Regentropfen */
+        body::after {
+            content: '';
+            position: fixed;
+            top: -200px;
+            left: 0;
+            width: 100%;
+            height: calc(100% + 400px);
+            background-image:
+                /* Große Purple Tropfen */
+                radial-gradient(ellipse 6px 32px at 10% 0%, rgba(139, 92, 246, 0.18) 0%, transparent 60%),
+                radial-gradient(ellipse 5px 28px at 25% 0%, rgba(124, 58, 237, 0.15) 0%, transparent 60%),
+                radial-gradient(ellipse 7px 36px at 50% 0%, rgba(147, 51, 234, 0.18) 0%, transparent 60%),
+                radial-gradient(ellipse 6px 30px at 75% 0%, rgba(168, 85, 247, 0.16) 0%, transparent 60%),
+                radial-gradient(ellipse 8px 38px at 90% 0%, rgba(139, 92, 246, 0.17) 0%, transparent 60%),
+                /* Mittlere Purple Tropfen */
+                radial-gradient(ellipse 3px 20px at 18% 0%, rgba(124, 58, 237, 0.12) 0%, transparent 60%),
+                radial-gradient(ellipse 4px 24px at 38% 0%, rgba(147, 51, 234, 0.13) 0%, transparent 60%),
+                radial-gradient(ellipse 3px 18px at 62% 0%, rgba(168, 85, 247, 0.11) 0%, transparent 60%),
+                radial-gradient(ellipse 4px 22px at 82% 0%, rgba(139, 92, 246, 0.12) 0%, transparent 60%),
+                /* Kleine Purple Tropfen */
+                radial-gradient(ellipse 2px 14px at 15% 0%, rgba(147, 51, 234, 0.09) 0%, transparent 60%),
+                radial-gradient(ellipse 2px 12px at 42% 0%, rgba(168, 85, 247, 0.08) 0%, transparent 60%),
+                radial-gradient(ellipse 2px 16px at 68% 0%, rgba(124, 58, 237, 0.09) 0%, transparent 60%),
+                radial-gradient(ellipse 2px 13px at 88% 0%, rgba(139, 92, 246, 0.08) 0%, transparent 60%);
+            animation: realisticPurpleRain 13s linear infinite;
+            z-index: -2;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        /* Purple Wasser-Streifen und Tropfen-Spuren */
+        .purple-moisture-trails {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                /* Vertikale Purple Wasser-Streifen */
+                linear-gradient(180deg, transparent 0%, rgba(139, 92, 246, 0.012) 25%, transparent 26%),
+                linear-gradient(180deg, transparent 0%, rgba(124, 58, 237, 0.012) 40%, transparent 41%),
+                linear-gradient(180deg, transparent 0%, rgba(147, 51, 234, 0.01) 55%, transparent 56%),
+                linear-gradient(180deg, transparent 0%, rgba(168, 85, 247, 0.012) 70%, transparent 71%),
+                /* Diagonale Purple Tropfen-Bahnen */
+                linear-gradient(182deg, transparent 0%, rgba(139, 92, 246, 0.01) 35%, transparent 36%),
+                linear-gradient(181deg, transparent 0%, rgba(124, 58, 237, 0.01) 50%, transparent 51%),
+                linear-gradient(183deg, transparent 0%, rgba(147, 51, 234, 0.009) 65%, transparent 66%);
+            animation: purpleWaterStreaks 22s ease-in-out infinite;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Statische Purple Wasser-Tropfen auf Glas */
+        .purple-glass-droplets {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                /* Statische Purple Tropfen verschiedener Größen */
+                radial-gradient(circle 4px at 22% 30%, rgba(139, 92, 246, 0.08), transparent),
+                radial-gradient(circle 6px at 48% 20%, rgba(124, 58, 237, 0.09), transparent),
+                radial-gradient(circle 3px at 75% 40%, rgba(147, 51, 234, 0.07), transparent),
+                radial-gradient(circle 5px at 32% 65%, rgba(168, 85, 247, 0.08), transparent),
+                radial-gradient(circle 2px at 88% 50%, rgba(139, 92, 246, 0.06), transparent),
+                radial-gradient(circle 4px at 68% 80%, rgba(124, 58, 237, 0.07), transparent),
+                radial-gradient(circle 3px at 15% 85%, rgba(147, 51, 234, 0.06), transparent),
+                radial-gradient(circle 6px at 58% 95%, rgba(168, 85, 247, 0.09), transparent);
+            animation: purpleDropletShimmer 16s ease-in-out infinite;
             z-index: -1;
             pointer-events: none;
         }
 
         @keyframes comfyPulse {
             0%, 100% {
-                opacity: 0.6;
+                opacity: 0.4;
                 transform: scale(1) rotate(0deg);
             }
             50% {
-                opacity: 0.9;
-                transform: scale(1.08) rotate(0.5deg);
+                opacity: 0.55;
+                transform: scale(1.04) rotate(0.2deg);
+            }
+        }
+
+        @keyframes realisticPurpleRain {
+            0% {
+                transform: translateY(-200px) skewX(1.5deg);
+                opacity: 0;
+            }
+            18% {
+                opacity: 0.5;
+            }
+            82% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(calc(100vh + 200px)) skewX(1.5deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes purpleWaterStreaks {
+            0%, 100% {
+                opacity: 0.2;
+                transform: translateY(0) scaleY(1);
+            }
+            50% {
+                opacity: 0.35;
+                transform: translateY(25px) scaleY(1.15);
+            }
+        }
+
+        @keyframes purpleDropletShimmer {
+            0%, 100% {
+                opacity: 0.35;
+                filter: blur(0px);
+            }
+            33% {
+                opacity: 0.55;
+                filter: blur(0.8px);
+            }
+            66% {
+                opacity: 0.25;
+                filter: blur(0px);
             }
         }
 
@@ -61,12 +180,13 @@
             display: inline-block;
             margin-bottom: 30px;
             padding: 12px 24px;
-            background: linear-gradient(135deg, #ffffff 0%, #faf5ff 100%);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(250, 245, 255, 0.5) 100%);
+            backdrop-filter: blur(15px);
             color: #333;
             text-decoration: none;
             border-radius: 25px;
-            border: 1px solid rgba(139, 92, 246, 0.1);
-            box-shadow: 0 2px 10px rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.15);
+            box-shadow: 0 2px 10px rgba(139, 92, 246, 0.12);
             transition: all 0.3s ease;
             position: relative;
             z-index: 2;
@@ -74,9 +194,9 @@
 
         .back-link:hover {
             transform: translateY(-3px);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.65) 0%, rgba(243, 240, 255, 0.65) 100%);
             box-shadow: 0 8px 25px rgba(139, 92, 246, 0.2);
             color: #8b5cf6;
-            background: linear-gradient(135deg, #ffffff 0%, #f3f0ff 100%);
         }
 
         h1 {
@@ -105,11 +225,12 @@
         }
 
         .workflow-card {
-            background: linear-gradient(135deg, #ffffff 0%, #faf5ff 100%);
-            border: 1px solid rgba(139, 92, 246, 0.1);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(250, 245, 255, 0.5) 100%);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(139, 92, 246, 0.15);
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.08);
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.1);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
             position: relative;
@@ -134,14 +255,277 @@
         }
 
         .workflow-card:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.65) 0%, rgba(250, 245, 255, 0.65) 100%);
             transform: translateY(-8px) scale(1.02);
             box-shadow:
-                0 20px 40px rgba(139, 92, 246, 0.15),
-                0 0 0 1px rgba(139, 92, 246, 0.1);
+                0 25px 50px rgba(139, 92, 246, 0.15),
+                0 0 0 1px rgba(139, 92, 246, 0.12);
+            outline: 2px solid #000000;
+            outline-offset: 2px;
         }
 
         .workflow-card:hover .workflow-title {
             color: #8b5cf6;
+        }
+
+        /* Spezifische Styling für Pixel Art Workflow - Gaming Green Theme */
+        .workflow-card.pixel-art {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(240, 253, 244, 0.5) 100%);
+            border: 1px solid rgba(34, 197, 94, 0.15);
+            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.1);
+        }
+
+        .workflow-card.pixel-art::before {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.05) 0%, rgba(21, 128, 61, 0.05) 100%);
+        }
+
+        .workflow-card.pixel-art:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.65) 0%, rgba(240, 253, 244, 0.65) 100%);
+            box-shadow:
+                0 25px 50px rgba(34, 197, 94, 0.15),
+                0 0 0 1px rgba(34, 197, 94, 0.12);
+        }
+
+        .workflow-card.pixel-art:hover .workflow-title {
+            color: #22c55e;
+        }
+
+        /* Spezifische Styling für AI Spritesheet Workflow - Tech Blue Theme */
+        .workflow-card.ai-sprite {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(239, 246, 255, 0.5) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.1);
+        }
+
+        .workflow-card.ai-sprite::before {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(29, 78, 216, 0.05) 100%);
+        }
+
+        .workflow-card.ai-sprite:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.65) 0%, rgba(239, 246, 255, 0.65) 100%);
+            box-shadow:
+                0 25px 50px rgba(59, 130, 246, 0.15),
+                0 0 0 1px rgba(59, 130, 246, 0.12);
+        }
+
+        .workflow-card.ai-sprite:hover .workflow-title {
+            color: #3b82f6;
+        }
+
+        /* Moderne Icon Styles */
+        .modern-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            margin-right: 8px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .icon-gaming {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: white;
+        }
+
+        .icon-ai {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+        }
+
+        /* Asset Gallery Styles */
+        .assets-gallery-section {
+            margin-top: 60px;
+            padding: 40px 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(250, 245, 255, 0.3) 100%);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(139, 92, 246, 0.1);
+        }
+
+        .assets-gallery-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .assets-gallery-subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+
+        .assets-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 0 20px;
+            max-height: 600px;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+
+        .asset-item {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(250, 245, 255, 0.6) 100%);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(139, 92, 246, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .asset-item:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(139, 92, 246, 0.15);
+            outline: 2px solid #000000;
+            outline-offset: 2px;
+        }
+
+        .asset-item img, .asset-item video {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .asset-item:hover img, .asset-item:hover video {
+            transform: scale(1.05);
+        }
+
+        .asset-caption {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .asset-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+            font-size: 0.9rem;
+        }
+
+        .asset-type {
+            font-size: 0.8rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .asset-type.source {
+            color: #3b82f6;
+        }
+
+        .asset-type.result {
+            color: #22c55e;
+        }
+
+        .asset-type.sprite {
+            color: #8b5cf6;
+        }
+
+        .loading-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ddd;
+            border-top: 2px solid #8b5cf6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Asset Modal */
+        .asset-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .asset-modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .asset-modal img, .asset-modal video {
+            max-width: 100%;
+            max-height: 80vh;
+            display: block;
+        }
+
+        .asset-modal-caption {
+            padding: 20px;
+            background: white;
+            text-align: center;
+        }
+
+        .close-asset-modal {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-asset-modal:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .assets-gallery {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 15px;
+                max-height: 400px;
+            }
+
+            .asset-item img, .asset-item video {
+                height: 150px;
+            }
+
+            .assets-gallery-title {
+                font-size: 1.5rem;
+            }
         }
 
         .workflow-header {
@@ -930,9 +1314,560 @@
                 font-size: 2.2rem;
             }
         }
+
+        /* =================================
+           NEUE DESIGN-KOMPONENTEN
+           ================================= */
+
+        /* Node-Type Icons - Quadratisch, monochrom nach Vorgaben */
+        .node-icon {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border: 2px solid #333;
+            border-radius: 4px;
+            text-align: center;
+            line-height: 20px;
+            font-size: 12px;
+            margin-right: 8px;
+            background: white;
+            position: relative;
+        }
+
+        .node-input::before { content: "📥"; }
+        .node-ai::before { content: "🧠"; }
+        .node-process::before { content: "🎨"; }
+        .node-output::before { content: "💾"; }
+
+        /* Status-Indikatoren linksbündig nach Vorgaben */
+        .status-indicator {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+        }
+
+        /* Pipeline Flow Visualisierung */
+        .pipeline-flow-visual {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+            border: 1px solid #ddd;
+        }
+
+        .flow-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .flow-step {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 20px 15px;
+            text-align: center;
+            min-width: 160px;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .flow-step:hover {
+            border-color: #8b5cf6;
+            transform: translateY(-2px);
+        }
+
+        .flow-step.active {
+            border-color: #007acc;
+            background: linear-gradient(135deg, #ffffff, #f0f9ff);
+        }
+
+        .flow-arrow {
+            font-size: 20px;
+            color: #666;
+            font-weight: bold;
+        }
+
+        .step-detail {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* Palette-Indikatoren nach Vorgaben */
+        .palette-indicator {
+            display: inline-grid;
+            grid-template-columns: repeat(2, 6px);
+            gap: 1px;
+            width: 14px;
+            height: 14px;
+            margin: 0 3px;
+        }
+
+        .palette-indicator .pixel {
+            width: 6px;
+            height: 6px;
+            border-radius: 1px;
+        }
+
+        .palette-gameboy .pixel { background: #9bbc0f; }
+        .palette-nes .pixel { background: #d12c28; }
+        .palette-snes .pixel { background: #7c3aed; }
+
+        .palette-indicators {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin: 8px 0;
+        }
+
+        /* Performance Metrics Grid */
+        .performance-section {
+            margin: 30px 0;
+        }
+
+        .performance-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .metric-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            border-color: #8b5cf6;
+            transform: translateY(-2px);
+        }
+
+        .metric-icon {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #007acc;
+            margin-bottom: 5px;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Palette Grid */
+        .palettes-section {
+            margin: 30px 0;
+        }
+
+        .palette-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .palette-card {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .palette-card:hover {
+            border-color: #8b5cf6;
+            transform: translateY(-3px);
+        }
+
+        .palette-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .console-icon {
+            font-size: 1.2rem;
+        }
+
+        .console-name {
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .palette-colors {
+            display: flex;
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .color-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid #ddd;
+        }
+
+        .palette-desc {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* Requirements Table */
+        .requirements-table {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .req-row {
+            display: grid;
+            grid-template-columns: 1fr 2fr 2fr 1fr;
+            border-bottom: 1px solid #eee;
+        }
+
+        .req-row.header {
+            background: #f8f9fa;
+            font-weight: 600;
+        }
+
+        .req-col {
+            padding: 15px;
+            border-right: 1px solid #eee;
+        }
+
+        .req-col:last-child {
+            border-right: none;
+        }
+
+        /* Model Grid */
+        .model-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .model-card {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .model-card:hover {
+            border-color: #8b5cf6;
+            transform: translateY(-3px);
+        }
+
+        .model-card.primary {
+            border-color: #10b981;
+        }
+
+        .model-card.fallback {
+            border-color: #f59e0b;
+        }
+
+        .model-card.backup {
+            border-color: #6b7280;
+        }
+
+        .model-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .model-icon {
+            font-size: 1.4rem;
+        }
+
+        .model-name {
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .model-desc {
+            color: #666;
+            margin: 10px 0;
+            font-size: 0.9rem;
+        }
+
+        .model-size {
+            font-weight: 600;
+            color: #007acc;
+            margin: 10px 0;
+        }
+
+        /* Download Buttons nach Vorgaben */
+        .download-btn {
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 8px 16px;
+            color: #333;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            font-family: inherit;
+        }
+
+        .download-btn:hover {
+            background: #3D8AF7;
+            color: white;
+            border-color: #3D8AF7;
+        }
+
+        /* Code Viewer nach Vorgaben */
+        .code-viewer {
+            background: #1a1a1a;
+            border-radius: 8px;
+            margin: 15px 0;
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+
+        .code-header {
+            background: #2d2d2d;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+        }
+
+        .code-title {
+            color: #e0e0e0;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .code-content {
+            padding: 16px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: #e0e0e0;
+            white-space: pre-wrap;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        /* Setup Steps */
+        .setup-steps {
+            margin: 20px 0;
+        }
+
+        .setup-step {
+            display: flex;
+            gap: 20px;
+            margin: 25px 0;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            background: #007acc;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        /* Demo Placeholder */
+        .demo-placeholder {
+            margin: 20px 0;
+        }
+
+        .demo-preview {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border: 2px dashed #ccc;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .demo-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .feature-icon {
+            font-size: 1.2rem;
+        }
+
+        .feature-text {
+            font-weight: 500;
+        }
+
+        /* System Health */
+        .system-health {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .health-checks {
+            display: grid;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .health-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
+
+        .health-label {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        /* Clean Design Enforcement - Keine Drop Shadows außer max 5% */
+        .modal-content {
+            box-shadow: 0 25px 50px rgba(139, 92, 246, 0.05);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .flow-container {
+                flex-direction: column;
+            }
+
+            .flow-arrow {
+                transform: rotate(90deg);
+            }
+
+            .performance-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 15px;
+            }
+
+            .palette-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .model-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .req-row {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .req-col {
+                border-right: none;
+                border-bottom: 1px solid #eee;
+            }
+
+            .setup-step {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .feature-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Browser-spezifische CSS-Regeln für bessere Kompatibilität */
+        html {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
+        body.antialiased {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-smoothing: antialiased;
+        }
+
+        /* Firefox-spezifische Optimierungen */
+        @-moz-document url-prefix() {
+            body {
+                -moz-osx-font-smoothing: grayscale;
+            }
+        }
+
+        /* WebKit-spezifische Optimierungen */
+        @supports (-webkit-appearance: none) {
+            body {
+                -webkit-font-smoothing: antialiased;
+            }
+        }
     </style>
 </head>
 <body>
+    <div class="purple-moisture-trails"></div>
+    <div class="purple-glass-droplets"></div>
     <div class="container">
         <a href="index.html" class="back-link">← Zurück zur Startseite</a>
 
@@ -944,9 +1879,12 @@
 
         <div class="workflows-grid">
             <!-- Workflow 1: Pixel Art -->
-            <div class="workflow-card" onclick="openModal('pixelart-modal')">
+            <div class="workflow-card pixel-art" onclick="openModal('pixelart-modal')">
                 <div class="workflow-header">
-                    <h2 class="workflow-title">🎮 Pixel Art Transformation</h2>
+                    <h2 class="workflow-title">
+                        <span class="modern-icon icon-gaming">PX</span>
+                        Pixel Art Transformation
+                    </h2>
                     <p class="workflow-subtitle">Realistische Effekte → Retro Gaming Style</p>
                 </div>
 
@@ -961,11 +1899,7 @@
                     </div>
                 </div>
 
-                <div class="workflow-description">
-                    Umfassende Konvertierung realistischer Effekte (Energie, Blitze, Naturkräfte, Magie, Partikel, kosmische Phänomene)
-                    in charakteristische 8-16-Bit Pixel-Art-Darstellung. Erhaltung der Bewegungsdynamik bei stilistischer
-                    Transformation zu nostalgischer Gaming-Ästhetik verschiedener Konsolen-Epochen.
-                </div>
+
 
                 <div class="workflow-meta">
                     <span>10 Vergleiche verfügbar</span>
@@ -974,9 +1908,12 @@
             </div>
 
             <!-- Workflow 2: AI Spritesheet Frame Extraction -->
-            <div class="workflow-card" onclick="openModal('spriteframe-modal')">
+            <div class="workflow-card ai-sprite" onclick="openModal('spriteframe-modal')">
                 <div class="workflow-header">
-                    <h2 class="workflow-title">🎞️ AI-Spritesheet-frame-extraction</h2>
+                    <h2 class="workflow-title">
+                        <span class="modern-icon icon-ai">AI</span>
+                        AI-Spritesheet-frame-extraction
+                    </h2>
                     <p class="workflow-subtitle">Anatomische Korrektur & Qualitätsoptimierung</p>
                 </div>
 
@@ -991,10 +1928,7 @@
                     </div>
                 </div>
 
-                <div class="workflow-description">
-                    Masteroptimierter Workflow für Sprite-Sheet-Verarbeitung im Cartoon-Stil (Archer TV Show).
-                    Automatische Anatomiekorrektur, Qualitätsbewertung und Sequenzierung von 6279 Frames mit 79.2% Filter-Effizienz.
-                </div>
+
 
                 <div class="workflow-meta">
                     <span>6 Vergleiche verfügbar</span>
@@ -1009,8 +1943,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button class="close-modal" onclick="closeModal('pixelart-modal')">&times;</button>
-                <h2 class="modal-title">🎮 Pixel Art Transformation Workflow</h2>
-                <p class="modal-subtitle">Realistische Effekte in Retro Gaming Style</p>
+                <h2 class="modal-title">🎮 GIF-Pixel-Art-Conversion Workflow</h2>
+                <p class="modal-subtitle">Professionelle Retro-Gaming-Transformation mit KI</p>
             </div>
 
             <div class="modal-body">
@@ -1980,6 +2914,36 @@ pip install -r requirements_ultimate.txt</pre>
                 </div>
             </div>
         </div>
+
+        <!-- Endloser Asset-Scroll-Bereich -->
+        <div class="assets-gallery-section">
+            <h2 class="assets-gallery-title">📁 Asset Gallery</h2>
+            <p class="assets-gallery-subtitle">Alle verfügbaren Workflow-Ergebnisse und Vergleiche</p>
+
+            <div class="assets-gallery" id="assets-gallery">
+                <!-- Assets werden per JavaScript geladen -->
+            </div>
+
+            <div class="loading-indicator" id="loading-indicator">
+                <div class="loading-spinner"></div>
+                <span>Lade weitere Assets...</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Asset Modal -->
+    <div id="assetModal" class="asset-modal">
+        <div class="asset-modal-content">
+            <span class="close-asset-modal">&times;</span>
+            <img id="asset-modal-media" src="" alt="Asset Preview" style="display: none;">
+            <video id="asset-modal-video" controls style="display: none;">
+                <source src="" type="video/mp4">
+            </video>
+            <div class="asset-modal-caption">
+                <h3 id="asset-modal-title"></h3>
+                <p id="asset-modal-type"></p>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -2060,6 +3024,172 @@ pip install -r requirements_ultimate.txt</pre>
             // Add active class to clicked tab button
             event.target.classList.add('active');
         }
+
+        // Pipeline Flow Interaktivität
+        function selectFlowStep(stepNumber) {
+            const steps = document.querySelectorAll('.flow-step');
+            steps.forEach(step => step.classList.remove('active'));
+
+            const selectedStep = document.querySelector(`[data-step="${stepNumber}"]`);
+            if (selectedStep) {
+                selectedStep.classList.add('active');
+            }
+        }
+
+        // Code Copy Funktionalität
+        function copyCode(elementId) {
+            const codeElement = document.getElementById(elementId);
+            if (codeElement) {
+                const text = codeElement.textContent;
+                navigator.clipboard.writeText(text).then(function() {
+                    // Feedback für erfolgreiches Kopieren
+                    const button = event.target;
+                    const originalText = button.innerHTML;
+                    button.innerHTML = '✔️ Copied!';
+                    button.style.background = '#10b981';
+                    button.style.color = 'white';
+
+                    setTimeout(() => {
+                        button.innerHTML = originalText;
+                        button.style.background = '';
+                        button.style.color = '';
+                    }, 2000);
+                }).catch(function(err) {
+                    console.error('Could not copy text: ', err);
+                });
+            }
+        }
+
+        // Model Download Placeholder
+        function downloadModel(modelName) {
+            const button = event.target;
+            const originalText = button.innerHTML;
+
+            // Simulate download process
+            button.innerHTML = '⚙️ Downloading...';
+            button.disabled = true;
+            button.style.background = '#f59e0b';
+            button.style.color = 'white';
+
+            setTimeout(() => {
+                button.innerHTML = '✔️ Downloaded';
+                button.style.background = '#10b981';
+
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                    button.style.background = '';
+                    button.style.color = '';
+                }, 2000);
+            }, 3000);
+        }
+
+        // System Health Check Functions
+        function checkGPU() {
+            const button = event.target;
+            const statusIndicator = button.parentElement.querySelector('.status-indicator');
+
+            button.innerHTML = '⚙️ Checking...';
+            button.disabled = true;
+
+            setTimeout(() => {
+                // Simulate GPU check
+                const gpuAvailable = Math.random() > 0.3; // 70% chance GPU is available
+
+                if (gpuAvailable) {
+                    statusIndicator.textContent = '✔️';
+                    button.innerHTML = '✔️ GPU OK';
+                    button.style.background = '#10b981';
+                    button.style.color = 'white';
+                } else {
+                    statusIndicator.textContent = '❌';
+                    button.innerHTML = '❌ No GPU';
+                    button.style.background = '#ef4444';
+                    button.style.color = 'white';
+                }
+
+                setTimeout(() => {
+                    button.innerHTML = '🔧 Check';
+                    button.disabled = false;
+                    button.style.background = '';
+                    button.style.color = '';
+                }, 3000);
+            }, 2000);
+        }
+
+        function loadModels() {
+            const button = event.target;
+            const statusIndicator = button.parentElement.querySelector('.status-indicator');
+
+            button.innerHTML = '⚙️ Loading...';
+            button.disabled = true;
+
+            setTimeout(() => {
+                statusIndicator.textContent = '✔️';
+                button.innerHTML = '✔️ Loaded';
+                button.style.background = '#10b981';
+                button.style.color = 'white';
+
+                setTimeout(() => {
+                    button.innerHTML = '📥 Load';
+                    button.disabled = false;
+                    button.style.background = '';
+                    button.style.color = '';
+                }, 2000);
+            }, 4000);
+        }
+
+        function startServer() {
+            const button = event.target;
+            const statusIndicator = button.parentElement.querySelector('.status-indicator');
+
+            button.innerHTML = '⚙️ Starting...';
+            button.disabled = true;
+
+            setTimeout(() => {
+                statusIndicator.textContent = '✔️';
+                button.innerHTML = '✔️ Running';
+                button.style.background = '#10b981';
+                button.style.color = 'white';
+
+                setTimeout(() => {
+                    button.innerHTML = '▶️ Start';
+                    button.disabled = false;
+                    button.style.background = '';
+                    button.style.color = '';
+                }, 2000);
+            }, 3000);
+        }
+
+        function testPipeline() {
+            const button = event.target;
+            const statusIndicator = button.parentElement.querySelector('.status-indicator');
+
+            button.innerHTML = '⚙️ Testing...';
+            button.disabled = true;
+
+            setTimeout(() => {
+                statusIndicator.textContent = '✔️';
+                button.innerHTML = '✔️ Ready';
+                button.style.background = '#10b981';
+                button.style.color = 'white';
+
+                setTimeout(() => {
+                    button.innerHTML = '🧪 Test';
+                    button.disabled = false;
+                    button.style.background = '';
+                    button.style.color = '';
+                }, 2000);
+            }, 5000);
+        }
+
+        // Flow Step Click Handlers
+        document.addEventListener('DOMContentLoaded', function() {
+            const flowSteps = document.querySelectorAll('.flow-step');
+            flowSteps.forEach((step, index) => {
+                step.addEventListener('click', () => selectFlowStep(index + 1));
+            });
+        });
 
         // Language switching for pixel art guide
         function showPixelGuideLang(lang) {
@@ -2293,6 +3423,175 @@ pip install -r requirements_ultimate.txt</pre>
                         break;
                 }
             }
+        });
+
+        // Asset Gallery functionality
+        const assetGallery = document.getElementById('assets-gallery');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        let currentAssetIndex = 0;
+        let isLoading = false;
+
+        // Define all available assets
+        const allAssets = [
+            // ComfyUI Video Assets - Source
+            { src: 'assets/videos/comfyui/source1.gif', title: 'Lightning Source', type: 'source', format: 'gif' },
+            { src: 'assets/videos/comfyui/source2.gif', title: 'Energy Source', type: 'source', format: 'gif' },
+            { src: 'assets/videos/comfyui/source3.gif', title: 'Tornado Source', type: 'source', format: 'gif' },
+            { src: 'assets/videos/comfyui/source4.gif', title: 'Pink Smoke Source', type: 'source', format: 'gif' },
+            { src: 'assets/videos/comfyui/source5.gif', title: 'Mystical Energy Source', type: 'source', format: 'gif' },
+            { src: 'assets/videos/comfyui/source6.gif', title: 'Fire Effects Source', type: 'source', format: 'gif' },
+            { src: 'assets/videos/comfyui/source7.gif', title: 'Water Splash Source', type: 'source', format: 'gif' },
+            { src: 'assets/videos/comfyui/source8.gif', title: 'Ice Crystal Source', type: 'source', format: 'gif' },
+            { src: 'assets/videos/comfyui/source9.gif', title: 'Portal Effect Source', type: 'source', format: 'gif' },
+            { src: 'assets/videos/comfyui/source10.gif', title: 'Cosmic Storm Source', type: 'source', format: 'gif' },
+
+            // ComfyUI Video Assets - Results
+            { src: 'assets/videos/comfyui/result1.gif', title: 'Lightning Pixel Art', type: 'result', format: 'gif' },
+            { src: 'assets/videos/comfyui/result2.gif', title: 'Energy Pixel Art', type: 'result', format: 'gif' },
+            { src: 'assets/videos/comfyui/result3.gif', title: 'Tornado Pixel Art', type: 'result', format: 'gif' },
+            { src: 'assets/videos/comfyui/result4.gif', title: 'Pink Smoke Pixel Art', type: 'result', format: 'gif' },
+            { src: 'assets/videos/comfyui/result5.gif', title: 'Mystical Energy Pixel Art', type: 'result', format: 'gif' },
+            { src: 'assets/videos/comfyui/result6.gif', title: 'Fire Effects Pixel Art', type: 'result', format: 'gif' },
+            { src: 'assets/videos/comfyui/result7.gif', title: 'Water Splash Pixel Art', type: 'result', format: 'gif' },
+            { src: 'assets/videos/comfyui/result8.gif', title: 'Ice Crystal Pixel Art', type: 'result', format: 'gif' },
+            { src: 'assets/videos/comfyui/result9.gif', title: 'Portal Effect Pixel Art', type: 'result', format: 'gif' },
+            { src: 'assets/videos/comfyui/result10.gif', title: 'Cosmic Storm Pixel Art', type: 'result', format: 'gif' },
+
+            // Spriteframe Assets - Sources
+            { src: 'assets/workflows/spriteframe/comparisons/source_main.png', title: 'Main Sprite Source', type: 'sprite', format: 'png' },
+            { src: 'assets/workflows/spriteframe/comparisons/source_1.png', title: 'Quality Filter Source', type: 'sprite', format: 'png' },
+            { src: 'assets/workflows/spriteframe/comparisons/source2.png', title: 'Style Evolution Source', type: 'sprite', format: 'png' },
+            { src: 'assets/workflows/spriteframe/comparisons/source3.png', title: 'Pose Refinement Source', type: 'sprite', format: 'png' },
+            { src: 'assets/workflows/spriteframe/comparisons/source5.png', title: 'Detail Enhancement Source', type: 'sprite', format: 'png' },
+            { src: 'assets/workflows/spriteframe/comparisons/source6.png', title: 'Color Correction Source', type: 'sprite', format: 'png' },
+
+            // Spriteframe Assets - Results
+            { src: 'assets/workflows/spriteframe/comparisons/result_main.gif', title: 'Main Sprite Result', type: 'sprite', format: 'gif' },
+            { src: 'assets/workflows/spriteframe/comparisons/result_1.gif', title: 'Quality Filtered', type: 'sprite', format: 'gif' },
+            { src: 'assets/workflows/spriteframe/comparisons/result2.gif', title: 'Style Optimized', type: 'sprite', format: 'gif' },
+            { src: 'assets/workflows/spriteframe/comparisons/result3.gif', title: 'Pose Refined', type: 'sprite', format: 'gif' },
+            { src: 'assets/workflows/spriteframe/comparisons/result5.gif', title: 'Details Enhanced', type: 'sprite', format: 'gif' },
+            { src: 'assets/workflows/spriteframe/comparisons/result6.gif', title: 'Colors Corrected', type: 'sprite', format: 'gif' }
+        ];
+
+        // Create asset item HTML
+        function createAssetItem(asset, index) {
+            const assetItem = document.createElement('div');
+            assetItem.className = 'asset-item';
+            assetItem.onclick = () => openAssetModal(asset);
+
+            const mediaElement = asset.format === 'gif'
+                ? `<img src="${asset.src}" alt="${asset.title}" loading="lazy">`
+                : `<img src="${asset.src}" alt="${asset.title}" loading="lazy">`;
+
+            assetItem.innerHTML = `
+                ${mediaElement}
+                <div class="asset-caption">
+                    <div class="asset-title">${asset.title}</div>
+                    <div class="asset-type ${asset.type}">${asset.type.toUpperCase()}</div>
+                </div>
+            `;
+
+            return assetItem;
+        }
+
+        // Load assets in batches
+        function loadAssets(count = 6) {
+            if (isLoading || currentAssetIndex >= allAssets.length) return;
+
+            isLoading = true;
+            loadingIndicator.style.display = 'flex';
+
+            // Simulate loading delay for better UX
+            setTimeout(() => {
+                const fragment = document.createDocumentFragment();
+
+                for (let i = 0; i < count && currentAssetIndex < allAssets.length; i++) {
+                    const asset = allAssets[currentAssetIndex];
+                    const assetItem = createAssetItem(asset, currentAssetIndex);
+                    fragment.appendChild(assetItem);
+                    currentAssetIndex++;
+                }
+
+                assetGallery.appendChild(fragment);
+
+                isLoading = false;
+
+                // Hide loading indicator if all assets loaded
+                if (currentAssetIndex >= allAssets.length) {
+                    loadingIndicator.style.display = 'none';
+                } else {
+                    loadingIndicator.style.display = 'none';
+                }
+            }, 500);
+        }
+
+        // Infinite scroll functionality
+        function handleScroll() {
+            const gallery = assetGallery;
+            const scrollTop = gallery.scrollTop;
+            const scrollHeight = gallery.scrollHeight;
+            const clientHeight = gallery.clientHeight;
+
+            // Load more when near bottom (80% scrolled)
+            if (scrollTop + clientHeight >= scrollHeight * 0.8) {
+                loadAssets(4);
+            }
+        }
+
+        // Open asset modal
+        function openAssetModal(asset) {
+            const modal = document.getElementById('assetModal');
+            const modalImg = document.getElementById('asset-modal-media');
+            const modalVideo = document.getElementById('asset-modal-video');
+            const modalTitle = document.getElementById('asset-modal-title');
+            const modalType = document.getElementById('asset-modal-type');
+
+            modalTitle.textContent = asset.title;
+            modalType.textContent = `${asset.type.toUpperCase()} • ${asset.format.toUpperCase()}`;
+
+            if (asset.format === 'gif') {
+                modalImg.src = asset.src;
+                modalImg.style.display = 'block';
+                modalVideo.style.display = 'none';
+            } else {
+                modalImg.src = asset.src;
+                modalImg.style.display = 'block';
+                modalVideo.style.display = 'none';
+            }
+
+            modal.style.display = 'flex';
+        }
+
+        // Close asset modal
+        function closeAssetModal() {
+            const modal = document.getElementById('assetModal');
+            modal.style.display = 'none';
+        }
+
+        // Initialize asset gallery
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initial load
+            loadAssets(8);
+
+            // Add scroll listener
+            assetGallery.addEventListener('scroll', handleScroll);
+
+            // Close modal events
+            document.querySelector('.close-asset-modal').addEventListener('click', closeAssetModal);
+
+            document.getElementById('assetModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeAssetModal();
+                }
+            });
+
+            // Keyboard close
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeAssetModal();
+                }
+            });
         });
 
 

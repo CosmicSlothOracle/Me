@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV - IT Professional</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: #333;
+            background: #f8fafc;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Realistischer Milchglas Regen-Effekt - 50% Opacity */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 70% 60%, rgba(139, 92, 246, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 40% 80%, rgba(16, 185, 129, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 80% 20%, rgba(245, 158, 11, 0.03) 0%, transparent 40%);
+            backdrop-filter: blur(2px);
+            animation: subtlePulse 8s ease-in-out infinite;
+            z-index: -3;
+            pointer-events: none;
+        }
+
+        /* Realistische Regentropfen */
+        body::after {
+            content: '';
+            position: fixed;
+            top: -200px;
+            left: 0;
+            width: 100%;
+            height: calc(100% + 400px);
+            background-image:
+                radial-gradient(ellipse 6px 30px at 8% 0%, rgba(59, 130, 246, 0.15) 0%, transparent 60%),
+                radial-gradient(ellipse 4px 25px at 23% 0%, rgba(139, 92, 246, 0.12) 0%, transparent 60%),
+                radial-gradient(ellipse 7px 35px at 45% 0%, rgba(16, 185, 129, 0.15) 0%, transparent 60%),
+                radial-gradient(ellipse 5px 28px at 67% 0%, rgba(245, 158, 11, 0.13) 0%, transparent 60%),
+                radial-gradient(ellipse 6px 32px at 89% 0%, rgba(59, 130, 246, 0.14) 0%, transparent 60%),
+                radial-gradient(ellipse 3px 18px at 15% 0%, rgba(139, 92, 246, 0.1) 0%, transparent 60%),
+                radial-gradient(ellipse 4px 22px at 32% 0%, rgba(16, 185, 129, 0.11) 0%, transparent 60%),
+                radial-gradient(ellipse 3px 16px at 58% 0%, rgba(245, 158, 11, 0.09) 0%, transparent 60%),
+                radial-gradient(ellipse 4px 20px at 78% 0%, rgba(59, 130, 246, 0.1) 0%, transparent 60%),
+                radial-gradient(ellipse 2px 12px at 12% 0%, rgba(16, 185, 129, 0.08) 0%, transparent 60%),
+                radial-gradient(ellipse 2px 10px at 38% 0%, rgba(245, 158, 11, 0.07) 0%, transparent 60%),
+                radial-gradient(ellipse 2px 14px at 62% 0%, rgba(139, 92, 246, 0.08) 0%, transparent 60%),
+                radial-gradient(ellipse 2px 11px at 85% 0%, rgba(59, 130, 246, 0.07) 0%, transparent 60%);
+            animation: realisticRain 12s linear infinite;
+            z-index: -2;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        .moisture-trails {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                linear-gradient(180deg, transparent 0%, rgba(59, 130, 246, 0.01) 20%, transparent 21%),
+                linear-gradient(180deg, transparent 0%, rgba(139, 92, 246, 0.01) 35%, transparent 36%),
+                linear-gradient(180deg, transparent 0%, rgba(16, 185, 129, 0.01) 50%, transparent 51%),
+                linear-gradient(180deg, transparent 0%, rgba(245, 158, 11, 0.01) 65%, transparent 66%),
+                linear-gradient(182deg, transparent 0%, rgba(59, 130, 246, 0.008) 30%, transparent 31%),
+                linear-gradient(181deg, transparent 0%, rgba(139, 92, 246, 0.008) 45%, transparent 46%),
+                linear-gradient(183deg, transparent 0%, rgba(16, 185, 129, 0.008) 60%, transparent 61%);
+            animation: waterStreaks 20s ease-in-out infinite;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .glass-droplets {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(circle 4px at 18% 25%, rgba(59, 130, 246, 0.06), transparent),
+                radial-gradient(circle 6px at 45% 15%, rgba(139, 92, 246, 0.07), transparent),
+                radial-gradient(circle 3px at 72% 35%, rgba(16, 185, 129, 0.05), transparent),
+                radial-gradient(circle 5px at 28% 60%, rgba(245, 158, 11, 0.06), transparent),
+                radial-gradient(circle 2px at 85% 45%, rgba(59, 130, 246, 0.04), transparent),
+                radial-gradient(circle 4px at 65% 75%, rgba(139, 92, 246, 0.05), transparent),
+                radial-gradient(circle 3px at 12% 80%, rgba(16, 185, 129, 0.04), transparent),
+                radial-gradient(circle 6px at 55% 90%, rgba(245, 158, 11, 0.07), transparent);
+            animation: dropletShimmer 15s ease-in-out infinite;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        @keyframes subtlePulse {
+            0%, 100% {
+                opacity: 0.35;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.5;
+                transform: scale(1.02);
+            }
+        }
+
+        @keyframes realisticRain {
+            0% {
+                transform: translateY(-200px) skewX(2deg);
+                opacity: 0;
+            }
+            15% {
+                opacity: 0.5;
+            }
+            85% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(calc(100vh + 200px)) skewX(2deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes waterStreaks {
+            0%, 100% {
+                opacity: 0.15;
+                transform: translateY(0) scaleY(1);
+            }
+            50% {
+                opacity: 0.3;
+                transform: translateY(20px) scaleY(1.1);
+            }
+        }
+
+        @keyframes dropletShimmer {
+            0%, 100% {
+                opacity: 0.3;
+                filter: blur(0px);
+            }
+            33% {
+                opacity: 0.5;
+                filter: blur(0.5px);
+            }
+            66% {
+                opacity: 0.2;
+                filter: blur(0px);
+            }
+        }
+
+        .card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(240, 249, 255, 0.5) 100%);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .card:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.65) 0%, rgba(240, 249, 255, 0.65) 100%);
+            box-shadow: 0 25px 50px rgba(59, 130, 246, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .nav-button {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(240, 249, 255, 0.5) 100%);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            transition: all 0.3s ease;
+            color: #3b82f6;
+        }
+
+        .nav-button:hover {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+            border-color: rgba(59, 130, 246, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 1200px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-title {
+            color: #3b82f6;
+            border-bottom: 2px solid #3b82f6;
+            display: inline-block;
+        }
+
+        .experience-item {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(240, 249, 255, 0.6) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            border-left: 4px solid #3b82f6;
+        }
+
+        .skill-tag {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+
+        .print-button {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .print-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        }
+
+        @media print {
+            body::before,
+            body::after,
+            .moisture-trails,
+            .glass-droplets {
+                display: none;
+            }
+
+            body {
+                background: white;
+            }
+
+            .card,
+            .experience-item {
+                background: white;
+                backdrop-filter: none;
+                border: 1px solid #e5e7eb;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="moisture-trails"></div>
+    <div class="glass-droplets"></div>
+
+    <!-- Navigation -->
+    <div class="fixed top-6 left-6 z-50">
+        <a href="index.html" class="nav-button px-6 py-3 rounded-xl font-medium inline-flex items-center gap-2">
+            ← Zurück zur Startseite
+        </a>
+    </div>
+
+    <!-- Print Button -->
+    <button onclick="window.print()" class="print-button fixed top-6 right-6 z-50 px-6 py-3 rounded-xl text-white font-medium inline-flex items-center gap-2">
+        🖨️ PDF
+    </button>
+
+    <div class="container mx-auto px-4 py-24">
+        <!-- Header Section -->
+        <header class="text-center mb-16">
+            <h1 class="text-5xl md:text-6xl font-light mb-4 text-gray-800">IT Professional</h1>
+            <p class="text-xl md:text-2xl text-gray-600 font-light mb-8">Systemtechniker & Digitalentwickler</p>
+            <div class="card rounded-xl p-8 max-w-4xl mx-auto">
+                <p class="text-lg text-gray-700 leading-relaxed">
+                    Engagierter Systemtechniker & autodidaktischer Digitalentwickler mit umfassender Praxis im
+                    Hardware-Support, der Betreuung von Rollouts, sowie der Umsetzung kreativer Digitalprojekte.
+                    Zahlreiche Fähigkeiten wurden mit Hilfe moderner KI-Werkzeuge selbstständig erlernt und auf
+                    reale Projekte angewendet.
+                </p>
+            </div>
+        </header>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Sidebar -->
+            <div class="lg:col-span-1 space-y-8">
+                <!-- Contact Info -->
+                <div class="card rounded-xl p-6">
+                    <h3 class="section-title text-xl font-medium mb-6 pb-2">Kontakt</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+                                📧
+                            </div>
+                            <span class="text-gray-700">ihre.email@domain.de</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+                                📱
+                            </div>
+                            <span class="text-gray-700">+49 XXX XXXXXXX</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+                                📍
+                            </div>
+                            <span class="text-gray-700">Ihr Standort</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+                                💼
+                            </div>
+                            <span class="text-gray-700">GitHub/LinkedIn</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Languages -->
+                <div class="card rounded-xl p-6">
+                    <h3 class="section-title text-xl font-medium mb-6 pb-2">Sprachkenntnisse</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-700">Deutsch</span>
+                            <span class="skill-tag px-3 py-1 rounded-full text-sm font-medium">Muttersprache</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-700">Englisch</span>
+                            <span class="skill-tag px-3 py-1 rounded-full text-sm font-medium">Sehr gut</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Core Skills -->
+                <div class="card rounded-xl p-6">
+                    <h3 class="section-title text-xl font-medium mb-6 pb-2">Kernkompetenzen</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-tag px-3 py-2 rounded-lg text-sm font-medium">Windows Client/Server</span>
+                        <span class="skill-tag px-3 py-2 rounded-lg text-sm font-medium">Netzwerkeinrichtung</span>
+                        <span class="skill-tag px-3 py-2 rounded-lg text-sm font-medium">Troubleshooting</span>
+                        <span class="skill-tag px-3 py-2 rounded-lg text-sm font-medium">Rollout-Management</span>
+                        <span class="skill-tag px-3 py-2 rounded-lg text-sm font-medium">KI-unterstützte Entwicklung</span>
+                        <span class="skill-tag px-3 py-2 rounded-lg text-sm font-medium">Webentwicklung</span>
+                        <span class="skill-tag px-3 py-2 rounded-lg text-sm font-medium">Game Design</span>
+                        <span class="skill-tag px-3 py-2 rounded-lg text-sm font-medium">Medienproduktion</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="lg:col-span-2 space-y-8">
+                <!-- Experience -->
+                <div class="card rounded-xl p-8">
+                    <h2 class="section-title text-2xl font-medium mb-8 pb-3">Berufserfahrung</h2>
+                    <div class="space-y-6">
+                        <!-- Datagroup SE -->
+                        <div class="experience-item rounded-lg p-6">
+                            <div class="flex justify-between items-start mb-4 flex-wrap gap-2">
+                                <div>
+                                    <h4 class="text-lg font-semibold text-gray-800">Systemtechniker</h4>
+                                    <p class="text-blue-600 font-medium">Datagroup SE</p>
+                                </div>
+                                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">Okt 2022 – Okt 2023</span>
+                            </div>
+                            <ul class="space-y-2 text-gray-700">
+                                <li class="flex items-start gap-2">
+                                    <span class="text-blue-500 mt-1">▸</span>
+                                    <span>IT-Support und Konfiguration von Arbeitsplatzsystemen</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-blue-500 mt-1">▸</span>
+                                    <span>Troubleshooting und Incidentbearbeitung</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-blue-500 mt-1">▸</span>
+                                    <span>Anwenderunterstützung im Enterprise-Umfeld</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Nevotec GmbH -->
+                        <div class="experience-item rounded-lg p-6">
+                            <div class="flex justify-between items-start mb-4 flex-wrap gap-2">
+                                <div>
+                                    <h4 class="text-lg font-semibold text-gray-800">Systemtechniker / Rollout-Techniker</h4>
+                                    <p class="text-blue-600 font-medium">Nevotec GmbH</p>
+                                </div>
+                                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">Apr 2020 – Sep 2022</span>
+                            </div>
+                            <ul class="space-y-2 text-gray-700">
+                                <li class="flex items-start gap-2">
+                                    <span class="text-blue-500 mt-1">▸</span>
+                                    <span>Konfiguration und Auslieferung neuer Geräte</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-blue-500 mt-1">▸</span>
+                                    <span>Einrichtung und Austausch vor Ort</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-blue-500 mt-1">▸</span>
+                                    <span>Anwenderschulungen & technische Workshops</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Gloria -->
+                        <div class="experience-item rounded-lg p-6">
+                            <div class="flex justify-between items-start mb-4 flex-wrap gap-2">
+                                <div>
+                                    <h4 class="text-lg font-semibold text-gray-800">Servicemitarbeiter (Gastronomie)</h4>
+                                    <p class="text-blue-600 font-medium">Gloria</p>
+                                </div>
+                                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">Jan 2016 – Apr 2020</span>
+                            </div>
+                            <ul class="space-y-2 text-gray-700">
+                                <li class="flex items-start gap-2">
+                                    <span class="text-blue-500 mt-1">▸</span>
+                                    <span>Schichtplanung und Qualitätskontrolle</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-blue-500 mt-1">▸</span>
+                                    <span>Kundenkommunikation & Menükonzeption</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-blue-500 mt-1">▸</span>
+                                    <span>Personalverantwortung in Spitzenzeiten</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Dialog Direkt -->
+                        <div class="experience-item rounded-lg p-6">
+                            <div class="flex justify-between items-start mb-4 flex-wrap gap-2">
+                                <div>
+                                    <h4 class="text-lg font-semibold text-gray-800">Fundraiser</h4>
+                                    <p class="text-blue-600 font-medium">Dialog Direkt GmbH</p>
+                                </div>
+                                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">Feb 2014 – Jan 2016</span>
+                            </div>
+                            <ul class="space-y-2 text-gray-700">
+                                <li class="flex items-start gap-2">
+                                    <span class="text-blue-500 mt-1">▸</span>
+                                    <span>Kaltakquise für Vertragsabschlüsse</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-blue-500 mt-1">▸</span>
+                                    <span>Team-Briefings & Schulungen neuer Fundraiser</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technical Skills -->
+                <div class="card rounded-xl p-8">
+                    <h2 class="section-title text-2xl font-medium mb-8 pb-3">Technische Kompetenzen</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="experience-item rounded-lg p-6">
+                            <h4 class="text-lg font-semibold text-gray-800 mb-4">Systemadministration</h4>
+                            <ul class="space-y-2 text-gray-700">
+                                <li>Windows Client/Server</li>
+                                <li>Netzwerkeinrichtung</li>
+                                <li>Imaging & Softwareverteilung</li>
+                                <li>Remedy, Outlook, Office Suite</li>
+                            </ul>
+                        </div>
+
+                        <div class="experience-item rounded-lg p-6">
+                            <h4 class="text-lg font-semibold text-gray-800 mb-4">Webentwicklung & KI</h4>
+                            <ul class="space-y-2 text-gray-700">
+                                <li>HTML, CSS, JavaScript</li>
+                                <li>GitHub, Netlify, Render</li>
+                                <li>ChatGPT, Cursor AI, LLMs</li>
+                                <li>KI-unterstützte Entwicklung</li>
+                            </ul>
+                        </div>
+
+                        <div class="experience-item rounded-lg p-6">
+                            <h4 class="text-lg font-semibold text-gray-800 mb-4">Game Design & Multimedia</h4>
+                            <ul class="space-y-2 text-gray-700">
+                                <li>HTML5 Multiplayer-Entwicklung</li>
+                                <li>2D-Sprite-Animationen</li>
+                                <li>Pixel-Art & UI-Gestaltung</li>
+                                <li>GIMP (10+ Jahre, Scripting)</li>
+                            </ul>
+                        </div>
+
+                        <div class="experience-item rounded-lg p-6">
+                            <h4 class="text-lg font-semibold text-gray-800 mb-4">Audio & Medienproduktion</h4>
+                            <ul class="space-y-2 text-gray-700">
+                                <li>FL Studio (MIDI-Produktion)</li>
+                                <li>Sounddesign</li>
+                                <li>Visuelle Aufbereitung</li>
+                                <li>Automatisierung & Scripting</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Featured Projects -->
+                <div class="card rounded-xl p-8">
+                    <h2 class="section-title text-2xl font-medium mb-8 pb-3">Herausragende Projekte</h2>
+
+                    <!-- HTML5 Game Project -->
+                    <div class="experience-item rounded-lg p-6 mb-6" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%); border-left: 4px solid #3b82f6;">
+                        <h4 class="text-xl font-semibold text-gray-800 mb-3">🎮 HTML5 Multiplayer-Kartenspiel (WIP)</h4>
+                        <p class="text-gray-700 mb-4 leading-relaxed">
+                            Entwicklung eines komplexen Multiplayer-Kartenspiels mit Plattformmechanik.
+                            <strong>Bereits implementiert:</strong> Game Loop, Multimedia-Integration, Animationssystem,
+                            Physics-Engine und PvP Online-Backend. <strong>In Entwicklung:</strong> Platformer-Mechaniken und
+                            Kartenspiel-Balancing. Modernste KI-Werkzeuge werden zur Unterstützung bei Code-Entwicklung, Design und Spiellogik
+                            eingesetzt.
+                        </p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="skill-tag px-3 py-1 rounded-full text-sm">HTML5</span>
+                            <span class="skill-tag px-3 py-1 rounded-full text-sm">JavaScript</span>
+                            <span class="skill-tag px-3 py-1 rounded-full text-sm">WebSocket</span>
+                            <span class="skill-tag px-3 py-1 rounded-full text-sm">ChatGPT</span>
+                            <span class="skill-tag px-3 py-1 rounded-full text-sm">Cursor AI</span>
+                            <span class="skill-tag px-3 py-1 rounded-full text-sm">GitHub</span>
+                            <span class="skill-tag px-3 py-1 rounded-full text-sm">Netlify</span>
+                        </div>
+                    </div>
+
+                    <!-- Multimedia Pipeline -->
+                    <div class="experience-item rounded-lg p-6">
+                        <div class="flex justify-between items-start mb-4 flex-wrap gap-2">
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-800">🎨 Multimedia-Produktionspipeline</h4>
+                                <p class="text-blue-600 font-medium">10+ Jahre Erfahrung</p>
+                            </div>
+                        </div>
+                        <ul class="space-y-2 text-gray-700">
+                            <li class="flex items-start gap-2">
+                                <span class="text-blue-500 mt-1">▸</span>
+                                <span>Entwicklung automatisierter GIMP-Workflows mit Scripting</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-blue-500 mt-1">▸</span>
+                                <span>Produktion & Strukturierung von MIDI-Dateien mit FL Studio</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-blue-500 mt-1">▸</span>
+                                <span>Erstellung komplexer 2D-Sprite-Animationen und Pixel-Art</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-blue-500 mt-1">▸</span>
+                                <span>Sounddesign & visuelle Aufbereitung für Games und Web</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-16 text-center text-gray-500">
+            <p class="text-sm">&copy; 2025 IT Professional</p>
+            <p class="text-xs mt-1 font-light">less is more</p>
+        </footer>
+    </div>
+</body>
+</html>

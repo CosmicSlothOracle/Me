@@ -14,7 +14,7 @@
             overflow-x: hidden;
         }
 
-        /* Subtle pulsating background like raindrops */
+                        /* Realistischer Milchglas Regen-Effekt - 50% Opacity */
         body::before {
             content: '';
             position: fixed;
@@ -23,23 +23,142 @@
             width: 100%;
             height: 100%;
             background:
-                radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.03) 0%, transparent 50%),
-                radial-gradient(circle at 70% 60%, rgba(139, 92, 246, 0.03) 0%, transparent 50%),
-                radial-gradient(circle at 40% 80%, rgba(16, 185, 129, 0.03) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(245, 158, 11, 0.03) 0%, transparent 50%);
+                radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 70% 60%, rgba(139, 92, 246, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 40% 80%, rgba(16, 185, 129, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 80% 20%, rgba(245, 158, 11, 0.03) 0%, transparent 40%);
+            backdrop-filter: blur(2px);
             animation: subtlePulse 8s ease-in-out infinite;
+            z-index: -3;
+            pointer-events: none;
+        }
+
+        /* Realistische Regentropfen - verschiedene Größen und Geschwindigkeiten */
+        body::after {
+            content: '';
+            position: fixed;
+            top: -200px;
+            left: 0;
+            width: 100%;
+            height: calc(100% + 400px);
+            background-image:
+                /* Große Tropfen */
+                radial-gradient(ellipse 6px 30px at 8% 0%, rgba(59, 130, 246, 0.15) 0%, transparent 60%),
+                radial-gradient(ellipse 4px 25px at 23% 0%, rgba(139, 92, 246, 0.12) 0%, transparent 60%),
+                radial-gradient(ellipse 7px 35px at 45% 0%, rgba(16, 185, 129, 0.15) 0%, transparent 60%),
+                radial-gradient(ellipse 5px 28px at 67% 0%, rgba(245, 158, 11, 0.13) 0%, transparent 60%),
+                radial-gradient(ellipse 6px 32px at 89% 0%, rgba(59, 130, 246, 0.14) 0%, transparent 60%),
+                /* Mittlere Tropfen */
+                radial-gradient(ellipse 3px 18px at 15% 0%, rgba(139, 92, 246, 0.1) 0%, transparent 60%),
+                radial-gradient(ellipse 4px 22px at 32% 0%, rgba(16, 185, 129, 0.11) 0%, transparent 60%),
+                radial-gradient(ellipse 3px 16px at 58% 0%, rgba(245, 158, 11, 0.09) 0%, transparent 60%),
+                radial-gradient(ellipse 4px 20px at 78% 0%, rgba(59, 130, 246, 0.1) 0%, transparent 60%),
+                /* Kleine Tropfen */
+                radial-gradient(ellipse 2px 12px at 12% 0%, rgba(16, 185, 129, 0.08) 0%, transparent 60%),
+                radial-gradient(ellipse 2px 10px at 38% 0%, rgba(245, 158, 11, 0.07) 0%, transparent 60%),
+                radial-gradient(ellipse 2px 14px at 62% 0%, rgba(139, 92, 246, 0.08) 0%, transparent 60%),
+                radial-gradient(ellipse 2px 11px at 85% 0%, rgba(59, 130, 246, 0.07) 0%, transparent 60%);
+            animation: realisticRain 12s linear infinite;
+            z-index: -2;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        /* Wasser-Streifen und Tropfen-Spuren */
+        .moisture-trails {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                /* Vertikale Wasser-Streifen */
+                linear-gradient(180deg, transparent 0%, rgba(59, 130, 246, 0.01) 20%, transparent 21%),
+                linear-gradient(180deg, transparent 0%, rgba(139, 92, 246, 0.01) 35%, transparent 36%),
+                linear-gradient(180deg, transparent 0%, rgba(16, 185, 129, 0.01) 50%, transparent 51%),
+                linear-gradient(180deg, transparent 0%, rgba(245, 158, 11, 0.01) 65%, transparent 66%),
+                /* Diagonale Tropfen-Bahnen */
+                linear-gradient(182deg, transparent 0%, rgba(59, 130, 246, 0.008) 30%, transparent 31%),
+                linear-gradient(181deg, transparent 0%, rgba(139, 92, 246, 0.008) 45%, transparent 46%),
+                linear-gradient(183deg, transparent 0%, rgba(16, 185, 129, 0.008) 60%, transparent 61%);
+            animation: waterStreaks 20s ease-in-out infinite;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Statische Wasser-Tropfen auf Glas */
+        .glass-droplets {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                /* Statische Tropfen verschiedener Größen */
+                radial-gradient(circle 4px at 18% 25%, rgba(59, 130, 246, 0.06), transparent),
+                radial-gradient(circle 6px at 45% 15%, rgba(139, 92, 246, 0.07), transparent),
+                radial-gradient(circle 3px at 72% 35%, rgba(16, 185, 129, 0.05), transparent),
+                radial-gradient(circle 5px at 28% 60%, rgba(245, 158, 11, 0.06), transparent),
+                radial-gradient(circle 2px at 85% 45%, rgba(59, 130, 246, 0.04), transparent),
+                radial-gradient(circle 4px at 65% 75%, rgba(139, 92, 246, 0.05), transparent),
+                radial-gradient(circle 3px at 12% 80%, rgba(16, 185, 129, 0.04), transparent),
+                radial-gradient(circle 6px at 55% 90%, rgba(245, 158, 11, 0.07), transparent);
+            animation: dropletShimmer 15s ease-in-out infinite;
             z-index: -1;
             pointer-events: none;
         }
 
         @keyframes subtlePulse {
             0%, 100% {
-                opacity: 0.5;
+                opacity: 0.35;
                 transform: scale(1);
             }
             50% {
-                opacity: 0.8;
-                transform: scale(1.05);
+                opacity: 0.5;
+                transform: scale(1.02);
+            }
+        }
+
+        @keyframes realisticRain {
+            0% {
+                transform: translateY(-200px) skewX(2deg);
+                opacity: 0;
+            }
+            15% {
+                opacity: 0.5;
+            }
+            85% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(calc(100vh + 200px)) skewX(2deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes waterStreaks {
+            0%, 100% {
+                opacity: 0.15;
+                transform: translateY(0) scaleY(1);
+            }
+            50% {
+                opacity: 0.3;
+                transform: translateY(20px) scaleY(1.1);
+            }
+        }
+
+        @keyframes dropletShimmer {
+            0%, 100% {
+                opacity: 0.3;
+                filter: blur(0px);
+            }
+            33% {
+                opacity: 0.5;
+                filter: blur(0.5px);
+            }
+            66% {
+                opacity: 0.2;
+                filter: blur(0px);
             }
         }
 
@@ -68,70 +187,80 @@
 
         .card:hover {
             transform: translateY(-8px) scale(1.02);
+            outline: 2px solid #000000;
+            outline-offset: 2px;
         }
 
-        /* CV Card - Blue Gradient */
+                        /* CV Card - 50% Milchglas Blue */
         .card-cv {
-            background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
-            border: 1px solid rgba(59, 130, 246, 0.1);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(240, 249, 255, 0.5) 100%);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(59, 130, 246, 0.15);
         }
 
         .card-cv::before {
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(6, 182, 212, 0.05) 100%);
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.04) 0%, rgba(6, 182, 212, 0.04) 100%);
         }
 
         .card-cv:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.65) 0%, rgba(240, 249, 255, 0.65) 100%);
             box-shadow:
-                0 20px 40px rgba(59, 130, 246, 0.15),
-                0 0 0 1px rgba(59, 130, 246, 0.1);
+                0 25px 50px rgba(59, 130, 246, 0.15),
+                0 0 0 1px rgba(59, 130, 246, 0.12);
         }
 
-        /* GitHub Card - Green Gradient */
+        /* GitHub Card - 50% Milchglas Green */
         .card-github {
-            background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
-            border: 1px solid rgba(16, 185, 129, 0.1);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(240, 253, 244, 0.5) 100%);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(16, 185, 129, 0.15);
         }
 
         .card-github::before {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(5, 150, 105, 0.05) 100%);
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.04) 0%, rgba(5, 150, 105, 0.04) 100%);
         }
 
         .card-github:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.65) 0%, rgba(240, 253, 244, 0.65) 100%);
             box-shadow:
-                0 20px 40px rgba(16, 185, 129, 0.15),
-                0 0 0 1px rgba(16, 185, 129, 0.1);
+                0 25px 50px rgba(16, 185, 129, 0.15),
+                0 0 0 1px rgba(16, 185, 129, 0.12);
         }
 
-        /* ComfyUI Card - Purple Gradient */
+        /* ComfyUI Card - 50% Milchglas Purple */
         .card-comfyui {
-            background: linear-gradient(135deg, #ffffff 0%, #faf5ff 100%);
-            border: 1px solid rgba(139, 92, 246, 0.1);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(250, 245, 255, 0.5) 100%);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(139, 92, 246, 0.15);
         }
 
         .card-comfyui::before {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(124, 58, 237, 0.05) 100%);
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.04) 0%, rgba(124, 58, 237, 0.04) 100%);
         }
 
         .card-comfyui:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.65) 0%, rgba(250, 245, 255, 0.65) 100%);
             box-shadow:
-                0 20px 40px rgba(139, 92, 246, 0.15),
-                0 0 0 1px rgba(139, 92, 246, 0.1);
+                0 25px 50px rgba(139, 92, 246, 0.15),
+                0 0 0 1px rgba(139, 92, 246, 0.12);
         }
 
-        /* Portfolio Card - Orange Gradient */
+        /* Portfolio Card - 50% Milchglas Orange */
         .card-portfolio {
-            background: linear-gradient(135deg, #ffffff 0%, #fffbeb 100%);
-            border: 1px solid rgba(245, 158, 11, 0.1);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 251, 235, 0.5) 100%);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(245, 158, 11, 0.15);
         }
 
         .card-portfolio::before {
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.05) 0%, rgba(217, 119, 6, 0.05) 100%);
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.04) 0%, rgba(217, 119, 6, 0.04) 100%);
         }
 
         .card-portfolio:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.65) 0%, rgba(255, 251, 235, 0.65) 100%);
             box-shadow:
-                0 20px 40px rgba(245, 158, 11, 0.15),
-                0 0 0 1px rgba(245, 158, 11, 0.1);
+                0 25px 50px rgba(245, 158, 11, 0.15),
+                0 0 0 1px rgba(245, 158, 11, 0.12);
         }
 
         /* Enhanced hover effects for card content */
@@ -159,9 +288,146 @@
         .card-image {
             transition: transform 0.6s ease;
         }
+
+        /* ComfyUI Slideshow Styles */
+        #comfyui-slideshow {
+            position: relative;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(124, 58, 237, 0.05));
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .slideshow-track {
+            display: flex;
+            transition: transform 0.3s ease;
+            height: 80%;
+            gap: 8px;
+            padding: 0 8px;
+        }
+
+        .slideshow-track.animating {
+            animation: horizontalSlideLoop 8s linear infinite;
+        }
+
+        @keyframes horizontalSlideLoop {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .gif-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            flex-shrink: 0;
+            aspect-ratio: 1;
+        }
+
+        .gif-item:hover {
+            transform: scale(1.05);
+            border-color: rgba(139, 92, 246, 0.4);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        }
+
+        .gif-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.3s ease;
+            border-radius: 5px;
+        }
+
+        .gif-item.paused img {
+            filter: grayscale(50%) opacity(0.7);
+        }
+
+        .gif-item.playing img {
+            filter: none;
+        }
+
+        /* Responsive gif-item sizes - Doubled */
+        @media (max-width: 640px) {
+            .gif-item {
+                width: 120px;
+                height: 120px;
+            }
+            .slideshow-track {
+                gap: 8px;
+            }
+        }
+
+        @media (min-width: 641px) and (max-width: 768px) {
+            .gif-item {
+                width: 140px;
+                height: 140px;
+            }
+            .slideshow-track {
+                gap: 12px;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .gif-item {
+                width: 160px;
+                height: 160px;
+            }
+            .slideshow-track {
+                gap: 16px;
+            }
+        }
+
+        /* Clean Design Enforcement - Nur max 5% Shadow auf Hauptcontainer */
+        .card {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .card:hover {
+            box-shadow:
+                0 25px 50px rgba(0, 0, 0, 0.05),
+                0 0 0 1px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Browser-spezifische CSS-Regeln für bessere Kompatibilität */
+        html {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
+        body.antialiased {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-smoothing: antialiased;
+        }
+
+        /* Firefox-spezifische Optimierungen */
+        @-moz-document url-prefix() {
+            body {
+                -moz-osx-font-smoothing: grayscale;
+            }
+        }
+
+        /* WebKit-spezifische Optimierungen */
+        @supports (-webkit-appearance: none) {
+            body {
+                -webkit-font-smoothing: antialiased;
+            }
+        }
     </style>
 </head>
 <body class="antialiased">
+    <div class="moisture-trails"></div>
+    <div class="glass-droplets"></div>
     <div class="container mx-auto px-4 py-12 md:py-24">
         <!-- Header Section -->
         <header class="text-center mb-16 md:mb-24">
@@ -172,7 +438,7 @@
         <!-- Main Navigation Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
             <!-- CV / About Card -->
-            <a href="#cv" class="card card-cv rounded-xl p-6 flex flex-col">
+            <a href="cv.html" class="card card-cv rounded-xl p-6 flex flex-col">
                 <div class="h-48 bg-gray-100 rounded-lg mb-6 overflow-hidden">
                     <img src="https://via.placeholder.com/600x400?text=CV+%26+About" alt="CV Preview" class="card-image w-full h-full object-cover">
     </div>
@@ -197,8 +463,12 @@
 
             <!-- ComfyUI Workflows Card -->
             <a href="comfyui.html" class="card card-comfyui rounded-xl p-6 flex flex-col">
-                <div class="h-48 bg-gray-100 rounded-lg mb-6 overflow-hidden">
-                    <img src="https://via.placeholder.com/600x400?text=ComfyUI+Workflows" alt="ComfyUI Workflows Preview" class="card-image w-full h-full object-cover">
+                <div class="h-48 bg-gray-100 rounded-lg mb-6 overflow-hidden relative">
+                    <div id="comfyui-slideshow">
+                        <div class="slideshow-track">
+                            <!-- GIFs werden hier dynamisch eingefügt -->
+                        </div>
+                    </div>
                 </div>
                 <h2 class="text-2xl font-medium mb-2">ComfyUI Workflows</h2>
                 <p class="text-gray-600 mb-4">Spezialisierte Workflows für KI-gestützte Bild- und Videoverarbeitung.</p>
@@ -226,5 +496,157 @@
             <p class="text-xs mt-1 font-light">less is more</p>
         </footer>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Liste aller verfügbaren result GIF Dateien
+            const resultGifs = [
+                'assets/videos/comfyui/result1.gif',
+                'assets/videos/comfyui/result2.gif',
+                'assets/videos/comfyui/result3.gif',
+                'assets/videos/comfyui/result4.gif',
+                'assets/videos/comfyui/result5.gif',
+                'assets/videos/comfyui/result6.gif',
+                'assets/videos/comfyui/result7.gif',
+                'assets/videos/comfyui/result8.gif',
+                'assets/videos/comfyui/result9.gif',
+                'assets/videos/comfyui/result10.gif',
+                'assets/workflows/spriteframe/comparisons/result_1.gif',
+                'assets/workflows/spriteframe/comparisons/result2.gif',
+                'assets/workflows/spriteframe/comparisons/result3.gif',
+                'assets/workflows/spriteframe/comparisons/result5.gif',
+                'assets/workflows/spriteframe/comparisons/result6.gif',
+                'assets/workflows/spriteframe/comparisons/result_main.gif'
+            ];
+
+                        const slideshowContainer = document.getElementById('comfyui-slideshow');
+            const slideshowTrack = document.querySelector('.slideshow-track');
+            const comfyuiCard = document.querySelector('.card-comfyui');
+            let currentSlide = 0;
+            let slideInterval;
+            let isHovering = false;
+
+            // Erstelle alle GIF-Items für die horizontale Slideshow
+            function createHorizontalSlideshow() {
+                slideshowTrack.innerHTML = '';
+
+                // Erstelle doppelte Anzahl der GIFs für nahtlosen Loop
+                const allGifs = [...resultGifs, ...resultGifs];
+
+                allGifs.forEach((gifPath, index) => {
+                    const gifContainer = document.createElement('div');
+                    gifContainer.className = 'gif-item paused';
+
+                    const img = document.createElement('img');
+                    img.src = gifPath;
+                    img.alt = `ComfyUI Result ${(index % resultGifs.length) + 1}`;
+                    img.loading = 'lazy';
+
+                    gifContainer.appendChild(img);
+                    slideshowTrack.appendChild(gifContainer);
+                });
+            }
+
+            // Funktion zum Starten aller GIF-Animationen
+            function playGifs() {
+                const containers = slideshowTrack.querySelectorAll('.gif-item');
+                containers.forEach(container => {
+                    container.classList.remove('paused');
+                    container.classList.add('playing');
+
+                    const img = container.querySelector('img');
+                    // Force GIF restart by reloading
+                    const src = img.src;
+                    img.src = '';
+                    setTimeout(() => {
+                        img.src = src;
+                    }, 10);
+                });
+            }
+
+            // Funktion zum Pausieren aller GIF-Animationen
+            function pauseGifs() {
+                const containers = slideshowTrack.querySelectorAll('.gif-item');
+                containers.forEach(container => {
+                    container.classList.remove('playing');
+                    container.classList.add('paused');
+                });
+            }
+
+            // Starte horizontale Animation
+            function startHorizontalAnimation() {
+                slideshowTrack.classList.add('animating');
+            }
+
+            // Stoppe horizontale Animation
+            function stopHorizontalAnimation() {
+                slideshowTrack.classList.remove('animating');
+            }
+
+            // Nächste Folie anzeigen (für statische Slideshow ohne Hover)
+            function nextSlide() {
+                if (!isHovering) {
+                    // Für statische Slideshow - verschiebt Track diskret
+                    currentSlide = (currentSlide + 1) % resultGifs.length;
+                    const gifWidth = 160; // Doubled base width for desktop
+                    const gap = 16; // Doubled gap for desktop
+                    const offset = currentSlide * (gifWidth + gap);
+                    slideshowTrack.style.transform = `translateX(-${offset}px)`;
+                }
+            }
+
+            // Slideshow starten
+            function startSlideshow() {
+                slideInterval = setInterval(nextSlide, 3000);
+            }
+
+            // Slideshow stoppen
+            function stopSlideshow() {
+                if (slideInterval) {
+                    clearInterval(slideInterval);
+                }
+            }
+
+            // Event Listeners für Hover-Effekte
+            comfyuiCard.addEventListener('mouseenter', function() {
+                isHovering = true;
+                stopSlideshow();
+
+                // Reset position und starte Animation
+                slideshowTrack.style.transform = 'translateX(0)';
+                setTimeout(() => {
+                    startHorizontalAnimation();
+                    playGifs();
+                }, 100);
+            });
+
+            comfyuiCard.addEventListener('mouseleave', function() {
+                isHovering = false;
+                stopHorizontalAnimation();
+
+                setTimeout(() => {
+                    pauseGifs();
+                    slideshowTrack.style.transform = 'translateX(0)';
+                    currentSlide = 0;
+                    startSlideshow();
+                }, 200);
+            });
+
+            // Responsive update bei Fenstergrößenänderung
+            window.addEventListener('resize', function() {
+                if (!isHovering) {
+                    slideshowTrack.style.transform = 'translateX(0)';
+                    currentSlide = 0;
+                }
+            });
+
+            // Initial setup
+            createHorizontalSlideshow();
+            setTimeout(() => {
+                pauseGifs();
+                startSlideshow();
+            }, 500);
+        });
+    </script>
 </body>
 </html>
