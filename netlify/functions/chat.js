@@ -64,19 +64,50 @@ Sei professionell, hilfsbereit und technisch versiert. Antworte auf Deutsch.`;
       };
     }
 
-    const { message } = requestData;
+    // Unterstütze sowohl altes Format (message) als auch neues Format (messages)
+    let messages = [];
 
-    // Validierung
-    if (!message || typeof message !== 'string' || message.trim().length === 0) {
+    if (requestData.messages && Array.isArray(requestData.messages)) {
+      // Neues Format: Konversationshistorie als Array
+      messages = requestData.messages;
+
+      // Validiere das Format der Nachrichten
+      const isValid = messages.every(msg =>
+        msg && typeof msg === 'object' &&
+        (msg.role === 'user' || msg.role === 'assistant') &&
+        typeof msg.content === 'string'
+      );
+
+      if (!isValid) {
+        return {
+          statusCode: 400,
+          headers,
+          body: JSON.stringify({ error: 'Invalid message format in conversation history' }),
+        };
+      }
+    } else if (requestData.message && typeof requestData.message === 'string') {
+      // Altes Format: Einzelne Nachricht
+      messages = [{ role: 'user', content: requestData.message.trim() }];
+    } else {
       return {
         statusCode: 400,
         headers,
-        body: JSON.stringify({ error: 'Message is required' }),
+        body: JSON.stringify({ error: 'Message or messages array is required' }),
+      };
+    }
+
+    // Prüfe ob mindestens eine Nachricht vorhanden ist
+    if (messages.length === 0 || messages[messages.length - 1].content.trim().length === 0) {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ error: 'Empty message content' }),
       };
     }
 
     // Rate Limiting (einfache Implementierung)
-    if (message.length > 1000) {
+    const lastMessage = messages[messages.length - 1].content;
+    if (lastMessage.length > 1000) {
       return {
         statusCode: 400,
         headers,
@@ -84,15 +115,18 @@ Sei professionell, hilfsbereit und technisch versiert. Antworte auf Deutsch.`;
       };
     }
 
-    console.log('Processing message:', message.substring(0, 50) + '...');
+    console.log('Processing conversation with', messages.length, 'messages');
+
+    // System-Prompt als erste Nachricht hinzufügen
+    const apiMessages = [
+      { role: 'system', content: SYSTEM_PROMPT },
+      ...messages
+    ];
 
     // OpenAI API Anfrage - Kostenoptimiert mit gpt-3.5-turbo
     const completion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
-      messages: [
-        { role: 'system', content: SYSTEM_PROMPT },
-        { role: 'user', content: message.trim() }
-      ],
+      messages: apiMessages,
       max_tokens: 300, // Reduziert für Kosteneinsparung
       temperature: 0.7,
     });
