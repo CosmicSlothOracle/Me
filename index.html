@@ -9,20 +9,155 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             color: #333;
-            background-color: #fff;
+            background: #f8fafc;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Subtle pulsating background like raindrops */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(139, 92, 246, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(16, 185, 129, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(245, 158, 11, 0.03) 0%, transparent 50%);
+            animation: subtlePulse 8s ease-in-out infinite;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        @keyframes subtlePulse {
+            0%, 100% {
+                opacity: 0.5;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(1.05);
+            }
         }
 
         .card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .card:hover::before {
+            opacity: 1;
         }
 
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            transform: translateY(-8px) scale(1.02);
         }
+
+        /* CV Card - Blue Gradient */
+        .card-cv {
+            background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+        }
+
+        .card-cv::before {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(6, 182, 212, 0.05) 100%);
+        }
+
+        .card-cv:hover {
+            box-shadow:
+                0 20px 40px rgba(59, 130, 246, 0.15),
+                0 0 0 1px rgba(59, 130, 246, 0.1);
+        }
+
+        /* GitHub Card - Green Gradient */
+        .card-github {
+            background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+            border: 1px solid rgba(16, 185, 129, 0.1);
+        }
+
+        .card-github::before {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(5, 150, 105, 0.05) 100%);
+        }
+
+        .card-github:hover {
+            box-shadow:
+                0 20px 40px rgba(16, 185, 129, 0.15),
+                0 0 0 1px rgba(16, 185, 129, 0.1);
+        }
+
+        /* ComfyUI Card - Purple Gradient */
+        .card-comfyui {
+            background: linear-gradient(135deg, #ffffff 0%, #faf5ff 100%);
+            border: 1px solid rgba(139, 92, 246, 0.1);
+        }
+
+        .card-comfyui::before {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(124, 58, 237, 0.05) 100%);
+        }
+
+        .card-comfyui:hover {
+            box-shadow:
+                0 20px 40px rgba(139, 92, 246, 0.15),
+                0 0 0 1px rgba(139, 92, 246, 0.1);
+        }
+
+        /* Portfolio Card - Orange Gradient */
+        .card-portfolio {
+            background: linear-gradient(135deg, #ffffff 0%, #fffbeb 100%);
+            border: 1px solid rgba(245, 158, 11, 0.1);
+        }
+
+        .card-portfolio::before {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.05) 0%, rgba(217, 119, 6, 0.05) 100%);
+        }
+
+        .card-portfolio:hover {
+            box-shadow:
+                0 20px 40px rgba(245, 158, 11, 0.15),
+                0 0 0 1px rgba(245, 158, 11, 0.1);
+        }
+
+        /* Enhanced hover effects for card content */
+        .card:hover h2 {
+            color: inherit;
+        }
+
+        .card-cv:hover h2 { color: #3b82f6; }
+        .card-github:hover h2 { color: #10b981; }
+        .card-comfyui:hover h2 { color: #8b5cf6; }
+        .card-portfolio:hover h2 { color: #f59e0b; }
 
         .container {
             max-width: 1200px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Subtle animation for the preview images */
+        .card:hover .card-image {
+            transform: scale(1.05);
+            transition: transform 0.6s ease;
+        }
+
+        .card-image {
+            transition: transform 0.6s ease;
         }
     </style>
 </head>
@@ -37,9 +172,9 @@
         <!-- Main Navigation Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
             <!-- CV / About Card -->
-            <a href="#cv" class="card bg-white rounded-xl shadow-md p-6 flex flex-col">
+            <a href="#cv" class="card card-cv rounded-xl p-6 flex flex-col">
                 <div class="h-48 bg-gray-100 rounded-lg mb-6 overflow-hidden">
-                    <img src="https://via.placeholder.com/600x400?text=CV+%26+About" alt="CV Preview" class="w-full h-full object-cover">
+                    <img src="https://via.placeholder.com/600x400?text=CV+%26+About" alt="CV Preview" class="card-image w-full h-full object-cover">
     </div>
                 <h2 class="text-2xl font-medium mb-2">CV / About</h2>
                 <p class="text-gray-600 mb-4">Mein beruflicher Werdegang und persönliche Geschichte als AI Specialist.</p>
@@ -49,9 +184,9 @@
             </a>
 
             <!-- GitHub Projects Card -->
-            <a href="#projects" class="card bg-white rounded-xl shadow-md p-6 flex flex-col">
+            <a href="#projects" class="card card-github rounded-xl p-6 flex flex-col">
                 <div class="h-48 bg-gray-100 rounded-lg mb-6 overflow-hidden">
-                    <img src="https://via.placeholder.com/600x400?text=GitHub+Projects" alt="GitHub Projects Preview" class="w-full h-full object-cover">
+                    <img src="https://via.placeholder.com/600x400?text=GitHub+Projects" alt="GitHub Projects Preview" class="card-image w-full h-full object-cover">
                 </div>
                 <h2 class="text-2xl font-medium mb-2">GitHub Projects</h2>
                 <p class="text-gray-600 mb-4">Open-Source-Projekte und Code-Repositories für KI-Anwendungen.</p>
@@ -61,9 +196,9 @@
             </a>
 
             <!-- ComfyUI Workflows Card -->
-            <a href="comfyui.html" class="card bg-white rounded-xl shadow-md p-6 flex flex-col">
+            <a href="comfyui.html" class="card card-comfyui rounded-xl p-6 flex flex-col">
                 <div class="h-48 bg-gray-100 rounded-lg mb-6 overflow-hidden">
-                    <img src="https://via.placeholder.com/600x400?text=ComfyUI+Workflows" alt="ComfyUI Workflows Preview" class="w-full h-full object-cover">
+                    <img src="https://via.placeholder.com/600x400?text=ComfyUI+Workflows" alt="ComfyUI Workflows Preview" class="card-image w-full h-full object-cover">
                 </div>
                 <h2 class="text-2xl font-medium mb-2">ComfyUI Workflows</h2>
                 <p class="text-gray-600 mb-4">Spezialisierte Workflows für KI-gestützte Bild- und Videoverarbeitung.</p>
@@ -73,9 +208,9 @@
             </a>
 
             <!-- Portfolio Card -->
-            <a href="portfolio.html" class="card bg-white rounded-xl shadow-md p-6 flex flex-col">
+            <a href="portfolio.html" class="card card-portfolio rounded-xl p-6 flex flex-col">
                 <div class="h-48 bg-gray-100 rounded-lg mb-6 overflow-hidden">
-                    <img src="https://via.placeholder.com/600x400?text=Creative+Portfolio" alt="Portfolio Preview" class="w-full h-full object-cover">
+                    <img src="https://via.placeholder.com/600x400?text=Creative+Portfolio" alt="Portfolio Preview" class="card-image w-full h-full object-cover">
                 </div>
                 <h2 class="text-2xl font-medium mb-2">Portfolio</h2>
                 <p class="text-gray-600 mb-4">Kreative Arbeiten aus den Bereichen Musik, Animation und KI-Kunst.</p>

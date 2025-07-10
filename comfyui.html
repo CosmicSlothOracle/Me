@@ -13,32 +13,70 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
-            background-color: #f8f8f8;
+            background: #faf5ff;
             color: #333;
             line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ComfyUI themed pulsating background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 25% 25%, rgba(139, 92, 246, 0.04) 0%, transparent 50%),
+                radial-gradient(circle at 75% 50%, rgba(124, 58, 237, 0.04) 0%, transparent 50%),
+                radial-gradient(circle at 50% 75%, rgba(147, 51, 234, 0.04) 0%, transparent 50%),
+                radial-gradient(circle at 20% 80%, rgba(168, 85, 247, 0.04) 0%, transparent 50%);
+            animation: comfyPulse 10s ease-in-out infinite;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        @keyframes comfyPulse {
+            0%, 100% {
+                opacity: 0.6;
+                transform: scale(1) rotate(0deg);
+            }
+            50% {
+                opacity: 0.9;
+                transform: scale(1.08) rotate(0.5deg);
+            }
         }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
+            position: relative;
+            z-index: 1;
         }
 
         .back-link {
             display: inline-block;
             margin-bottom: 30px;
             padding: 12px 24px;
-            background: white;
+            background: linear-gradient(135deg, #ffffff 0%, #faf5ff 100%);
             color: #333;
             text-decoration: none;
             border-radius: 25px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid rgba(139, 92, 246, 0.1);
+            box-shadow: 0 2px 10px rgba(139, 92, 246, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
         }
 
         .back-link:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.2);
+            color: #8b5cf6;
+            background: linear-gradient(135deg, #ffffff 0%, #f3f0ff 100%);
         }
 
         h1 {
@@ -67,17 +105,43 @@
         }
 
         .workflow-card {
-            background: white;
+            background: linear-gradient(135deg, #ffffff 0%, #faf5ff 100%);
+            border: 1px solid rgba(139, 92, 246, 0.1);
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
+            position: relative;
+        }
+
+        .workflow-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(124, 58, 237, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .workflow-card:hover::before {
+            opacity: 1;
         }
 
         .workflow-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow:
+                0 20px 40px rgba(139, 92, 246, 0.15),
+                0 0 0 1px rgba(139, 92, 246, 0.1);
+        }
+
+        .workflow-card:hover .workflow-title {
+            color: #8b5cf6;
         }
 
         .workflow-header {
