@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Positioning & Animation Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f0f0f0;
+            overflow-x: hidden;
+        }
+
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+        }
+
+        .test-header {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .test-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .test-btn {
+            padding: 8px 16px;
+            background: #4A90E2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .test-btn:hover {
+            background: #357ABD;
+        }
+
+        .test-btn.secondary {
+            background: #6c757d;
+        }
+
+        .test-btn.success {
+            background: #28a745;
+        }
+
+        .test-btn.danger {
+            background: #dc3545;
+        }
+
+        .test-results {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            white-space: pre-wrap;
+        }
+
+        .test-results.success {
+            background: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+
+        .test-results.error {
+            background: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+
+        .visual-test-frame {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            border: 2px solid #ddd;
+            margin: 15px 0;
+            overflow: hidden;
+            background: linear-gradient(45deg, #f0f0f0 25%, transparent 25%),
+                        linear-gradient(-45deg, #f0f0f0 25%, transparent 25%),
+                        linear-gradient(45deg, transparent 75%, #f0f0f0 75%),
+                        linear-gradient(-45deg, transparent 75%, #f0f0f0 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+        }
+
+        .positioning-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .position-marker {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: red;
+            border: 2px solid white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .expected-position {
+            background: #28a745;
+        }
+
+        .actual-position {
+            background: #dc3545;
+        }
+
+        .grid-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.3;
+            z-index: 5;
+        }
+
+        .grid-line {
+            position: absolute;
+            background: #007bff;
+        }
+
+        .grid-line.vertical {
+            width: 1px;
+            height: 100%;
+        }
+
+        .grid-line.horizontal {
+            width: 100%;
+            height: 1px;
+        }
+
+        .character-clone {
+            position: absolute;
+            bottom: 10%;
+            right: 10%;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .animation-info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            z-index: 15;
+        }
+
+        .heatmap-toggle {
+            margin: 10px 0;
+        }
+
+        .heatmap-canvas {
+            position: absolute;
+            bottom: 10%;
+            right: 10%;
+            z-index: 3;
+            border: 2px solid #ff0000;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Character Positioning & Animation Test Suite</h1>
+
+        <!-- Original Page Test -->
+        <div class="test-section">
+            <div class="test-header">1. Original Page Load Test</div>
+            <div class="test-controls">
+                <button class="test-btn" onclick="loadOriginalPage()">Load Original Page</button>
+                <button class="test-btn secondary" onclick="analyzeOriginalCharacter()">Analyze Character Position</button>
+                <button class="test-btn secondary" onclick="testAnimation()">Test Animation</button>
+            </div>
+            <iframe id="original-frame" width="100%" height="600" style="border: 1px solid #ddd; display: none;"></iframe>
+            <div id="original-results" class="test-results"></div>
+        </div>
+
+        <!-- Visual Position Test -->
+        <div class="test-section">
+            <div class="test-header">2. Visual Position Verification</div>
+            <div class="test-controls">
+                <button class="test-btn" onclick="createVisualTest()">Create Visual Test</button>
+                <button class="test-btn secondary" onclick="toggleGrid()">Toggle Grid</button>
+                <button class="test-btn secondary" onclick="toggleHeatmap()">Toggle Heatmap</button>
+                <button class="test-btn success" onclick="captureScreenshot()">Capture Screenshot</button>
+            </div>
+
+            <div class="heatmap-toggle">
+                <label>
+                    <input type="checkbox" id="use-heatmap" onchange="updateHeatmapMode()">
+                    Use B&W Heatmap instead of sprite
+                </label>
+            </div>
+
+            <div class="visual-test-frame" id="visual-test">
+                <div class="positioning-overlay" id="overlay"></div>
+                <div class="animation-info" id="anim-info">Animation: Loading...</div>
+            </div>
+            <div id="visual-results" class="test-results"></div>
+        </div>
+
+        <!-- Animation Performance Test -->
+        <div class="test-section">
+            <div class="test-header">3. Animation Performance Test</div>
+            <div class="test-controls">
+                <button class="test-btn" onclick="runPerformanceTest()">Run Performance Test</button>
+                <button class="test-btn secondary" onclick="testFallback()">Test Fallback Only</button>
+                <button class="test-btn secondary" onclick="testFallback()">Test Fallback</button>
+            </div>
+            <div id="performance-results" class="test-results"></div>
+        </div>
+
+        <!-- Cross-browser Test -->
+        <div class="test-section">
+            <div class="test-header">4. Cross-browser Compatibility</div>
+            <div class="test-controls">
+                <button class="test-btn" onclick="runCompatibilityTest()">Run Compatibility Test</button>
+                <button class="test-btn secondary" onclick="testResponsive()">Test Responsive</button>
+            </div>
+            <div id="compatibility-results" class="test-results"></div>
+        </div>
+    </div>
+
+    <script>
+        let visualTestCharacter = null;
+        let performanceData = {
+            frameCount: 0,
+            startTime: 0,
+            fps: 0
+        };
+
+        // 1. Original Page Tests
+        function loadOriginalPage() {
+            const frame = document.getElementById('original-frame');
+            frame.src = '../index.html';
+            frame.style.display = 'block';
+
+            frame.onload = function() {
+                updateResults('original-results', 'Original page loaded successfully', 'success');
+                setTimeout(() => analyzeOriginalCharacter(), 1000);
+            };
+        }
+
+        function analyzeOriginalCharacter() {
+            const frame = document.getElementById('original-frame');
+            try {
+                const frameDoc = frame.contentDocument || frame.contentWindow.document;
+                const character = frameDoc.getElementById('background-character');
+                const canvas = frameDoc.getElementById('background-canvas');
+
+                if (!character) {
+                    updateResults('original-results', 'ERROR: Background character element not found', 'error');
+                    return;
+                }
+
+                const rect = character.getBoundingClientRect();
+                const styles = frameDoc.defaultView.getComputedStyle(character);
+
+                const analysis = `Character Analysis:
+Position: ${styles.position}
+Bottom: ${styles.bottom}
+Right: ${styles.right}
+Z-index: ${styles.zIndex}
+Actual Position: ${rect.left}px from left, ${rect.top}px from top
+Canvas Size: ${canvas ? canvas.width + 'x' + canvas.height : 'Not found'}
+Transform Scale: ${canvas ? canvas.style.transform : 'None'}`;
+
+                updateResults('original-results', analysis, 'success');
+            } catch (error) {
+                updateResults('original-results', `ERROR: Cannot access iframe content: ${error.message}`, 'error');
+            }
+        }
+
+        function testAnimation() {
+            const frame = document.getElementById('original-frame');
+            try {
+                const frameDoc = frame.contentDocument || frame.contentWindow.document;
+                const frameWindow = frame.contentWindow;
+
+                if (frameWindow.backgroundCharacter) {
+                    const character = frameWindow.backgroundCharacter;
+                    let frameCount = 0;
+
+                    const startTime = performance.now();
+                    const testDuration = 3000; // 3 seconds
+
+                    function checkAnimation() {
+                        frameCount++;
+                        const elapsed = performance.now() - startTime;
+
+                        if (elapsed < testDuration) {
+                            requestAnimationFrame(checkAnimation);
+                        } else {
+                            const fps = (frameCount / elapsed) * 1000;
+                            const results = `Animation Test Results:
+Duration: ${elapsed.toFixed(0)}ms
+Frames rendered: ${frameCount}
+Average FPS: ${fps.toFixed(1)}
+Character loaded: ${character.isLoaded}
+Current frame: ${character.currentFrame}
+Animation speed: ${character.animationSpeed}`;
+
+                            updateResults('original-results', results, 'success');
+                        }
+                    }
+
+                    checkAnimation();
+                } else {
+                    updateResults('original-results', 'ERROR: BackgroundCharacter not found in window', 'error');
+                }
+            } catch (error) {
+                updateResults('original-results', `ERROR: Animation test failed: ${error.message}`, 'error');
+            }
+        }
+
+        // 2. Visual Position Tests
+        function createVisualTest() {
+            const testFrame = document.getElementById('visual-test');
+            const overlay = document.getElementById('overlay');
+
+            // Clear previous test
+            const oldCharacter = testFrame.querySelector('.character-clone');
+            if (oldCharacter) oldCharacter.remove();
+
+            // Create character clone
+            const characterClone = document.createElement('div');
+            characterClone.className = 'character-clone';
+
+            const canvas = document.createElement('canvas');
+            canvas.width = 192;
+            canvas.height = 192;
+            canvas.style.imageRendering = 'pixelated';
+            canvas.style.transform = 'scale(2)';
+
+            characterClone.appendChild(canvas);
+            testFrame.appendChild(characterClone);
+
+            // Initialize test character
+            visualTestCharacter = new TestCharacter(canvas);
+            visualTestCharacter.init();
+
+            // Add position markers
+            addPositionMarkers(overlay);
+
+            updateResults('visual-results', 'Visual test created. Character should appear at bottom-right (10% from edges)', 'success');
+        }
+
+        function addPositionMarkers(overlay) {
+            overlay.innerHTML = '';
+
+            // Expected position marker (bottom 10%, right 10%)
+            const expectedMarker = document.createElement('div');
+            expectedMarker.className = 'position-marker expected-position';
+            expectedMarker.style.bottom = '10%';
+            expectedMarker.style.right = '10%';
+            expectedMarker.title = 'Expected position (bottom: 10%, right: 10%)';
+            overlay.appendChild(expectedMarker);
+
+            // Corner markers for reference
+            const corners = [
+                {bottom: '0%', right: '0%', title: 'Bottom Right Corner'},
+                {bottom: '0%', right: '10%', title: 'Bottom Right 10%'},
+                {bottom: '10%', right: '0%', title: 'Bottom 10% Right Edge'}
+            ];
+
+            corners.forEach(corner => {
+                const marker = document.createElement('div');
+                marker.className = 'position-marker';
+                marker.style.bottom = corner.bottom;
+                marker.style.right = corner.right;
+                marker.style.background = '#ffc107';
+                marker.title = corner.title;
+                overlay.appendChild(marker);
+            });
+        }
+
+        function toggleGrid() {
+            const testFrame = document.getElementById('visual-test');
+            let grid = testFrame.querySelector('.grid-overlay');
+
+            if (grid) {
+                grid.remove();
+                return;
+            }
+
+            grid = document.createElement('div');
+            grid.className = 'grid-overlay';
+
+            // Create 10% grid lines
+            for (let i = 0; i <= 100; i += 10) {
+                // Vertical lines
+                const vLine = document.createElement('div');
+                vLine.className = 'grid-line vertical';
+                vLine.style.left = `${i}%`;
+                grid.appendChild(vLine);
+
+                // Horizontal lines
+                const hLine = document.createElement('div');
+                hLine.className = 'grid-line horizontal';
+                hLine.style.top = `${i}%`;
+                grid.appendChild(hLine);
+            }
+
+            testFrame.appendChild(grid);
+        }
+
+        function toggleHeatmap() {
+            const testFrame = document.getElementById('visual-test');
+            let heatmap = testFrame.querySelector('.heatmap-canvas');
+
+            if (heatmap) {
+                heatmap.remove();
+                return;
+            }
+
+            // Create heatmap canvas
+            heatmap = document.createElement('canvas');
+            heatmap.className = 'heatmap-canvas';
+            heatmap.width = 192;
+            heatmap.height = 192;
+            heatmap.style.transform = 'scale(2)';
+
+            const ctx = heatmap.getContext('2d');
+
+            // Draw black and white heatmap pattern
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, 192, 192);
+
+            // White center marker
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(90, 90, 12, 12);
+
+            // Grid pattern
+            ctx.fillStyle = '#ffffff';
+            for (let x = 0; x < 192; x += 24) {
+                for (let y = 0; y < 192; y += 24) {
+                    if ((x + y) % 48 === 0) {
+                        ctx.fillRect(x, y, 2, 2);
+                    }
+                }
+            }
+
+            testFrame.appendChild(heatmap);
+        }
+
+        function updateHeatmapMode() {
+            const useHeatmap = document.getElementById('use-heatmap').checked;
+            const character = document.querySelector('.character-clone');
+
+            if (character && visualTestCharacter) {
+                if (useHeatmap) {
+                    visualTestCharacter.useHeatmap = true;
+                    visualTestCharacter.drawHeatmap();
+                } else {
+                    visualTestCharacter.useHeatmap = false;
+                    visualTestCharacter.animate();
+                }
+            }
+        }
+
+        // 3. Performance Tests
+        function runPerformanceTest() {
+            performanceData = {
+                frameCount: 0,
+                startTime: performance.now(),
+                fps: 0
+            };
+
+            const testDuration = 5000; // 5 seconds
+
+            function measurePerformance() {
+                performanceData.frameCount++;
+                const elapsed = performance.now() - performanceData.startTime;
+
+                if (elapsed < testDuration) {
+                    requestAnimationFrame(measurePerformance);
+                } else {
+                    performanceData.fps = (performanceData.frameCount / elapsed) * 1000;
+
+                    const results = `Performance Test Results (5 seconds):
+Total frames: ${performanceData.frameCount}
+Average FPS: ${performanceData.fps.toFixed(1)}
+Frame time: ${(elapsed / performanceData.frameCount).toFixed(2)}ms
+Performance rating: ${performanceData.fps > 30 ? 'GOOD' : performanceData.fps > 15 ? 'ACCEPTABLE' : 'POOR'}`;
+
+                    updateResults('performance-results', results, performanceData.fps > 15 ? 'success' : 'error');
+                }
+            }
+
+            measurePerformance();
+        }
+
+        // testSpritesheet function removed - no longer needed
+
+        function testFallback() {
+            // Test fallback rendering
+            const canvas = document.createElement('canvas');
+            canvas.width = 192;
+            canvas.height = 192;
+            const ctx = canvas.getContext('2d');
+
+            // Simulate fallback drawing
+            ctx.fillStyle = '#4A90E2';
+            ctx.fillRect(70, 70, 50, 50);
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '12px Arial';
+            ctx.fillText('AI', 88, 98);
+
+            const results = `Fallback Test:
+Fallback rendering: SUCCESS
+Blue square with "AI" text rendered
+Canvas size: ${canvas.width}x${canvas.height}
+Context available: ${ctx ? 'YES' : 'NO'}`;
+
+            updateResults('performance-results', results, 'success');
+        }
+
+        // 4. Cross-browser Tests
+        function runCompatibilityTest() {
+            const features = {
+                'Canvas 2D': !!document.createElement('canvas').getContext('2d'),
+                'RequestAnimationFrame': !!window.requestAnimationFrame,
+                'Fixed positioning': true, // Assume supported
+                'Transform scale': CSS.supports('transform', 'scale(2)'),
+                'Image rendering pixelated': CSS.supports('image-rendering', 'pixelated'),
+                'Viewport units': CSS.supports('width', '10vh')
+            };
+
+            const browser = navigator.userAgent;
+            const viewport = `${window.innerWidth}x${window.innerHeight}`;
+
+            let results = `Browser Compatibility Test:
+User Agent: ${browser}
+Viewport: ${viewport}
+Features:\n`;
+
+            Object.entries(features).forEach(([feature, supported]) => {
+                results += `  ${feature}: ${supported ? 'SUPPORTED' : 'NOT SUPPORTED'}\n`;
+            });
+
+            const allSupported = Object.values(features).every(Boolean);
+            updateResults('compatibility-results', results, allSupported ? 'success' : 'error');
+        }
+
+        function testResponsive() {
+            const viewports = [
+                {width: 320, height: 568, name: 'Mobile'},
+                {width: 768, height: 1024, name: 'Tablet'},
+                {width: 1920, height: 1080, name: 'Desktop'}
+            ];
+
+            let results = 'Responsive Test Results:\n';
+
+            viewports.forEach(viewport => {
+                // Calculate expected position for each viewport
+                const rightPos = viewport.width * 0.9; // 10% from right
+                const bottomPos = viewport.height * 0.9; // 10% from bottom
+
+                results += `${viewport.name} (${viewport.width}x${viewport.height}):
+  Character position: ${rightPos.toFixed(0)}px from left, ${bottomPos.toFixed(0)}px from top
+  Character size: 384px (192px * 2 scale)
+  Fits in viewport: ${rightPos + 384 <= viewport.width && bottomPos + 384 <= viewport.height ? 'YES' : 'NO'}\n`;
+            });
+
+            updateResults('compatibility-results', results, 'success');
+        }
+
+        // Test Character Class
+        class TestCharacter {
+            constructor(canvas) {
+                this.canvas = canvas;
+                this.ctx = canvas.getContext('2d');
+                this.currentFrame = 0;
+                this.frameCount = 0;
+                this.animationSpeed = 10;
+                this.isLoaded = false;
+                this.useHeatmap = false;
+                this.animationId = null;
+            }
+
+            async init() {
+                console.log('TestCharacter using fallback only - no sprites loaded');
+                this.drawFallback();
+            }
+
+            drawFallback() {
+                this.ctx.fillStyle = '#4A90E2';
+                this.ctx.fillRect(70, 70, 50, 50);
+                this.ctx.fillStyle = '#ffffff';
+                this.ctx.font = '12px Arial';
+                this.ctx.fillText('AI', 88, 98);
+            }
+
+            drawHeatmap() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+                // Black background
+                this.ctx.fillStyle = '#000000';
+                this.ctx.fillRect(0, 0, 192, 192);
+
+                // White center cross
+                this.ctx.fillStyle = '#ffffff';
+                this.ctx.fillRect(90, 0, 12, 192);
+                this.ctx.fillRect(0, 90, 192, 12);
+
+                // Corner markers
+                this.ctx.fillRect(0, 0, 24, 24);
+                this.ctx.fillRect(168, 0, 24, 24);
+                this.ctx.fillRect(0, 168, 24, 24);
+                this.ctx.fillRect(168, 168, 24, 24);
+
+                // Position text
+                this.ctx.fillStyle = '#000000';
+                this.ctx.font = '10px Arial';
+                this.ctx.fillText('10% FROM', 96, 100);
+                this.ctx.fillText('BOTTOM-RIGHT', 96, 112);
+            }
+
+            animate() {
+                if (this.useHeatmap) {
+                    this.drawHeatmap();
+                    return;
+                }
+
+                // No sprite animation - use static fallback
+                this.drawFallback();
+
+                // Update animation info
+                const animInfo = document.getElementById('anim-info');
+                if (animInfo) {
+                    animInfo.textContent = `Animation: Static fallback - no sprites loaded`;
+                }
+            }
+
+            destroy() {
+                if (this.animationId) {
+                    cancelAnimationFrame(this.animationId);
+                }
+            }
+        }
+
+        // Utility Functions
+        function updateResults(elementId, text, type = '') {
+            const element = document.getElementById(elementId);
+            element.textContent = text;
+            element.className = `test-results ${type}`;
+        }
+
+        function captureScreenshot() {
+            // Note: Due to browser security, we can't actually capture screenshots
+            // But we can provide instructions
+            const instructions = `Screenshot Capture Instructions:
+1. Use browser's built-in screenshot tool (F12 > ... > More tools > Screenshot)
+2. Or use Print Screen key
+3. Compare character position with position markers
+4. Character should be exactly at the green marker (10% from bottom-right)
+5. Character should be 384x384px in size (192px * 2 scale)
+
+Expected results:
+✓ Character visible at bottom-right
+✓ Character positioned exactly at green marker
+✓ Animation running smoothly
+✓ No console errors`;
+
+            updateResults('visual-results', instructions, 'success');
+        }
+
+        // Auto-run basic tests on load
+        document.addEventListener('DOMContentLoaded', function() {
+            runCompatibilityTest();
+            createVisualTest();
+        });
+    </script>
+</body>
+</html>

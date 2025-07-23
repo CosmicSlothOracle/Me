@@ -7,7 +7,7 @@ class AIChatbot {
     this.isLoading = false;
     this.conversation = []; // Konversationshistorie speichern
     this.maxHistoryLength = 6; // Maximale Anzahl der gespeicherten Nachrichten
-    this.currentAnimation = 'idle'; // Aktuelle Animation des Chatbot-Avatars
+    // Animation system removed - using static display
     this.init();
   }
 
@@ -22,7 +22,9 @@ class AIChatbot {
     toggleButton.id = 'chatbot-toggle';
     toggleButton.innerHTML = `
       <div class="chatbot-avatar-container">
-        <img src="assets/chatbot/idle.gif" alt="AI Assistant" id="chatbot-avatar" />
+        <div class="ai-avatar-static" id="chatbot-avatar">
+          <div class="ai-icon">AI</div>
+        </div>
         <div class="speech-bubble" id="speech-bubble">
           <p>Hallo! Frag mich etwas zu ComfyUI-Workflows!</p>
         </div>
@@ -36,7 +38,9 @@ class AIChatbot {
       <div class="chatbot-header">
         <div class="chatbot-title">
           <div class="ai-icon">
-            <img src="assets/chatbot/talk.gif" alt="AI Assistant" class="header-avatar" />
+            <div class="ai-avatar-static header-avatar">
+              <div class="ai-icon">AI</div>
+            </div>
           </div>
           <span>AI Assistant</span>
         </div>
@@ -102,7 +106,7 @@ class AIChatbot {
         height: 100px;
       }
 
-      #chatbot-avatar {
+      .ai-avatar-static {
         width: 100%;
         height: 100%;
         border-radius: 50%;
@@ -111,6 +115,34 @@ class AIChatbot {
         backdrop-filter: blur(10px);
         border: 2px solid rgba(139, 92, 246, 0.5);
         transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .ai-avatar-static .ai-icon {
+        color: rgba(139, 92, 246, 0.9);
+        font-size: 24px;
+        font-weight: bold;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .header-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(124, 58, 237, 0.2) 100%);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(139, 92, 246, 0.3);
+      }
+
+      .header-avatar .ai-icon {
+        color: rgba(139, 92, 246, 0.9);
+        font-size: 12px;
+        font-weight: bold;
       }
 
       .speech-bubble {
@@ -473,35 +505,20 @@ class AIChatbot {
     if (this.isOpen) {
       container.classList.add('open');
       document.getElementById('chatbot-input').focus();
-      this.setAnimation('talk');
+      // Animation removed
     } else {
       container.classList.remove('open');
-      this.setAnimation('idle');
+      // Animation removed
     }
   }
 
   closeChatbot() {
     document.getElementById('chatbot-container').classList.remove('open');
     this.isOpen = false;
-    this.setAnimation('idle');
+    // Animation removed
   }
 
-  // Neue Methode für Animation-Wechsel
-  setAnimation(animation) {
-    if (this.currentAnimation === animation) return;
-
-    this.currentAnimation = animation;
-    const avatar = document.getElementById('chatbot-avatar');
-
-    if (avatar) {
-      avatar.src = `assets/chatbot/${animation}.gif`;
-    }
-
-    const headerAvatar = document.querySelector('.header-avatar');
-    if (headerAvatar) {
-      headerAvatar.src = `assets/chatbot/${animation === 'idle' ? 'talk' : animation}.gif`;
-    }
-  }
+  // Animation system removed - using static display
 
   // Methode für Sprechblase
   updateSpeechBubble(text) {
@@ -548,9 +565,9 @@ class AIChatbot {
 
     input.value = '';
 
-    // Loading Indicator und Animation ändern
+    // Loading Indicator
     this.showLoading();
-    this.setAnimation('talk');
+    // Animation removed
 
     try {
       // Konversationshistorie für API vorbereiten
@@ -626,8 +643,7 @@ class AIChatbot {
       // Fehlermeldung zur Konversationshistorie hinzufügen
       this.conversation.push({ role: 'assistant', content: userMessage });
 
-      // Animation für Fehler
-      this.setAnimation('sleep');
+      // Animation removed
       this.updateSpeechBubble(userMessage);
 
     } finally {
@@ -657,12 +673,9 @@ class AIChatbot {
       animation = 'talk';
     }
 
-    this.setAnimation(animation);
+    // Animation removed
 
-    // Nach einiger Zeit zurück zu idle
-    setTimeout(() => {
-      this.setAnimation('idle');
-    }, 5000);
+    // Timeout removed - no animation needed
   }
 
   addMessage(content, type) {

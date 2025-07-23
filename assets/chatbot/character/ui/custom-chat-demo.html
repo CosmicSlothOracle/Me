@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Chat UI Demo</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .demo-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .demo-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .demo-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .demo-controls {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .demo-controls h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .control-group {
+            margin-bottom: 20px;
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .control-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .demo-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .demo-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .demo-btn.active {
+            background: rgba(255, 255, 255, 0.4);
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+
+        .demo-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            width: 200px;
+        }
+
+        .demo-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .demo-select {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .demo-select option {
+            background: #333;
+            color: white;
+        }
+
+        .asset-upload {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .asset-upload input[type="file"] {
+            display: none;
+        }
+
+        .asset-upload label {
+            cursor: pointer;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .asset-upload label:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .asset-preview {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .asset-preview img {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            object-fit: cover;
+        }
+
+        .config-display {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .info-box {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            border-left: 4px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .info-box h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .info-box ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .info-box li {
+            margin-bottom: 5px;
+        }
+
+        /* Chat wird über dem Demo-Content angezeigt */
+        .demo-content {
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-header">
+            <h1>🎨 Custom Chat UI Demo</h1>
+            <p>Gestalte dein eigenes Chatfenster mit Assets und zeige es direkt an</p>
+        </div>
+
+        <div class="demo-content">
+            <div class="demo-controls">
+                <h3>⚙️ Chat-Konfiguration</h3>
+
+                <div class="control-group">
+                    <label>Chat-Anzeige:</label>
+                    <div class="control-row">
+                        <button class="demo-btn" id="show-chat">Chat anzeigen</button>
+                        <button class="demo-btn" id="hide-chat">Chat ausblenden</button>
+                        <button class="demo-btn" id="toggle-direct">Direkte Anzeige: <span id="direct-status">Ein</span></button>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>Position & Größe:</label>
+                    <div class="control-row">
+                        <select class="demo-select" id="position-select">
+                            <option value="bottom-right">Unten Rechts</option>
+                            <option value="bottom-left">Unten Links</option>
+                            <option value="top-right">Oben Rechts</option>
+                            <option value="top-left">Oben Links</option>
+                            <option value="center">Zentriert</option>
+                        </select>
+                        <input class="demo-input" id="width-input" placeholder="Breite (400px)" value="400px">
+                        <input class="demo-input" id="height-input" placeholder="Höhe (600px)" value="600px">
+                        <button class="demo-btn" id="apply-size">Anwenden</button>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>Theme:</label>
+                    <div class="control-row">
+                        <button class="demo-btn active" data-theme="default">Standard</button>
+                        <button class="demo-btn" data-theme="pixel">Pixel Art</button>
+                        <button class="demo-btn" data-theme="modern">Modern</button>
+                        <button class="demo-btn" data-theme="custom">Custom</button>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>🖼️ Asset-Upload:</label>
+                    <div class="control-row">
+                        <div class="asset-upload">
+                            <label for="frame-upload">
+                                🖼️ Chat-Rahmen
+                                <input type="file" id="frame-upload" accept="image/*">
+                            </label>
+                            <div class="asset-preview" id="frame-preview"></div>
+                        </div>
+                        <div class="asset-upload">
+                            <label for="background-upload">
+                                🎨 Hintergrund
+                                <input type="file" id="background-upload" accept="image/*">
+                            </label>
+                            <div class="asset-preview" id="background-preview"></div>
+                        </div>
+                        <div class="asset-upload">
+                            <label for="avatar-upload">
+                                👤 AI-Avatar
+                                <input type="file" id="avatar-upload" accept="image/*">
+                            </label>
+                            <div class="asset-preview" id="avatar-preview"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>🔧 Erweiterte Optionen:</label>
+                    <div class="control-row">
+                        <button class="demo-btn" id="reset-config">Konfiguration zurücksetzen</button>
+                        <button class="demo-btn" id="export-config">Konfiguration exportieren</button>
+                        <button class="demo-btn" id="test-animation">Animation testen</button>
+                    </div>
+                </div>
+
+                <div class="config-display" id="config-display">
+                    Aktuelle Konfiguration wird hier angezeigt...
+                </div>
+            </div>
+
+            <div class="info-box">
+                <h4>📋 Verwendung:</h4>
+                <ul>
+                    <li>Lade eigene Assets hoch um das Chat-Design anzupassen</li>
+                    <li>Wähle Position und Größe für das Chatfenster</li>
+                    <li>Das Chat wird standardmäßig direkt angezeigt (kein Toggle-Button)</li>
+                    <li>Alle Änderungen werden sofort angewendet</li>
+                </ul>
+            </div>
+
+            <div class="info-box">
+                <h4>🎯 Asset-Empfehlungen:</h4>
+                <ul>
+                    <li><strong>Chat-Rahmen:</strong> 400x600px, PNG mit Transparenz</li>
+                    <li><strong>Hintergrund:</strong> 400x500px, beliebiges Format</li>
+                    <li><strong>AI-Avatar:</strong> 64x64px, PNG mit Transparenz</li>
+                    <li><strong>Buttons:</strong> 40x40px, PNG mit Transparenz</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Chat UI laden -->
+    <script src="custom-chat-ui.js"></script>
+    <script>
+        // Demo-Konfiguration
+        let currentConfig = {
+            theme: 'default',
+            directDisplay: true,
+            position: { bottom: '20px', right: '20px' },
+            size: { width: '400px', height: '600px' },
+            assets: {
+                chatWindow: {
+                    frame: null,
+                    background: null,
+                    header: null
+                },
+                buttons: {
+                    send: null,
+                    close: null
+                },
+                icons: {
+                    aiAvatar: null,
+                    sendIcon: null
+                }
+            }
+        };
+
+        // Custom Chat UI Instanz
+        let customChatUI = null;
+
+        // Demo-Initialisierung
+        document.addEventListener('DOMContentLoaded', function() {
+            initCustomChat();
+            setupEventListeners();
+            updateConfigDisplay();
+        });
+
+        function initCustomChat() {
+            if (customChatUI) {
+                customChatUI.destroy();
+            }
+
+            customChatUI = new CustomChatUI(currentConfig);
+            console.log('Custom Chat UI initialisiert:', customChatUI);
+        }
+
+        function setupEventListeners() {
+            // Chat-Steuerung
+            document.getElementById('show-chat').addEventListener('click', () => {
+                if (customChatUI) customChatUI.showChat();
+            });
+
+            document.getElementById('hide-chat').addEventListener('click', () => {
+                if (customChatUI) customChatUI.hideChat();
+            });
+
+            document.getElementById('toggle-direct').addEventListener('click', () => {
+                currentConfig.directDisplay = !currentConfig.directDisplay;
+                document.getElementById('direct-status').textContent = currentConfig.directDisplay ? 'Ein' : 'Aus';
+                initCustomChat();
+                updateConfigDisplay();
+            });
+
+            // Position & Größe
+            document.getElementById('position-select').addEventListener('change', (e) => {
+                const position = e.target.value;
+                switch (position) {
+                    case 'bottom-right':
+                        currentConfig.position = { bottom: '20px', right: '20px' };
+                        break;
+                    case 'bottom-left':
+                        currentConfig.position = { bottom: '20px', left: '20px' };
+                        break;
+                    case 'top-right':
+                        currentConfig.position = { top: '20px', right: '20px' };
+                        break;
+                    case 'top-left':
+                        currentConfig.position = { top: '20px', left: '20px' };
+                        break;
+                    case 'center':
+                        currentConfig.position = { top: '50%', left: '50%', transform: 'translate(-50%, -50%)' };
+                        break;
+                }
+                if (customChatUI) customChatUI.updatePosition(currentConfig.position);
+                updateConfigDisplay();
+            });
+
+            document.getElementById('apply-size').addEventListener('click', () => {
+                const width = document.getElementById('width-input').value || '400px';
+                const height = document.getElementById('height-input').value || '600px';
+                currentConfig.size = { width, height };
+                if (customChatUI) customChatUI.updateSize(currentConfig.size);
+                updateConfigDisplay();
+            });
+
+            // Theme-Buttons
+            document.querySelectorAll('[data-theme]').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('[data-theme]').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    currentConfig.theme = e.target.dataset.theme;
+                    updateConfigDisplay();
+                });
+            });
+
+            // Asset-Upload
+            setupAssetUpload('frame-upload', 'frame', 'frame-preview');
+            setupAssetUpload('background-upload', 'background', 'background-preview');
+            setupAssetUpload('avatar-upload', 'aiAvatar', 'avatar-preview');
+
+            // Erweiterte Optionen
+            document.getElementById('reset-config').addEventListener('click', () => {
+                currentConfig = {
+                    theme: 'default',
+                    directDisplay: true,
+                    position: { bottom: '20px', right: '20px' },
+                    size: { width: '400px', height: '600px' },
+                    assets: {
+                        chatWindow: { frame: null, background: null, header: null },
+                        buttons: { send: null, close: null },
+                        icons: { aiAvatar: null, sendIcon: null }
+                    }
+                };
+                initCustomChat();
+                updateConfigDisplay();
+            });
+
+            document.getElementById('export-config').addEventListener('click', () => {
+                const configJson = JSON.stringify(currentConfig, null, 2);
+                const blob = new Blob([configJson], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'chat-config.json';
+                a.click();
+                URL.revokeObjectURL(url);
+            });
+
+            document.getElementById('test-animation').addEventListener('click', () => {
+                if (customChatUI) {
+                    customChatUI.hideChat();
+                    setTimeout(() => customChatUI.showChat(), 500);
+                }
+            });
+        }
+
+        function setupAssetUpload(inputId, assetType, previewId) {
+            const input = document.getElementById(inputId);
+            const preview = document.getElementById(previewId);
+
+            input.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const dataUrl = e.target.result;
+
+                        // Update config
+                        if (assetType === 'frame') {
+                            currentConfig.assets.chatWindow.frame = dataUrl;
+                        } else if (assetType === 'background') {
+                            currentConfig.assets.chatWindow.background = dataUrl;
+                        } else if (assetType === 'aiAvatar') {
+                            currentConfig.assets.icons.aiAvatar = dataUrl;
+                        }
+
+                        // Update preview
+                        preview.innerHTML = `
+                            <img src="${dataUrl}" alt="${assetType}">
+                            <span>${file.name}</span>
+                        `;
+
+                        // Apply to chat
+                        if (customChatUI) {
+                            customChatUI.updateConfig(currentConfig);
+                        }
+
+                        updateConfigDisplay();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        function updateConfigDisplay() {
+            const display = document.getElementById('config-display');
+            const configCopy = { ...currentConfig };
+
+            // Kürze Data-URLs für bessere Lesbarkeit
+            const shortenDataUrls = (obj) => {
+                Object.keys(obj).forEach(key => {
+                    if (typeof obj[key] === 'string' && obj[key].startsWith('data:')) {
+                        obj[key] = obj[key].substring(0, 50) + '...[DATA_URL]';
+                    } else if (typeof obj[key] === 'object' && obj[key] !== null) {
+                        shortenDataUrls(obj[key]);
+                    }
+                });
+            };
+
+            shortenDataUrls(configCopy);
+            display.textContent = JSON.stringify(configCopy, null, 2);
+        }
+    </script>
+</body>
+</html>

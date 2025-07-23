@@ -312,6 +312,28 @@
             color: #3b82f6;
         }
 
+        /* Spezifische Styling für RMBG Pipeline Workflow - Professional Green Theme */
+        .workflow-card.rmbg-pipeline {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(240, 253, 244, 0.5) 100%);
+            border: 1px solid rgba(34, 197, 94, 0.15);
+            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.1);
+        }
+
+        .workflow-card.rmbg-pipeline::before {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.05) 0%, rgba(22, 163, 74, 0.05) 100%);
+        }
+
+        .workflow-card.rmbg-pipeline:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.65) 0%, rgba(240, 253, 244, 0.65) 100%);
+            box-shadow:
+                0 25px 50px rgba(34, 197, 94, 0.15),
+                0 0 0 1px rgba(34, 197, 94, 0.12);
+        }
+
+        .workflow-card.rmbg-pipeline:hover .workflow-title {
+            color: #22c55e;
+        }
+
         /* Moderne Icon Styles */
         .modern-icon {
             display: inline-flex;
@@ -1935,6 +1957,35 @@
                     <span class="expand-hint">Klicken für Details →</span>
                 </div>
             </div>
+
+            <!-- Workflow 3: RMBG Pipeline -->
+            <div class="workflow-card rmbg-pipeline" onclick="openModal('rmbg-modal')">
+                <div class="workflow-header">
+                    <h2 class="workflow-title">
+                        <span class="modern-icon icon-ai">RMBG</span>
+                        Intelligente RMBG-Pipeline
+                    </h2>
+                    <p class="workflow-subtitle">Vollautomatische Hintergrundentfernung mit KI-Optimierung</p>
+                </div>
+
+                <div class="comparison-container">
+                    <div class="comparison-side">
+                        <div class="comparison-label before-label">Original</div>
+                        <img src="assets/workflows/rmbg/showcase/source_main.png" alt="RMBG Source">
+                    </div>
+                    <div class="comparison-side">
+                        <div class="comparison-label after-label">Hintergrund entfernt</div>
+                        <img src="assets/workflows/rmbg/showcase/result_main.png" alt="RMBG Result">
+                    </div>
+                </div>
+
+
+
+                <div class="workflow-meta">
+                    <span>10 Vergleiche verfügbar</span>
+                    <span class="expand-hint">Klicken für Details →</span>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -2931,6 +2982,317 @@ pip install -r requirements_ultimate.txt</pre>
         </div>
     </div>
 
+    <!-- Modal 3: RMBG Pipeline -->
+    <div id="rmbg-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close-modal" onclick="closeModal('rmbg-modal')">&times;</button>
+                <h2 class="modal-title">🎯 Intelligente RMBG-Pipeline</h2>
+                <p class="modal-subtitle">Vollautomatische Hintergrundentfernung mit KI-gestützter Qualitätsoptimierung</p>
+            </div>
+            <div class="modal-body">
+                <div class="tab-bar">
+                    <button class="tab-btn active" onclick="showRmbgTab('rmbg-comparisons')">Vergleiche</button>
+                    <button class="tab-btn" onclick="showRmbgTab('rmbg-guide')">Technischer Guide</button>
+                </div>
+                <div id="rmbg-comparisons" class="tab-content" style="display:block;">
+                    <div class="workflow-details">
+                        <h3>🎯 Workflow-Übersicht</h3>
+                        <p>
+                            Diese vollautomatische RMBG-Pipeline demonstriert die Integration von State-of-the-Art KI-Modellen für professionelle Hintergrundentfernung mit iterativer Qualitätsoptimierung. Das System verarbeitet Batch-Images automatisch und optimiert Parameter basierend auf Echtzeit-Qualitätsbewertung.
+                        </p>
+
+                        <div style="background: linear-gradient(135deg, #f0fdf4, #dcfce7); padding: 20px; border-radius: 12px; margin: 20px 0;">
+                            <h4 style="color: #22c55e; margin-bottom: 15px;">🏆 Erfolgsmetriken</h4>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                                <div><strong>✅ Erfolgsrate:</strong> 100% bei 80+ Bildern</div>
+                                <div><strong>⭐ Sehr gut:</strong> 85% (69/81 Bilder)</div>
+                                <div><strong>👍 Gut:</strong> 15% (12/81 Bilder)</div>
+                                <div><strong>🔄 Verbessert:</strong> 16 Bilder durch iterative Optimierung</div>
+                            </div>
+                        </div>
+
+                        <h3>🛠️ Technische Architektur</h3>
+                        <div class="tech-stack">
+                            <div class="tech-item">
+                                <strong>Framework</strong>
+                                <span>ComfyUI mit modularem Node-System</span>
+                            </div>
+                            <div class="tech-item">
+                                <strong>KI-Modelle</strong>
+                                <span>RMBG-2.0, INSPYRENET, BEN/BEN2, BiRefNet-HR</span>
+                            </div>
+                            <div class="tech-item">
+                                <strong>Backend</strong>
+                                <span>Python 3.9+ mit PyTorch & CUDA</span>
+                            </div>
+                            <div class="tech-item">
+                                <strong>API</strong>
+                                <span>REST-basierte Workflow-Ausführung</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="comparison-gallery">
+                        <div class="comparison-item">
+                            <div class="comparison-container">
+                                <div class="comparison-side">
+                                    <div class="comparison-label before-label">Original</div>
+                                    <img src="assets/workflows/rmbg/showcase/source_main.png" alt="RMBG Source">
+                                </div>
+                                <div class="comparison-side">
+                                    <div class="comparison-label after-label">Hintergrund entfernt</div>
+                                    <img src="assets/workflows/rmbg/showcase/result_main.png" alt="RMBG Result">
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+
+                        <div class="comparison-item">
+                            <div class="comparison-container">
+                                <div class="comparison-side">
+                                    <div class="comparison-label before-label">Original</div>
+                                    <img src="assets/workflows/rmbg/comparison/source_1.png" alt="RMBG Source 1">
+                                </div>
+                                <div class="comparison-side">
+                                    <div class="comparison-label after-label">Hintergrund entfernt</div>
+                                    <img src="assets/workflows/rmbg/comparison/result_1.png" alt="RMBG Result 1">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="comparison-item">
+                            <div class="comparison-container">
+                                <div class="comparison-side">
+                                    <div class="comparison-label before-label">Original</div>
+                                    <img src="assets/workflows/rmbg/comparison/source_2.png" alt="RMBG Source 2">
+                                </div>
+                                <div class="comparison-side">
+                                    <div class="comparison-label after-label">Hintergrund entfernt</div>
+                                    <img src="assets/workflows/rmbg/comparison/result_2.png" alt="RMBG Result 2">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="comparison-item">
+                            <div class="comparison-container">
+                                <div class="comparison-side">
+                                    <div class="comparison-label before-label">Original</div>
+                                    <img src="assets/workflows/rmbg/comparison/source_3.png" alt="RMBG Source 3">
+                                </div>
+                                <div class="comparison-side">
+                                    <div class="comparison-label after-label">Hintergrund entfernt</div>
+                                    <img src="assets/workflows/rmbg/comparison/result_3.png" alt="RMBG Result 3">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="comparison-item">
+                            <div class="comparison-container">
+                                <div class="comparison-side">
+                                    <div class="comparison-label before-label">Original</div>
+                                    <img src="assets/workflows/rmbg/comparison/source_4.png" alt="RMBG Source 4">
+                                </div>
+                                <div class="comparison-side">
+                                    <div class="comparison-label after-label">Hintergrund entfernt</div>
+                                    <img src="assets/workflows/rmbg/comparison/result_4.png" alt="RMBG Result 4">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="comparison-item">
+                            <div class="comparison-container">
+                                <div class="comparison-side">
+                                    <div class="comparison-label before-label">Original</div>
+                                    <img src="assets/workflows/rmbg/comparison/source_5.png" alt="RMBG Source 5">
+                                </div>
+                                <div class="comparison-side">
+                                    <div class="comparison-label after-label">Hintergrund entfernt</div>
+                                    <img src="assets/workflows/rmbg/comparison/result_5.png" alt="RMBG Result 5">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="comparison-item">
+                            <div class="comparison-container">
+                                <div class="comparison-side">
+                                    <div class="comparison-label before-label">Original</div>
+                                    <img src="assets/workflows/rmbg/comparison/source_6.png" alt="RMBG Source 6">
+                                </div>
+                                <div class="comparison-side">
+                                    <div class="comparison-label after-label">Hintergrund entfernt</div>
+                                    <img src="assets/workflows/rmbg/comparison/result_6.png" alt="RMBG Result 6">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="comparison-item">
+                            <div class="comparison-container">
+                                <div class="comparison-side">
+                                    <div class="comparison-label before-label">Original</div>
+                                    <img src="assets/workflows/rmbg/comparison/source_7.png" alt="RMBG Source 7">
+                                </div>
+                                <div class="comparison-side">
+                                    <div class="comparison-label after-label">Hintergrund entfernt</div>
+                                    <img src="assets/workflows/rmbg/comparison/result_7.png" alt="RMBG Result 7">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="comparison-item">
+                            <div class="comparison-container">
+                                <div class="comparison-side">
+                                    <div class="comparison-label before-label">Original</div>
+                                    <img src="assets/workflows/rmbg/comparison/source_8.png" alt="RMBG Source 8">
+                                </div>
+                                <div class="comparison-side">
+                                    <div class="comparison-label after-label">Hintergrund entfernt</div>
+                                    <img src="assets/workflows/rmbg/comparison/result_8.png" alt="RMBG Result 8">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="comparison-item">
+                            <div class="comparison-container">
+                                <div class="comparison-side">
+                                    <div class="comparison-label before-label">Original</div>
+                                    <img src="assets/workflows/rmbg/comparison/source_9.png" alt="RMBG Source 9">
+                                </div>
+                                <div class="comparison-side">
+                                    <div class="comparison-label after-label">Hintergrund entfernt</div>
+                                    <img src="assets/workflows/rmbg/comparison/result_9.png" alt="RMBG Result 9">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="comparison-item">
+                            <div class="comparison-container">
+                                <div class="comparison-side">
+                                    <div class="comparison-label before-label">Original</div>
+                                    <img src="assets/workflows/rmbg/comparison/source_10.png" alt="RMBG Source 10">
+                                </div>
+                                <div class="comparison-side">
+                                    <div class="comparison-label after-label">Hintergrund entfernt</div>
+                                    <img src="assets/workflows/rmbg/comparison/result_10.png" alt="RMBG Result 10">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="rmbg-guide" class="tab-content" style="display:none;">
+                    <div class="guide-card">
+                        <h3>🔧 INTELLIGENTE RMBG-PIPELINE – TECHNISCHER GUIDE</h3>
+
+                        <h4>1. 🎯 Projektübersicht</h4>
+                        <p>Vollautomatische Hintergrundentfernung mit State-of-the-Art KI-Modellen und iterativer Qualitätsoptimierung. Das System verarbeitet Batch-Images automatisch und optimiert Parameter basierend auf Echtzeit-Qualitätsbewertung.</p>
+
+                        <h4>2. 🛠️ Core-Technologien</h4>
+                        <ul>
+                            <li><strong>ComfyUI:</strong> Modulare Workflow-Engine für KI-Inferenz</li>
+                            <li><strong>Python 3.9+:</strong> Backend-Logik und API-Integration</li>
+                            <li><strong>PyTorch:</strong> Deep Learning Framework für Modell-Inferenz</li>
+                            <li><strong>CUDA/CPU:</strong> Hybrid-Computing für optimale Performance</li>
+                            <li><strong>REST API:</strong> HTTP-basierte Workflow-Ausführung</li>
+                        </ul>
+
+                        <h4>3. 🤖 KI-Modelle & Checkpoints</h4>
+                        <ul>
+                            <li><strong>RMBG-2.0:</strong> State-of-the-Art Hintergrundentfernung</li>
+                            <li><strong>INSPYRENET:</strong> Hochpräzise Maskengenerierung</li>
+                            <li><strong>BEN/BEN2:</strong> Robuste Edge-Detection</li>
+                            <li><strong>BiRefNet-HR:</strong> High-Resolution Verarbeitung</li>
+                        </ul>
+
+                        <h4>4. 🔄 Iterative Automatisierung</h4>
+                        <h5>Phase 1: Parameter Audit</h5>
+                        <pre class="guide-pre">def audit_parameter_flow(image_path, test_iterations=3):
+    test_configs = [
+        {"sensitivity": 0.2, "mask_blur": 0, "process_res": 512, "model": "BEN"},
+        {"sensitivity": 0.5, "mask_blur": 2, "process_res": 1024, "model": "BEN2"},
+        {"sensitivity": 0.9, "mask_blur": 5, "process_res": 2048, "model": "INSPYRENET"},
+    ]
+    # SSIM-basierte Ähnlichkeitsanalyse
+    # Parameter-Effektivitätsvalidierung</pre>
+
+                        <h5>Phase 2: Adaptive Processing</h5>
+                        <pre class="guide-pre">def adaptive_processing(image_path, max_iterations=3):
+    quality_categories = ["sehr_gut", "gut", "ungenügend"]
+    parameter_strategies = {
+        "sehr_gut": "skip_optimization",
+        "gut": "mild_improvement",
+        "ungenügend": "aggressive_optimization"
+    }
+    # Modell-Wechsel basierend auf Qualität
+    # Parameter-Variation pro Iteration</pre>
+
+                        <h5>Phase 3: Quality Assessment</h5>
+                        <pre class="guide-pre">def assess_quality(output_image):
+    metrics = {
+        "pixel_residue": calculate_residue(),
+        "edge_cleanliness": analyze_edges(),
+        "background_removal": check_completeness()
+    }
+    return classify_quality(metrics)</pre>
+
+                        <h4>5. 🎯 Industrielle Use Cases</h4>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 20px 0;">
+                            <div style="background: linear-gradient(135deg, #fef3c7, #fde68a); padding: 15px; border-radius: 8px;">
+                                <h5 style="color: #d97706; margin-bottom: 10px;">🛒 E-Commerce & Produktfotografie</h5>
+                                <ul style="margin: 0; padding-left: 20px;">
+                                    <li>Automatische Produktbilder für Kataloge</li>
+                                    <li>Batch-Processing: 1000+ Produktbilder pro Stunde</li>
+                                    <li>Qualitätskontrolle und automatische Filterung</li>
+                                    <li>Multi-Platform Integration (Shopify, Amazon, eBay)</li>
+                                </ul>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #dbeafe, #bfdbfe); padding: 15px; border-radius: 8px;">
+                                <h5 style="color: #2563eb; margin-bottom: 10px;">📢 Marketing & Werbung</h5>
+                                <ul style="margin: 0; padding-left: 20px;">
+                                    <li>Campaign Assets für Werbekampagnen</li>
+                                    <li>Brand Consistency über alle Kanäle</li>
+                                    <li>A/B Testing mit verschiedenen Hintergründen</li>
+                                    <li>Social Media Anpassungen</li>
+                                </ul>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #f3e8ff, #e9d5ff); padding: 15px; border-radius: 8px;">
+                                <h5 style="color: #9333ea; margin-bottom: 10px;">📸 Fotografie & Design</h5>
+                                <ul style="margin: 0; padding-left: 20px;">
+                                    <li>Portrait-Photography mit sauberen Hintergründen</li>
+                                    <li>Event-Photography Batch-Verarbeitung</li>
+                                    <li>Real Estate Immobilienbilder</li>
+                                    <li>Fashion Modephotografie</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <h4>6. 📊 Performance-Daten</h4>
+                        <table class="guide-table">
+                            <tr><th>Metrik</th><th>Wert</th></tr>
+                            <tr><td>Verarbeitungsgeschwindigkeit</td><td>2-4 Sekunden pro Bild</td></tr>
+                            <tr><td>Batch-Größe</td><td>80+ Bilder erfolgreich verarbeitet</td></tr>
+                            <tr><td>Qualitätsverteilung</td><td>85% sehr gut, 15% gut, 0% ungenügend</td></tr>
+                            <tr><td>Verbesserungsrate</td><td>20% der Bilder erfolgreich optimiert</td></tr>
+                            <tr><td>Erfolgsrate</td><td>100% bei Batch-Verarbeitung</td></tr>
+                        </table>
+
+                        <h4>7. 🚀 Zukunftsperspektiven</h4>
+                        <ul>
+                            <li><strong>Video Processing:</strong> Frame-by-Frame Hintergrundentfernung</li>
+                            <li><strong>Real-Time Processing:</strong> Live-Stream Integration</li>
+                            <li><strong>Cloud Deployment:</strong> AWS/Azure Integration</li>
+                            <li><strong>Mobile App:</strong> iOS/Android Client</li>
+                            <li><strong>Custom Model Training:</strong> Spezialisierte Modelle für spezifische Anwendungen</li>
+                        </ul>
+
+                        <h4>✅ Zusammenfassung</h4>
+                        <p>Die intelligente RMBG-Pipeline demonstriert die erfolgreiche Implementierung einer vollautomatischen Hintergrundentfernung mit State-of-the-Art KI-Technologien und iterativer Qualitätsoptimierung. Mit 100% Erfolgsrate und 85% "Sehr gut" Qualität ist sie bereit für industrielle Anwendungen.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Asset Modal -->
     <div id="assetModal" class="asset-modal">
         <div class="asset-modal-content">
@@ -3593,6 +3955,27 @@ pip install -r requirements_ultimate.txt</pre>
                 }
             });
         });
+
+        // Tab functionality for RMBG modal
+        function showRmbgTab(tabId) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('#rmbg-modal .tab-content');
+            tabContents.forEach(content => {
+                content.style.display = 'none';
+            });
+
+            // Remove active class from all tab buttons
+            const tabButtons = document.querySelectorAll('#rmbg-modal .tab-btn');
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show selected tab content
+            document.getElementById(tabId).style.display = 'block';
+
+            // Add active class to clicked tab button
+            event.target.classList.add('active');
+        }
 
 
     </script>

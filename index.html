@@ -14,152 +14,86 @@
             overflow-x: hidden;
         }
 
-                        /* Realistischer Milchglas Regen-Effekt - 50% Opacity */
-        body::before {
+        /* Clean minimalist design without rain effects */
+
+        /* Elegant Theme Selector - Minimalist Text Design */
+        .theme-selector-bar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 8px 0;
+            margin: 0 0 15px 0;
+        }
+
+        .theme-selector-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .theme-text-button {
+            background: transparent;
+            border: none;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #6b7280;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            border-radius: 6px;
+        }
+
+        .theme-text-button:hover {
+            transform: translateY(-1px);
+            color: #374151;
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .theme-text-button.active {
+            color: #1e40af;
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .theme-text-button.active::before {
             content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background:
-                radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.03) 0%, transparent 40%),
-                radial-gradient(circle at 70% 60%, rgba(139, 92, 246, 0.03) 0%, transparent 40%),
-                radial-gradient(circle at 40% 80%, rgba(16, 185, 129, 0.03) 0%, transparent 40%),
-                radial-gradient(circle at 80% 20%, rgba(245, 158, 11, 0.03) 0%, transparent 40%);
-            backdrop-filter: blur(2px);
-            animation: subtlePulse 8s ease-in-out infinite;
-            z-index: -3;
-            pointer-events: none;
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 2px;
+            background: #3b82f6;
+            border-radius: 1px;
         }
 
-        /* Realistische Regentropfen - verschiedene Größen und Geschwindigkeiten */
-        body::after {
-            content: '';
-            position: fixed;
-            top: -200px;
-            left: 0;
-            width: 100%;
-            height: calc(100% + 400px);
-            background-image:
-                /* Große Tropfen */
-                radial-gradient(ellipse 6px 30px at 8% 0%, rgba(59, 130, 246, 0.15) 0%, transparent 60%),
-                radial-gradient(ellipse 4px 25px at 23% 0%, rgba(139, 92, 246, 0.12) 0%, transparent 60%),
-                radial-gradient(ellipse 7px 35px at 45% 0%, rgba(16, 185, 129, 0.15) 0%, transparent 60%),
-                radial-gradient(ellipse 5px 28px at 67% 0%, rgba(245, 158, 11, 0.13) 0%, transparent 60%),
-                radial-gradient(ellipse 6px 32px at 89% 0%, rgba(59, 130, 246, 0.14) 0%, transparent 60%),
-                /* Mittlere Tropfen */
-                radial-gradient(ellipse 3px 18px at 15% 0%, rgba(139, 92, 246, 0.1) 0%, transparent 60%),
-                radial-gradient(ellipse 4px 22px at 32% 0%, rgba(16, 185, 129, 0.11) 0%, transparent 60%),
-                radial-gradient(ellipse 3px 16px at 58% 0%, rgba(245, 158, 11, 0.09) 0%, transparent 60%),
-                radial-gradient(ellipse 4px 20px at 78% 0%, rgba(59, 130, 246, 0.1) 0%, transparent 60%),
-                /* Kleine Tropfen */
-                radial-gradient(ellipse 2px 12px at 12% 0%, rgba(16, 185, 129, 0.08) 0%, transparent 60%),
-                radial-gradient(ellipse 2px 10px at 38% 0%, rgba(245, 158, 11, 0.07) 0%, transparent 60%),
-                radial-gradient(ellipse 2px 14px at 62% 0%, rgba(139, 92, 246, 0.08) 0%, transparent 60%),
-                radial-gradient(ellipse 2px 11px at 85% 0%, rgba(59, 130, 246, 0.07) 0%, transparent 60%);
-            animation: realisticRain 12s linear infinite;
-            z-index: -2;
-            pointer-events: none;
-            opacity: 0.5;
+        /* Theme-specific fonts */
+
+
+        .theme-text-button[data-theme="pixel-art"] {
+            font-family: 'Courier New', 'Lucida Console', monospace;
+            font-weight: bold;
         }
 
-        /* Wasser-Streifen und Tropfen-Spuren */
-        .moisture-trails {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background:
-                /* Vertikale Wasser-Streifen */
-                linear-gradient(180deg, transparent 0%, rgba(59, 130, 246, 0.01) 20%, transparent 21%),
-                linear-gradient(180deg, transparent 0%, rgba(139, 92, 246, 0.01) 35%, transparent 36%),
-                linear-gradient(180deg, transparent 0%, rgba(16, 185, 129, 0.01) 50%, transparent 51%),
-                linear-gradient(180deg, transparent 0%, rgba(245, 158, 11, 0.01) 65%, transparent 66%),
-                /* Diagonale Tropfen-Bahnen */
-                linear-gradient(182deg, transparent 0%, rgba(59, 130, 246, 0.008) 30%, transparent 31%),
-                linear-gradient(181deg, transparent 0%, rgba(139, 92, 246, 0.008) 45%, transparent 46%),
-                linear-gradient(183deg, transparent 0%, rgba(16, 185, 129, 0.008) 60%, transparent 61%);
-            animation: waterStreaks 20s ease-in-out infinite;
-            z-index: -1;
-            pointer-events: none;
+        .theme-text-button[data-theme="modern"] {
+            font-family: 'Helvetica Neue', 'Arial', sans-serif;
+            font-weight: 300;
         }
 
-        /* Statische Wasser-Tropfen auf Glas */
-        .glass-droplets {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image:
-                /* Statische Tropfen verschiedener Größen */
-                radial-gradient(circle 4px at 18% 25%, rgba(59, 130, 246, 0.06), transparent),
-                radial-gradient(circle 6px at 45% 15%, rgba(139, 92, 246, 0.07), transparent),
-                radial-gradient(circle 3px at 72% 35%, rgba(16, 185, 129, 0.05), transparent),
-                radial-gradient(circle 5px at 28% 60%, rgba(245, 158, 11, 0.06), transparent),
-                radial-gradient(circle 2px at 85% 45%, rgba(59, 130, 246, 0.04), transparent),
-                radial-gradient(circle 4px at 65% 75%, rgba(139, 92, 246, 0.05), transparent),
-                radial-gradient(circle 3px at 12% 80%, rgba(16, 185, 129, 0.04), transparent),
-                radial-gradient(circle 6px at 55% 90%, rgba(245, 158, 11, 0.07), transparent);
-            animation: dropletShimmer 15s ease-in-out infinite;
-            z-index: -1;
-            pointer-events: none;
+        .theme-text-button[data-theme="bauhaus"] {
+            font-family: 'Impact', 'Arial Black', sans-serif;
+            font-weight: bold;
+            text-transform: uppercase;
         }
 
-        @keyframes subtlePulse {
-            0%, 100% {
-                opacity: 0.35;
-                transform: scale(1);
-            }
-            50% {
-                opacity: 0.5;
-                transform: scale(1.02);
-            }
-        }
-
-        @keyframes realisticRain {
-            0% {
-                transform: translateY(-200px) skewX(2deg);
-                opacity: 0;
-            }
-            15% {
-                opacity: 0.5;
-            }
-            85% {
-                opacity: 0.5;
-            }
-            100% {
-                transform: translateY(calc(100vh + 200px)) skewX(2deg);
-                opacity: 0;
-            }
-        }
-
-        @keyframes waterStreaks {
-            0%, 100% {
-                opacity: 0.15;
-                transform: translateY(0) scaleY(1);
-            }
-            50% {
-                opacity: 0.3;
-                transform: translateY(20px) scaleY(1.1);
-            }
-        }
-
-        @keyframes dropletShimmer {
-            0%, 100% {
-                opacity: 0.3;
-                filter: blur(0px);
-            }
-            33% {
-                opacity: 0.5;
-                filter: blur(0.5px);
-            }
-            66% {
-                opacity: 0.2;
-                filter: blur(0px);
-            }
+        .theme-text-button[data-theme="manga"] {
+            font-family: 'Comic Sans MS', 'Trebuchet MS', sans-serif;
+            font-weight: bold;
         }
 
         .card {
@@ -272,6 +206,51 @@
         .card-github:hover h2 { color: #10b981; }
         .card-comfyui:hover h2 { color: #8b5cf6; }
         .card-portfolio:hover h2 { color: #f59e0b; }
+
+        /* Hover transparency for card images */
+        .card-image-container {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-image {
+            transition: opacity 0.3s ease;
+        }
+
+        .card:hover .card-image {
+            opacity: 0.3;
+        }
+
+        /* Mobile focus states for touch devices */
+        @media (hover: none) {
+            .card:focus-within .card-image,
+            .card:focus .card-image {
+                opacity: 0.3;
+            }
+        }
+
+        /* Ensure slideshow is visible behind transparent image */
+        .card-comfyui .h-48 {
+            position: relative;
+        }
+
+        .card-comfyui .card-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 2;
+        }
+
+        .card-comfyui #comfyui-slideshow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+        }
 
         .container {
             max-width: 1200px;
@@ -426,21 +405,32 @@
     </style>
 </head>
 <body class="antialiased">
-    <div class="moisture-trails"></div>
-    <div class="glass-droplets"></div>
+    <!-- Background Character Animation -->
+    <div id="background-character" style="position: fixed; bottom: 10%; right: 10%; z-index: 1; pointer-events: none;">
+        <canvas id="background-canvas" width="192" height="192" style="image-rendering: pixelated; transform: scale(2);"></canvas>
+    </div>
+
+    <!-- Main Content -->
     <div class="container mx-auto px-4 py-12 md:py-24">
-        <!-- Header Section -->
+                <!-- Header Section -->
         <header class="text-center mb-16 md:mb-24">
-            <h1 class="text-4xl md:text-5xl font-light mb-2">Max Mustermann</h1>
-            <p class="text-xl md:text-2xl text-gray-500 font-light">AI Specialist</p>
+            <!-- Theme Selector Bar -->
+            <div class="theme-selector-bar">
+                <div class="theme-selector-container">
+                    <button class="theme-text-button active" data-theme="pixel-art">Pixel Art</button>
+                    <button class="theme-text-button" data-theme="modern">Modern</button>
+                    <button class="theme-text-button" data-theme="bauhaus">Bauhaus</button>
+                    <button class="theme-text-button" data-theme="manga">Manga</button>
+                </div>
+            </div>
         </header>
 
         <!-- Main Navigation Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
             <!-- CV / About Card -->
-            <a href="cv.html" class="card card-cv rounded-xl p-6 flex flex-col">
+            <a href="cv.html" class="card card-cv rounded-xl p-6 flex flex-col" tabindex="0">
                 <div class="h-48 bg-gray-100 rounded-lg mb-6 overflow-hidden">
-                    <img src="https://via.placeholder.com/600x400?text=CV+%26+About" alt="CV Preview" class="card-image w-full h-full object-cover">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJsaW5lYXItZ3JhZGllbnQoMTM1ZGVnLCAjZGJlYWZlLCAjZTBlN2ZmKSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIGZpbGw9IiMzNzQxNTEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5DViAmYW1wOyBBYm91dDwvdGV4dD48L3N2Zz4=" alt="CV Preview" class="card-image w-full h-full object-cover">
     </div>
                 <h2 class="text-2xl font-medium mb-2">CV / About</h2>
                 <p class="text-gray-600 mb-4">Mein beruflicher Werdegang und persönliche Geschichte als AI Specialist.</p>
@@ -450,9 +440,9 @@
             </a>
 
             <!-- GitHub Projects Card -->
-            <a href="#projects" class="card card-github rounded-xl p-6 flex flex-col">
+            <a href="#projects" class="card card-github rounded-xl p-6 flex flex-col" tabindex="0">
                 <div class="h-48 bg-gray-100 rounded-lg mb-6 overflow-hidden">
-                    <img src="https://via.placeholder.com/600x400?text=GitHub+Projects" alt="GitHub Projects Preview" class="card-image w-full h-full object-cover">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJsaW5lYXItZ3JhZGllbnQoMTM1ZGVnLCAjZGNmY2U3LCAjY2NmYmYxKSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIGZpbGw9IiMzNzQxNTEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5HaXRIdWIgUHJvamVjdHM8L3RleHQ+PC9zdmc+" alt="GitHub Projects Preview" class="card-image w-full h-full object-cover">
                 </div>
                 <h2 class="text-2xl font-medium mb-2">GitHub Projects</h2>
                 <p class="text-gray-600 mb-4">Open-Source-Projekte und Code-Repositories für KI-Anwendungen.</p>
@@ -462,13 +452,14 @@
             </a>
 
             <!-- ComfyUI Workflows Card -->
-            <a href="comfyui.html" class="card card-comfyui rounded-xl p-6 flex flex-col">
+            <a href="comfyui.html" class="card card-comfyui rounded-xl p-6 flex flex-col" tabindex="0">
                 <div class="h-48 bg-gray-100 rounded-lg mb-6 overflow-hidden relative">
                     <div id="comfyui-slideshow">
                         <div class="slideshow-track">
                             <!-- GIFs werden hier dynamisch eingefügt -->
                         </div>
                     </div>
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJsaW5lYXItZ3JhZGllbnQoMTM1ZGVnLCAjZmNlN2YzLCAjZGRkNmZlKSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIGZpbGw9IiMzNzQxNTEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5Db21meVVJIFdvcmtmbG93czwvdGV4dD48L3N2Zz4=" alt="ComfyUI Workflows Preview" class="card-image w-full h-full object-cover" style="display: none;">
                 </div>
                 <h2 class="text-2xl font-medium mb-2">ComfyUI Workflows</h2>
                 <p class="text-gray-600 mb-4">Spezialisierte Workflows für KI-gestützte Bild- und Videoverarbeitung.</p>
@@ -478,9 +469,9 @@
             </a>
 
             <!-- Portfolio Card -->
-            <a href="portfolio.html" class="card card-portfolio rounded-xl p-6 flex flex-col">
+            <a href="portfolio.html" class="card card-portfolio rounded-xl p-6 flex flex-col" tabindex="0">
                 <div class="h-48 bg-gray-100 rounded-lg mb-6 overflow-hidden">
-                    <img src="https://via.placeholder.com/600x400?text=Creative+Portfolio" alt="Portfolio Preview" class="card-image w-full h-full object-cover">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJsaW5lYXItZ3JhZGllbnQoMTM1ZGVnLCAjZmVmM2M3LCAjZmVkN2FhKSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjQiIGZpbGw9IiMzNzQxNTEiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5DcmVhdGl2ZSBQb3J0Zm9saW88L3RleHQ+PC9zdmc+" alt="Portfolio Preview" class="card-image w-full h-full object-cover">
                 </div>
                 <h2 class="text-2xl font-medium mb-2">Portfolio</h2>
                 <p class="text-gray-600 mb-4">Kreative Arbeiten aus den Bereichen Musik, Animation und KI-Kunst.</p>
@@ -492,10 +483,10 @@
 
         <!-- Footer -->
         <footer class="mt-24 text-center text-gray-500">
-            <p class="text-sm">&copy; 2025 Max Mustermann</p>
-            <p class="text-xs mt-1 font-light">less is more</p>
         </footer>
     </div>
+
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -612,6 +603,17 @@
                 isHovering = true;
                 stopSlideshow();
 
+                // Verstecke Theme-spezifisches Bild und zeige Slideshow
+                const comfyuiImg = document.querySelector('.card-comfyui img');
+                const comfyuiSlideshow = document.getElementById('comfyui-slideshow');
+
+                if (comfyuiImg) {
+                    comfyuiImg.style.display = 'none';
+                }
+                if (comfyuiSlideshow) {
+                    comfyuiSlideshow.style.display = 'flex';
+                }
+
                 // Reset position und starte Animation
                 slideshowTrack.style.transform = 'translateX(0)';
                 setTimeout(() => {
@@ -623,6 +625,17 @@
             comfyuiCard.addEventListener('mouseleave', function() {
                 isHovering = false;
                 stopHorizontalAnimation();
+
+                // Zeige Theme-spezifisches Bild und verstecke Slideshow
+                const comfyuiImg = document.querySelector('.card-comfyui img');
+                const comfyuiSlideshow = document.getElementById('comfyui-slideshow');
+
+                if (comfyuiImg) {
+                    comfyuiImg.style.display = 'block';
+                }
+                if (comfyuiSlideshow) {
+                    comfyuiSlideshow.style.display = 'none';
+                }
 
                 setTimeout(() => {
                     pauseGifs();
@@ -649,7 +662,294 @@
         });
     </script>
 
-    <!-- AI Chatbot Integration -->
+    <!-- Theme Management System -->
+    <script>
+        class ThemeManager {
+            constructor() {
+                this.currentTheme = localStorage.getItem('selected-theme') || 'pixel-art';
+                this.themes = {
+
+                    'pixel-art': {
+                        name: 'Pixel Art',
+                        fontFamily: '"Courier New", "Lucida Console", monospace',
+                        backgroundImage: 'assets/themes/pixel-art/background/background.png',
+                        cardImages: {
+                            'cv': 'assets/themes/pixel-art/cards/cv-about.png',
+                            'github': 'assets/themes/pixel-art/cards/github-projects.png',
+                            'comfyui': 'assets/themes/pixel-art/cards/comfyui-workflows.png',
+                            'portfolio': 'assets/themes/pixel-art/cards/portfolio.png'
+                        }
+                    },
+                    'modern': {
+                        name: 'Modern',
+                        fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif',
+                        backgroundImage: 'assets/themes/modern/background/background.png',
+                        cardImages: {
+                            'cv': 'assets/themes/modern/cards/cv-about.png',
+                            'github': 'assets/themes/modern/cards/github-projects.png',
+                            'comfyui': 'assets/themes/modern/cards/comfyui-workflows.png',
+                            'portfolio': 'assets/themes/modern/cards/portfolio.png'
+                        }
+                    },
+                    'bauhaus': {
+                        name: 'Bauhaus',
+                        fontFamily: '"Georgia", "Times New Roman", serif',
+                        backgroundImage: 'assets/themes/bauhaus/background/background.png',
+                        cardImages: {
+                            'cv': 'assets/themes/bauhaus/cards/cv-about.png',
+                            'github': 'assets/themes/bauhaus/cards/github-projects.png',
+                            'comfyui': 'assets/themes/bauhaus/cards/comfyui-workflows.png',
+                            'portfolio': 'assets/themes/bauhaus/cards/portfolio.png'
+                        }
+                    },
+                    'manga': {
+                        name: 'Manga',
+                        fontFamily: '"Arial Black", "Helvetica", sans-serif',
+                        backgroundImage: 'assets/themes/manga/background/background-with-character-reference.png',
+                        cardImages: {
+                            'cv': 'assets/themes/manga/cards/cv-about.png',
+                            'github': 'assets/themes/manga/cards/github-projects.png',
+                            'comfyui': 'assets/themes/manga/cards/comfyui-workflows.png',
+                            'portfolio': 'assets/themes/manga/cards/portfolio.png'
+                        }
+                    },
+                    // Integrated theme removed
+                };
+                this.init();
+            }
+
+            init() {
+                this.applyTheme(this.currentTheme);
+                this.setupEventListeners();
+                this.updateActiveButton();
+            }
+
+            updateActiveButton() {
+                // Remove active state from all buttons
+                document.querySelectorAll('.theme-text-button').forEach(button => {
+                    button.classList.remove('active');
+                });
+
+                // Add active state to current theme button
+                const currentButton = document.querySelector(`[data-theme="${this.currentTheme}"]`);
+                if (currentButton) {
+                    currentButton.classList.add('active');
+                }
+            }
+
+            setupEventListeners() {
+                // Theme buttons
+                document.querySelectorAll('.theme-text-button').forEach(button => {
+                    // Click event for theme application
+                    button.addEventListener('click', (e) => {
+                        const themeName = e.currentTarget.dataset.theme;
+                        this.selectAndApplyTheme(themeName);
+                    });
+
+                    // Hover preview removed - classic click only
+                });
+            }
+
+            selectAndApplyTheme(themeName) {
+                // Remove previous active state
+                document.querySelectorAll('.theme-text-button').forEach(button => {
+                    button.classList.remove('active');
+                });
+
+                // Add active state to clicked button
+                const selectedButton = document.querySelector(`[data-theme="${themeName}"]`);
+                selectedButton.classList.add('active');
+
+                // Apply theme immediately
+                this.applyTheme(themeName);
+                this.currentTheme = themeName;
+                localStorage.setItem('selected-theme', this.currentTheme);
+            }
+
+            // Preview methods removed - classic click only behavior
+
+            applyTheme(themeName, isPreview = false) {
+                const theme = this.themes[themeName];
+                if (!theme) return;
+
+                // Apply font family
+                document.body.style.fontFamily = theme.fontFamily;
+
+                            // Apply background for themes that have it
+            if (theme.backgroundImage) {
+                    document.body.style.backgroundImage = `url(${theme.backgroundImage})`;
+                    document.body.style.backgroundSize = 'cover';
+                    document.body.style.backgroundPosition = 'center';
+                    document.body.style.backgroundAttachment = 'fixed';
+                } else {
+                    document.body.style.backgroundImage = '';
+                }
+
+                // Apply card images
+                this.applyCardImages(theme.cardImages);
+
+                // Apply theme-specific styles
+                this.applyThemeStyles(themeName);
+
+                // Notify Pixel Assistant Manager of theme change (only if not preview)
+                            // Theme change handled by individual components
+            }
+
+            applyCardImages(cardImages) {
+                // Fallback images for when theme assets are missing
+                const fallbackImages = {
+                    'cv': 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzZiNzI4MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkNWICZhbXA7IEFib3V0PC90ZXh0Pjwvc3ZnPg==',
+                    'github': 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzZiNzI4MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkdpdEh1YiBQcm9qZWN0czwvdGV4dD48L3N2Zz4=',
+                    'comfyui': 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzZiNzI4MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkNvbWZ5VUkgV29ya2Zsb3dzPC90ZXh0Pjwvc3ZnPg==',
+                    'portfolio': 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjNmNGY2Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzZiNzI4MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkNyZWF0aXZlIFBvcnRmb2xpbzwvdGV4dD48L3N2Zz4='
+                };
+
+                // CV Card
+                const cvImg = document.querySelector('.card-cv img');
+                if (cvImg) {
+                    cvImg.src = cardImages.cv || fallbackImages.cv;
+                    cvImg.onerror = () => { cvImg.src = fallbackImages.cv; };
+                }
+
+                // GitHub Card
+                const githubImg = document.querySelector('.card-github img');
+                if (githubImg) {
+                    githubImg.src = cardImages.github || fallbackImages.github;
+                    githubImg.onerror = () => { githubImg.src = fallbackImages.github; };
+                }
+
+                // ComfyUI Card - Immer Theme-spezifisches Bild anzeigen, Slideshow nur bei Hover
+                const comfyuiImg = document.querySelector('.card-comfyui img');
+                const comfyuiSlideshow = document.getElementById('comfyui-slideshow');
+
+                // Lade Theme-spezifisches Bild
+                if (comfyuiImg) {
+                    comfyuiImg.src = cardImages.comfyui;
+                    comfyuiImg.style.display = 'block';
+                    comfyuiImg.onerror = () => {
+                        comfyuiImg.src = fallbackImages.comfyui;
+                    };
+                }
+
+                // Verstecke Slideshow standardmäßig
+                if (comfyuiSlideshow) {
+                    comfyuiSlideshow.style.display = 'none';
+                }
+
+                // Portfolio Card
+                const portfolioImg = document.querySelector('.card-portfolio img');
+                if (portfolioImg) {
+                    portfolioImg.src = cardImages.portfolio || fallbackImages.portfolio;
+                    portfolioImg.onerror = () => { portfolioImg.src = fallbackImages.portfolio; };
+                }
+            }
+
+            applyThemeStyles(themeName) {
+                                // Remove previous theme classes
+                document.body.classList.remove('theme-pixel-art', 'theme-modern', 'theme-bauhaus', 'theme-manga');
+
+                // Add new theme class
+                document.body.classList.add(`theme-${themeName}`);
+
+                // Pixel Art specific styles
+                if (themeName === 'pixel-art') {
+                    this.applyPixelArtStyles();
+                }
+
+                // Integrated theme removed
+            }
+
+            applyPixelArtStyles() {
+                // Add pixel art font and styling
+                const pixelStyleId = 'pixel-art-styles';
+                let pixelStyles = document.getElementById(pixelStyleId);
+
+                if (!pixelStyles) {
+                    pixelStyles = document.createElement('style');
+                    pixelStyles.id = pixelStyleId;
+                    document.head.appendChild(pixelStyles);
+                }
+
+                pixelStyles.textContent = `
+                    body.theme-pixel-art {
+                        font-family: 'Courier New', 'Lucida Console', monospace;
+                        image-rendering: pixelated;
+                        image-rendering: -moz-crisp-edges;
+                        image-rendering: crisp-edges;
+                    }
+
+                    body.theme-pixel-art .card-image {
+                        image-rendering: pixelated;
+                        image-rendering: -moz-crisp-edges;
+                        image-rendering: crisp-edges;
+                    }
+
+                    body.theme-pixel-art h1,
+                    body.theme-pixel-art h2,
+                    body.theme-pixel-art h3 {
+                        font-weight: bold;
+                        text-shadow: 2px 2px 0px rgba(0,0,0,0.8);
+                    }
+
+                    body.theme-pixel-art .card {
+                        border: 2px solid #333;
+                        border-radius: 0;
+                    }
+
+                    body.theme-pixel-art .card:hover {
+                        border-color: #ff6b6b;
+                        box-shadow: 0 0 0 2px #ff6b6b;
+                    }
+
+                    /* Rain effects removed globally */
+                `;
+            }
+
+            // Integrated theme method removed
+        }
+
+        // Initialize Theme Manager
+        const themeManager = new ThemeManager();
+    </script>
+
+        <!-- Simple AI Chatbot Integration - Simplified System -->
     <script src="chatbot.js"></script>
+
+    <script>
+        // Simple Background Character - Static Fallback
+        class BackgroundCharacter {
+            constructor() {
+                this.canvas = document.getElementById('background-canvas');
+                if (!this.canvas) {
+                    console.error('Canvas element not found');
+                    return;
+                }
+                this.ctx = this.canvas.getContext('2d');
+                this.isLoaded = false;
+            }
+
+            async init() {
+                console.log('Background character initialized with static fallback');
+                this.drawFallback();
+            }
+
+            drawFallback() {
+                this.ctx.fillStyle = '#4A90E2';
+                this.ctx.fillRect(70, 70, 50, 50);
+                this.ctx.fillStyle = '#ffffff';
+                this.ctx.font = '12px Arial';
+                this.ctx.fillText('AI', 88, 98);
+            }
+        }
+
+        // Initialize Background Character
+        window.backgroundCharacter = new BackgroundCharacter();
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.backgroundCharacter.canvas) {
+                window.backgroundCharacter.init();
+            }
+        });
+    </script>
 </body>
 </html>

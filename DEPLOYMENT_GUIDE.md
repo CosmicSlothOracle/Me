@@ -84,7 +84,7 @@ Vor der Veröffentlichung sollten Sie folgende Dinge anpassen:
 ### Für Arbeitgeber:
 
 1. **Online-Link senden:** `https://yoursite.netlify.app/` (oder custom domain)
-2. **PDF-Download:** Über den "🖨️ PDF" Button
+2. **PDF-Download:** Über den "📄 CV Download" Button mit Passwort "cv"
 3. **Professioneller Eindruck:** Moderne Webentwicklung-Skills demonstriert
 
 ### Netlify-Vorteile:

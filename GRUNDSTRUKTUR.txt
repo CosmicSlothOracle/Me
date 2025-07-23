@@ -1,0 +1,85 @@
+GRUNDSTRUKTUR
+Apply to workflow_eva...
+1. HAUPTANWEISUNG
+Klare, direkte Handlungsanweisung
+Ein konkretes Ziel formulieren
+Präzise Verben verwenden
+Beispiel: "Erstelle einen Python-Code für...", "Analysiere folgende Daten..."
+2. SPEZIFIKATIONEN
+Technische Details angeben
+Umfang definieren
+Komplexitätsstufe festlegen
+Beispiel: "Verwende nur Standard-Bibliotheken", "Optimiere für Geschwindigkeit"
+3. KONTEXT
+Relevante Hintergrundinformationen
+Bestehende Codestruktur
+Projektanforderungen
+Beispiel: "Dies ist Teil eines größeren Projekts zur Bildverarbeitung"
+4. FORMAT
+Gewünschtes Ausgabeformat definieren
+Code-Stil spezifizieren
+Kommentierungsgrad festlegen
+Beispiel: "Liefere den Code ohne Erklärungen", "Füge ausführliche Kommentare hinzu"
+EFFEKTIVE TECHNIKEN
+PRÄZISION
+Exakte Begriffe verwenden
+Technische Fachbegriffe nutzen
+Mehrdeutigkeiten vermeiden
+STRUKTURIERUNG
+Nummerierte Listen für Schritte
+Markdown für Übersichtlichkeit
+Code-Blöcke für Beispiele
+ITERATION
+Bei komplexen Aufgaben schrittweise vorgehen
+Zwischenergebnisse prüfen
+Nachfragen für Präzisierungen stellen
+BEISPIEL-PROMPTS
+FÜR CODE-ENTWICKLUNG:Erstelle einen Python-Code für einen Pixel-Art-Konverter mit folgenden Funktionen:
+1. Bildeinlesen (PNG, JPG)
+2. Farbpalette auf 16 Farben reduzieren
+3. Pixelgröße anpassen (8x8)
+4. Als PNG speichern
+
+Verwende nur die Bibliotheken PIL und numpy. Optimiere für Geschwindigkeit.
+Der Code soll in eine bestehende ComfyUI-Umgebung integriert werden.
+Liefere den Code mit minimalen Kommentaren nur für komplexe Funktionen.
+
+Apply to workflow_eva...
+FÜR WORKFLOW-OPTIMIERUNG:
+Analysiere folgenden ComfyUI-Workflow für Pixel-Art-Generierung:
+[WORKFLOW-JSON]
+
+Identifiziere Engpässe und schlage Optimierungen vor mit Fokus auf:
+1. Schnellere Verarbeitung
+2. Bessere Bildqualität
+3. Speichereffizienz
+
+Formatiere die Antwort als Tabelle mit Spalten: Problem | Lösung | Erwartete Verbesserung
+Apply to workflow_eva...
+VERMEIDEN SIE
+Vage Anweisungen ("mach etwas Cooles")
+Zu breite Anfragen ohne Fokus
+Fehlende technische Details
+Widersprüchliche Anforderungen
+FORTGESCHRITTENE STRATEGIEN
+STEP-BY-STEP ENTWICKLUNG
+Grundgerüst anfordern
+Funktionalität erweitern
+Edge Cases behandeln
+Optimierungen vornehmen
+VERGLEICHENDE ANALYSE
+Verschiedene Lösungsansätze anfordern
+Vor- und Nachteile bewerten lassen
+Beste Option auswählen
+DEBUGGING
+Fehlerbeschreibung präzisieren
+Umgebungsinformationen angeben
+Erwartetes vs. tatsächliches Verhalten definieren
+ZUSAMMENFASSUNG
+Eine optimale Promptstruktur für Claude Sonnet:
+Ist präzise und eindeutig
+Enthält alle relevanten technischen Details
+Definiert klare Erwartungen an das Format
+Bietet ausreichend Kontext
+Vermeidet Mehrdeutigkeiten und Widersprüche
+Diese Struktur maximiert die Effizienz der Zusammenarbeit und führt zu präzisen, funktionalen Ergebnissen.

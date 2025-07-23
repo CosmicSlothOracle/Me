@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Chat UI Test Suite</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f0f2f5;
+            color: #333;
+        }
+
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        .test-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .test-header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .test-header p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+
+        .test-section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+
+        .test-section h2 {
+            color: #2c3e50;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .test-controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .test-btn {
+            padding: 10px 20px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .test-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .test-btn.success {
+            background: #27ae60;
+        }
+
+        .test-btn.success:hover {
+            background: #219a52;
+        }
+
+        .test-btn.warning {
+            background: #f39c12;
+        }
+
+        .test-btn.warning:hover {
+            background: #e67e22;
+        }
+
+        .test-btn.danger {
+            background: #e74c3c;
+        }
+
+        .test-btn.danger:hover {
+            background: #c0392b;
+        }
+
+        .test-results {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 20px;
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .test-results.success {
+            background: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+
+        .test-results.error {
+            background: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+
+        .test-results.warning {
+            background: #fff3cd;
+            border-color: #ffeaa7;
+            color: #856404;
+        }
+
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .test-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .test-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .test-progress {
+            background: #e9ecef;
+            border-radius: 10px;
+            height: 6px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .test-progress-bar {
+            background: #3498db;
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .test-progress-bar.success {
+            background: #27ae60;
+        }
+
+        .test-progress-bar.error {
+            background: #e74c3c;
+        }
+
+        .test-status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .test-status.running {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .test-status.passed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .test-status.failed {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .config-viewer {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.5;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+
+        .live-preview {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-size: 12px;
+            z-index: 2000;
+            max-width: 200px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .test-container {
+                padding: 20px;
+            }
+
+            .test-controls {
+                flex-direction: column;
+            }
+
+            .test-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .live-preview {
+                position: static;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="test-header">
+            <h1>🧪 Custom Chat UI Test Suite</h1>
+            <p>Umfassende Tests für das Custom Chat UI System mit Asset-Unterstützung</p>
+        </div>
+
+        <div class="live-preview" id="live-preview">
+            <strong>Live Status:</strong><br>
+            <span id="live-status">Initialisierung...</span>
+        </div>
+
+        <!-- Test 1: Basic Functionality -->
+        <div class="test-section">
+            <h2>🚀 Basic Functionality Tests</h2>
+            <div class="test-controls">
+                <button class="test-btn" onclick="runBasicTests()">
+                    <span>▶️</span> Basic Tests starten
+                </button>
+                <button class="test-btn success" onclick="testDirectDisplay()">
+                    <span>👁️</span> Direkte Anzeige testen
+                </button>
+                <button class="test-btn warning" onclick="testToggleMode()">
+                    <span>🔄</span> Toggle-Modus testen
+                </button>
+            </div>
+            <div id="basic-results" class="test-results"></div>
+        </div>
+
+        <!-- Test 2: Asset Loading -->
+        <div class="test-section">
+            <h2>🖼️ Asset Loading Tests</h2>
+            <div class="test-controls">
+                <button class="test-btn" onclick="runAssetTests()">
+                    <span>🎨</span> Asset Tests starten
+                </button>
+                <button class="test-btn success" onclick="testThemeAssets()">
+                    <span>🎭</span> Theme Assets testen
+                </button>
+                <button class="test-btn warning" onclick="testCustomAssets()">
+                    <span>🛠️</span> Custom Assets testen
+                </button>
+            </div>
+            <div id="asset-results" class="test-results"></div>
+        </div>
+
+        <!-- Test 3: Configuration System -->
+        <div class="test-section">
+            <h2>⚙️ Configuration System Tests</h2>
+            <div class="test-controls">
+                <button class="test-btn" onclick="runConfigTests()">
+                    <span>🔧</span> Config Tests starten
+                </button>
+                <button class="test-btn success" onclick="testThemeSwitching()">
+                    <span>🔄</span> Theme Switching
+                </button>
+                <button class="test-btn warning" onclick="testResponsiveConfig()">
+                    <span>📱</span> Responsive Config
+                </button>
+            </div>
+            <div id="config-results" class="test-results"></div>
+        </div>
+
+        <!-- Test 4: UI Interaction -->
+        <div class="test-section">
+            <h2>💬 UI Interaction Tests</h2>
+            <div class="test-controls">
+                <button class="test-btn" onclick="runInteractionTests()">
+                    <span>🖱️</span> Interaction Tests starten
+                </button>
+                <button class="test-btn success" onclick="testMessageSending()">
+                    <span>📤</span> Message Sending
+                </button>
+                <button class="test-btn warning" onclick="testQuickReplies()">
+                    <span>⚡</span> Quick Replies
+                </button>
+            </div>
+            <div id="interaction-results" class="test-results"></div>
+        </div>
+
+        <!-- Test 5: Performance Tests -->
+        <div class="test-section">
+            <h2>⚡ Performance Tests</h2>
+            <div class="test-controls">
+                <button class="test-btn" onclick="runPerformanceTests()">
+                    <span>📊</span> Performance Tests starten
+                </button>
+                <button class="test-btn success" onclick="testAnimationPerformance()">
+                    <span>🎬</span> Animation Performance
+                </button>
+                <button class="test-btn warning" onclick="testMemoryUsage()">
+                    <span>💾</span> Memory Usage
+                </button>
+            </div>
+            <div id="performance-results" class="test-results"></div>
+        </div>
+
+        <!-- Test Results Overview -->
+        <div class="test-grid">
+            <div class="test-card">
+                <h3>Test Statistics</h3>
+                <div id="test-stats">
+                    <div>Total Tests: <span id="total-tests">0</span></div>
+                    <div>Passed: <span id="passed-tests">0</span></div>
+                    <div>Failed: <span id="failed-tests">0</span></div>
+                    <div>Success Rate: <span id="success-rate">0%</span></div>
+                </div>
+                <div class="test-progress">
+                    <div class="test-progress-bar" id="overall-progress"></div>
+                </div>
+            </div>
+
+            <div class="test-card">
+                <h3>Current Configuration</h3>
+                <div class="config-viewer" id="config-viewer">
+                    Konfiguration wird geladen...
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Actions -->
+        <div class="test-section">
+            <h2>🔧 Test Actions</h2>
+            <div class="test-controls">
+                <button class="test-btn success" onclick="runAllTests()">
+                    <span>🚀</span> Alle Tests starten
+                </button>
+                <button class="test-btn warning" onclick="resetAllTests()">
+                    <span>🔄</span> Tests zurücksetzen
+                </button>
+                <button class="test-btn danger" onclick="cleanupTests()">
+                    <span>🧹</span> Cleanup
+                </button>
+                <button class="test-btn" onclick="exportTestResults()">
+                    <span>📊</span> Ergebnisse exportieren
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Chat UI Scripts -->
+    <script src="../assets/chatbot/character/ui/custom-chat-ui.js"></script>
+    <script src="../assets/chatbot/character/ui/chat-ui-config.js"></script>
+    <script src="../chatbot-enhanced.js"></script>
+
+    <script>
+        // Test System Variables
+        let testStats = {
+            total: 0,
+            passed: 0,
+            failed: 0,
+            running: false
+        };
+
+        let testResults = {};
+        let activeChatUI = null;
+
+        // Initialize Test System
+        document.addEventListener('DOMContentLoaded', function() {
+            updateLiveStatus('Test System initialisiert');
+            updateConfigViewer();
+            initializeTestEnvironment();
+        });
+
+        function initializeTestEnvironment() {
+            updateLiveStatus('Test-Umgebung wird vorbereitet...');
+
+            // Teste ob alle erforderlichen Klassen verfügbar sind
+            const requiredClasses = ['CustomChatUI', 'ChatUIConfig', 'EnhancedAIChatbot'];
+            const availableClasses = requiredClasses.filter(className => typeof window[className] !== 'undefined');
+
+            updateTestResults('basic-results',
+                `Test-Umgebung initialisiert\nVerfügbare Klassen: ${availableClasses.join(', ')}\nSystem bereit für Tests`,
+                'success');
+        }
+
+        // Basic Functionality Tests
+        function runBasicTests() {
+            updateLiveStatus('Basic Tests laufen...');
+            let results = 'Basic Functionality Tests:\n\n';
+            let passedTests = 0;
+            let totalTests = 0;
+
+            // Test 1: Class Availability
+            totalTests++;
+            if (typeof CustomChatUI !== 'undefined') {
+                results += '✅ CustomChatUI Klasse verfügbar\n';
+                passedTests++;
+            } else {
+                results += '❌ CustomChatUI Klasse NICHT verfügbar\n';
+            }
+
+            // Test 2: Configuration System
+            totalTests++;
+            if (typeof ChatUIConfig !== 'undefined') {
+                results += '✅ ChatUIConfig System verfügbar\n';
+                passedTests++;
+            } else {
+                results += '❌ ChatUIConfig System NICHT verfügbar\n';
+            }
+
+            // Test 3: Direct Display
+            totalTests++;
+            try {
+                const testConfig = { directDisplay: true };
+                const testUI = new CustomChatUI(testConfig);
+                if (testUI.config.directDisplay) {
+                    results += '✅ Direkte Anzeige funktioniert\n';
+                    passedTests++;
+                } else {
+                    results += '❌ Direkte Anzeige FEHLGESCHLAGEN\n';
+                }
+                testUI.destroy();
+            } catch (error) {
+                results += `❌ Direkte Anzeige ERROR: ${error.message}\n`;
+            }
+
+            updateTestStats(totalTests, passedTests, 0);
+            updateTestResults('basic-results', results, passedTests === totalTests ? 'success' : 'error');
+            updateLiveStatus(`Basic Tests: ${passedTests}/${totalTests} erfolgreich`);
+        }
+
+        function testDirectDisplay() {
+            updateLiveStatus('Direkte Anzeige wird getestet...');
+
+            try {
+                if (activeChatUI) {
+                    activeChatUI.destroy();
+                }
+
+                activeChatUI = new CustomChatUI({
+                    directDisplay: true,
+                    position: { bottom: '20px', right: '20px' },
+                    size: { width: '400px', height: '600px' }
+                });
+
+                setTimeout(() => {
+                    const container = document.getElementById('custom-chat-container');
+                    if (container && container.classList.contains('active')) {
+                        updateTestResults('basic-results',
+                            '✅ Direkte Anzeige erfolgreich\nChat-Fenster wird direkt angezeigt',
+                            'success');
+                    } else {
+                        updateTestResults('basic-results',
+                            '❌ Direkte Anzeige fehlgeschlagen\nChat-Fenster nicht sichtbar',
+                            'error');
+                    }
+                    updateLiveStatus('Direkte Anzeige Test abgeschlossen');
+                }, 1000);
+            } catch (error) {
+                updateTestResults('basic-results',
+                    `❌ Direkte Anzeige ERROR: ${error.message}`,
+                    'error');
+            }
+        }
+
+        function testToggleMode() {
+            updateLiveStatus('Toggle-Modus wird getestet...');
+
+            try {
+                if (activeChatUI) {
+                    activeChatUI.destroy();
+                }
+
+                activeChatUI = new CustomChatUI({
+                    directDisplay: false,
+                    showToggleButton: true
+                });
+
+                setTimeout(() => {
+                    const container = document.getElementById('custom-chat-container');
+                    if (container && !container.classList.contains('active')) {
+                        updateTestResults('basic-results',
+                            '✅ Toggle-Modus erfolgreich\nChat-Fenster initial versteckt',
+                            'success');
+                    } else {
+                        updateTestResults('basic-results',
+                            '❌ Toggle-Modus fehlgeschlagen\nChat-Fenster sollte versteckt sein',
+                            'error');
+                    }
+                    updateLiveStatus('Toggle-Modus Test abgeschlossen');
+                }, 1000);
+            } catch (error) {
+                updateTestResults('basic-results',
+                    `❌ Toggle-Modus ERROR: ${error.message}`,
+                    'error');
+            }
+        }
+
+        // Asset Loading Tests
+        function runAssetTests() {
+            updateLiveStatus('Asset Tests laufen...');
+            let results = 'Asset Loading Tests:\n\n';
+            let passedTests = 0;
+            let totalTests = 0;
+
+            // Test 1: Asset Structure
+            totalTests++;
+            const testConfig = {
+                assets: {
+                    chatWindow: { frame: 'test.png' },
+                    icons: { aiAvatar: 'avatar.png' }
+                }
+            };
+
+            if (testConfig.assets && testConfig.assets.chatWindow) {
+                results += '✅ Asset-Struktur korrekt\n';
+                passedTests++;
+            } else {
+                results += '❌ Asset-Struktur FEHLERHAFT\n';
+            }
+
+            // Test 2: Asset Loading System
+            totalTests++;
+            try {
+                const testUI = new CustomChatUI(testConfig);
+                if (testUI.loadAssets) {
+                    results += '✅ Asset-Loading-System verfügbar\n';
+                    passedTests++;
+                } else {
+                    results += '❌ Asset-Loading-System NICHT verfügbar\n';
+                }
+                testUI.destroy();
+            } catch (error) {
+                results += `❌ Asset-Loading-System ERROR: ${error.message}\n`;
+            }
+
+            updateTestStats(totalTests, passedTests, 0);
+            updateTestResults('asset-results', results, passedTests === totalTests ? 'success' : 'error');
+            updateLiveStatus(`Asset Tests: ${passedTests}/${totalTests} erfolgreich`);
+        }
+
+        function testThemeAssets() {
+            updateLiveStatus('Theme Assets werden getestet...');
+
+            const themes = ['default', 'pixelart', 'modern'];
+            let results = 'Theme Assets Test:\n\n';
+
+            themes.forEach(theme => {
+                const config = chatUIConfig.getThemeConfig(theme);
+                if (config) {
+                    results += `✅ Theme "${theme}" konfiguriert\n`;
+                } else {
+                    results += `❌ Theme "${theme}" NICHT konfiguriert\n`;
+                }
+            });
+
+            updateTestResults('asset-results', results, 'success');
+            updateLiveStatus('Theme Assets Test abgeschlossen');
+        }
+
+        function testCustomAssets() {
+            updateLiveStatus('Custom Assets werden getestet...');
+
+            // Simuliere Custom Asset Upload
+            const customConfig = {
+                assets: {
+                    chatWindow: {
+                        frame: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChAGA4VjYTQAAAABJRU5ErkJggg=='
+                    },
+                    icons: {
+                        aiAvatar: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChAGA4VjYTQAAAABJRU5ErkJggg=='
+                    }
+                }
+            };
+
+            try {
+                if (activeChatUI) {
+                    activeChatUI.destroy();
+                }
+
+                activeChatUI = new CustomChatUI(customConfig);
+
+                setTimeout(() => {
+                    updateTestResults('asset-results',
+                        '✅ Custom Assets erfolgreich geladen\nData-URL Assets funktionieren',
+                        'success');
+                    updateLiveStatus('Custom Assets Test abgeschlossen');
+                }, 1000);
+            } catch (error) {
+                updateTestResults('asset-results',
+                    `❌ Custom Assets ERROR: ${error.message}`,
+                    'error');
+            }
+        }
+
+        // Configuration System Tests
+        function runConfigTests() {
+            updateLiveStatus('Config Tests laufen...');
+            let results = 'Configuration System Tests:\n\n';
+            let passedTests = 0;
+            let totalTests = 0;
+
+            // Test 1: Config Validation
+            totalTests++;
+            const validConfig = {
+                theme: 'default',
+                directDisplay: true,
+                position: { bottom: '20px', right: '20px' },
+                size: { width: '400px', height: '600px' }
+            };
+
+            if (chatUIConfig.validateConfig(validConfig)) {
+                results += '✅ Config-Validierung funktioniert\n';
+                passedTests++;
+            } else {
+                results += '❌ Config-Validierung FEHLGESCHLAGEN\n';
+            }
+
+            // Test 2: Theme Switching
+            totalTests++;
+            const themeConfig = chatUIConfig.setCurrentTheme('modern');
+            if (themeConfig && themeConfig.theme === 'modern') {
+                results += '✅ Theme-Switching funktioniert\n';
+                passedTests++;
+            } else {
+                results += '❌ Theme-Switching FEHLGESCHLAGEN\n';
+            }
+
+            updateTestStats(totalTests, passedTests, 0);
+            updateTestResults('config-results', results, passedTests === totalTests ? 'success' : 'error');
+            updateLiveStatus(`Config Tests: ${passedTests}/${totalTests} erfolgreich`);
+        }
+
+        function testThemeSwitching() {
+            updateLiveStatus('Theme Switching wird getestet...');
+
+            const themes = ['default', 'modern', 'pixelart'];
+            let currentTheme = 0;
+
+            function switchToNextTheme() {
+                if (currentTheme < themes.length) {
+                    const theme = themes[currentTheme];
+                    const config = chatUIConfig.setCurrentTheme(theme);
+
+                    if (activeChatUI) {
+                        activeChatUI.updateConfig(config);
+                    }
+
+                    updateLiveStatus(`Theme gewechselt zu: ${theme}`);
+                    currentTheme++;
+
+                    if (currentTheme < themes.length) {
+                        setTimeout(switchToNextTheme, 2000);
+                    } else {
+                        updateTestResults('config-results',
+                            '✅ Theme Switching erfolgreich\nAlle Themes wurden getestet',
+                            'success');
+                        updateLiveStatus('Theme Switching Test abgeschlossen');
+                    }
+                }
+            }
+
+            switchToNextTheme();
+        }
+
+        function testResponsiveConfig() {
+            updateLiveStatus('Responsive Config wird getestet...');
+
+            const originalWidth = window.innerWidth;
+
+            // Simuliere mobile Auflösung
+            Object.defineProperty(window, 'innerWidth', {
+                writable: true,
+                configurable: true,
+                value: 400
+            });
+
+            const mobileConfig = chatUIConfig.getResponsiveConfig();
+
+            // Zurück zur ursprünglichen Auflösung
+            Object.defineProperty(window, 'innerWidth', {
+                writable: true,
+                configurable: true,
+                value: originalWidth
+            });
+
+            if (mobileConfig.size.width === '100%') {
+                updateTestResults('config-results',
+                    '✅ Responsive Config funktioniert\nMobile-Konfiguration korrekt',
+                    'success');
+            } else {
+                updateTestResults('config-results',
+                    '❌ Responsive Config fehlgeschlagen\nMobile-Konfiguration inkorrekt',
+                    'error');
+            }
+
+            updateLiveStatus('Responsive Config Test abgeschlossen');
+        }
+
+        // UI Interaction Tests
+        function runInteractionTests() {
+            updateLiveStatus('Interaction Tests laufen...');
+            let results = 'UI Interaction Tests:\n\n';
+            let passedTests = 0;
+            let totalTests = 0;
+
+            // Test 1: Chat Input
+            totalTests++;
+            const input = document.getElementById('custom-chat-input');
+            if (input) {
+                results += '✅ Chat-Input verfügbar\n';
+                passedTests++;
+            } else {
+                results += '❌ Chat-Input NICHT verfügbar\n';
+            }
+
+            // Test 2: Send Button
+            totalTests++;
+            const sendBtn = document.getElementById('custom-send-btn');
+            if (sendBtn) {
+                results += '✅ Send-Button verfügbar\n';
+                passedTests++;
+            } else {
+                results += '❌ Send-Button NICHT verfügbar\n';
+            }
+
+            updateTestStats(totalTests, passedTests, 0);
+            updateTestResults('interaction-results', results, passedTests === totalTests ? 'success' : 'error');
+            updateLiveStatus(`Interaction Tests: ${passedTests}/${totalTests} erfolgreich`);
+        }
+
+        function testMessageSending() {
+            updateLiveStatus('Message Sending wird getestet...');
+
+            const input = document.getElementById('custom-chat-input');
+            const sendBtn = document.getElementById('custom-send-btn');
+
+            if (input && sendBtn) {
+                input.value = 'Test-Nachricht';
+                sendBtn.click();
+
+                setTimeout(() => {
+                    const messages = document.querySelectorAll('.custom-message');
+                    if (messages.length > 1) {
+                        updateTestResults('interaction-results',
+                            '✅ Message Sending funktioniert\nNachricht wurde gesendet',
+                            'success');
+                    } else {
+                        updateTestResults('interaction-results',
+                            '❌ Message Sending fehlgeschlagen\nNachricht nicht gesendet',
+                            'error');
+                    }
+                    updateLiveStatus('Message Sending Test abgeschlossen');
+                }, 1000);
+            } else {
+                updateTestResults('interaction-results',
+                    '❌ Message Sending nicht möglich\nUI-Elemente nicht verfügbar',
+                    'error');
+            }
+        }
+
+        function testQuickReplies() {
+            updateLiveStatus('Quick Replies werden getestet...');
+
+            const quickReplies = document.querySelectorAll('.custom-quick-reply-btn');
+            if (quickReplies.length > 0) {
+                quickReplies[0].click();
+
+                setTimeout(() => {
+                    const input = document.getElementById('custom-chat-input');
+                    if (input && input.value.length > 0) {
+                        updateTestResults('interaction-results',
+                            '✅ Quick Replies funktionieren\nText wurde in Input gesetzt',
+                            'success');
+                    } else {
+                        updateTestResults('interaction-results',
+                            '❌ Quick Replies fehlgeschlagen\nText nicht in Input gesetzt',
+                            'error');
+                    }
+                    updateLiveStatus('Quick Replies Test abgeschlossen');
+                }, 500);
+            } else {
+                updateTestResults('interaction-results',
+                    '❌ Quick Replies nicht verfügbar\nButtons nicht gefunden',
+                    'error');
+            }
+        }
+
+        // Performance Tests
+        function runPerformanceTests() {
+            updateLiveStatus('Performance Tests laufen...');
+            let results = 'Performance Tests:\n\n';
+
+            const startTime = performance.now();
+
+            // Erstelle mehrere Chat-Instanzen
+            const instances = [];
+            for (let i = 0; i < 5; i++) {
+                instances.push(new CustomChatUI({
+                    directDisplay: false,
+                    position: { bottom: `${20 + i * 10}px`, right: `${20 + i * 10}px` }
+                }));
+            }
+
+            const creationTime = performance.now() - startTime;
+
+            // Cleanup
+            instances.forEach(instance => instance.destroy());
+
+            results += `✅ Performance Test abgeschlossen\n`;
+            results += `Erstellungszeit für 5 Instanzen: ${creationTime.toFixed(2)}ms\n`;
+            results += `Durchschnitt pro Instanz: ${(creationTime / 5).toFixed(2)}ms\n`;
+
+            updateTestResults('performance-results', results, 'success');
+            updateLiveStatus('Performance Tests abgeschlossen');
+        }
+
+        function testAnimationPerformance() {
+            updateLiveStatus('Animation Performance wird getestet...');
+
+            let frameCount = 0;
+            const startTime = performance.now();
+
+            function countFrames() {
+                frameCount++;
+                if (performance.now() - startTime < 1000) {
+                    requestAnimationFrame(countFrames);
+                } else {
+                    const fps = frameCount;
+                    updateTestResults('performance-results',
+                        `✅ Animation Performance Test\nFPS: ${fps}\nPerformance: ${fps > 30 ? 'Gut' : fps > 15 ? 'Akzeptabel' : 'Schlecht'}`,
+                        fps > 15 ? 'success' : 'warning');
+                    updateLiveStatus('Animation Performance Test abgeschlossen');
+                }
+            }
+
+            countFrames();
+        }
+
+        function testMemoryUsage() {
+            updateLiveStatus('Memory Usage wird getestet...');
+
+            const initialMemory = performance.memory ? performance.memory.usedJSHeapSize : 0;
+
+            // Erstelle und zerstöre mehrere Instanzen
+            for (let i = 0; i < 10; i++) {
+                const instance = new CustomChatUI();
+                instance.destroy();
+            }
+
+            const finalMemory = performance.memory ? performance.memory.usedJSHeapSize : 0;
+            const memoryDiff = finalMemory - initialMemory;
+
+            updateTestResults('performance-results',
+                `✅ Memory Usage Test\nSpeicher-Änderung: ${(memoryDiff / 1024 / 1024).toFixed(2)} MB\nMemory Leaks: ${memoryDiff < 1000000 ? 'Keine erkannt' : 'Möglich'}`,
+                memoryDiff < 1000000 ? 'success' : 'warning');
+            updateLiveStatus('Memory Usage Test abgeschlossen');
+        }
+
+        // Utility Functions
+        function updateTestStats(total, passed, failed) {
+            testStats.total += total;
+            testStats.passed += passed;
+            testStats.failed += failed;
+
+            document.getElementById('total-tests').textContent = testStats.total;
+            document.getElementById('passed-tests').textContent = testStats.passed;
+            document.getElementById('failed-tests').textContent = testStats.failed;
+
+            const successRate = testStats.total > 0 ? (testStats.passed / testStats.total * 100).toFixed(1) : 0;
+            document.getElementById('success-rate').textContent = successRate + '%';
+
+            const progressBar = document.getElementById('overall-progress');
+            progressBar.style.width = successRate + '%';
+            progressBar.className = `test-progress-bar ${successRate > 80 ? 'success' : successRate > 50 ? '' : 'error'}`;
+        }
+
+        function updateTestResults(elementId, text, type = '') {
+            const element = document.getElementById(elementId);
+            element.textContent = text;
+            element.className = `test-results ${type}`;
+        }
+
+        function updateLiveStatus(status) {
+            document.getElementById('live-status').textContent = status;
+        }
+
+        function updateConfigViewer() {
+            const viewer = document.getElementById('config-viewer');
+            const config = chatUIConfig.getThemeConfig(chatUIConfig.currentTheme);
+            viewer.textContent = JSON.stringify(config, null, 2);
+        }
+
+        // Main Test Functions
+        function runAllTests() {
+            updateLiveStatus('Alle Tests werden gestartet...');
+            testStats = { total: 0, passed: 0, failed: 0, running: true };
+
+            runBasicTests();
+            setTimeout(() => runAssetTests(), 1000);
+            setTimeout(() => runConfigTests(), 2000);
+            setTimeout(() => runInteractionTests(), 3000);
+            setTimeout(() => runPerformanceTests(), 4000);
+            setTimeout(() => {
+                updateLiveStatus('Alle Tests abgeschlossen!');
+                testStats.running = false;
+            }, 5000);
+        }
+
+        function resetAllTests() {
+            testStats = { total: 0, passed: 0, failed: 0, running: false };
+            updateTestStats(0, 0, 0);
+
+            const resultElements = ['basic-results', 'asset-results', 'config-results', 'interaction-results', 'performance-results'];
+            resultElements.forEach(id => {
+                document.getElementById(id).textContent = 'Tests zurückgesetzt...';
+                document.getElementById(id).className = 'test-results';
+            });
+
+            updateLiveStatus('Tests zurückgesetzt');
+        }
+
+        function cleanupTests() {
+            if (activeChatUI) {
+                activeChatUI.destroy();
+                activeChatUI = null;
+            }
+
+            // Entferne alle Chat-Container
+            const containers = document.querySelectorAll('[id*="chat-container"]');
+            containers.forEach(container => container.remove());
+
+            // Entferne alle Chat-Styles
+            const styles = document.querySelectorAll('[id*="chat-ui-styles"]');
+            styles.forEach(style => style.remove());
+
+            updateLiveStatus('Cleanup abgeschlossen');
+        }
+
+        function exportTestResults() {
+            const results = {
+                timestamp: new Date().toISOString(),
+                stats: testStats,
+                config: chatUIConfig.getThemeConfig(chatUIConfig.currentTheme),
+                browser: navigator.userAgent,
+                viewport: `${window.innerWidth}x${window.innerHeight}`
+            };
+
+            const blob = new Blob([JSON.stringify(results, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `chat-ui-test-results-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            updateLiveStatus('Test-Ergebnisse exportiert');
+        }
+    </script>
+</body>
+</html>

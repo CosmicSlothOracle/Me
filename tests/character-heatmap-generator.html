@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Heatmap Reference Generator</title>
+</head>
+<body>
+    <h3>Character Position Heatmap Reference</h3>
+    <canvas id="heatmap" width="256" height="256" style="border: 1px solid #000; image-rendering: pixelated;"></canvas>
+    <br><br>
+    <button onclick="generateHeatmap()">Generate Heatmap</button>
+    <button onclick="downloadHeatmap()">Download PNG</button>
+
+    <script>
+        function generateHeatmap() {
+            const canvas = document.getElementById('heatmap');
+            const ctx = canvas.getContext('2d');
+
+            // Clear canvas
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, 256, 256);
+
+            // Black border
+            ctx.fillStyle = '#000000';
+            ctx.lineWidth = 4;
+            ctx.strokeRect(2, 2, 252, 252);
+
+            // Center cross (where character center should be)
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(124, 0, 8, 256);
+            ctx.fillRect(0, 124, 256, 8);
+
+            // Corner markers
+            ctx.fillRect(0, 0, 32, 32);
+            ctx.fillRect(224, 0, 32, 32);
+            ctx.fillRect(0, 224, 32, 32);
+            ctx.fillRect(224, 224, 32, 32);
+
+            // Grid pattern (every 32px)
+            ctx.lineWidth = 1;
+            for (let x = 32; x < 256; x += 32) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, 256);
+                ctx.stroke();
+            }
+            for (let y = 32; y < 256; y += 32) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(256, y);
+                ctx.stroke();
+            }
+
+            // Position indicators
+            ctx.fillStyle = '#000000';
+            ctx.font = '12px Arial';
+            ctx.fillText('TOP-LEFT', 40, 20);
+            ctx.fillText('TOP-RIGHT', 180, 20);
+            ctx.fillText('BOTTOM-LEFT', 40, 240);
+            ctx.fillText('BOTTOM-RIGHT', 160, 240);
+            ctx.fillText('CENTER', 200, 130);
+
+            // Position percentages
+            ctx.font = '10px Arial';
+            ctx.fillText('0%,0%', 8, 15);
+            ctx.fillText('100%,0%', 220, 15);
+            ctx.fillText('0%,100%', 8, 250);
+            ctx.fillText('100%,100%', 210, 250);
+            ctx.fillText('50%,50%', 200, 140);
+        }
+
+        function downloadHeatmap() {
+            const canvas = document.getElementById('heatmap');
+            const link = document.createElement('a');
+            link.download = 'character-position-heatmap.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+        // Generate on load
+        generateHeatmap();
+    </script>
+</body>
+</html>

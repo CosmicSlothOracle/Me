@@ -1,6 +1,6 @@
-// OpenAI Client für Netlify Functions
+// Groq Client für Netlify Functions - Schneller und kostengünstiger als OpenAI
 // Kompatibel mit Serverless Environment
-const { OpenAI } = require('openai');
+const { Groq } = require('groq-sdk');
 
 exports.handler = async (event, context) => {
   // CORS Headers für Frontend-Zugriff
@@ -31,8 +31,8 @@ exports.handler = async (event, context) => {
 
   try {
     // API Key prüfen
-    if (!process.env.OPENAI_API_KEY) {
-      console.error('OpenAI API Key not found in environment variables');
+    if (!process.env.GROQ_API_KEY) {
+      console.error('Groq API Key not found in environment variables');
       return {
         statusCode: 500,
         headers,
@@ -40,9 +40,9 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // OpenAI Client initialisieren
-    const openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY,
+    // Groq Client initialisieren
+    const groq = new Groq({
+      apiKey: process.env.GROQ_API_KEY,
     });
 
     // System-Prompt für AI-Portfolio-Assistance
@@ -123,16 +123,16 @@ Sei professionell, hilfsbereit und technisch versiert. Antworte auf Deutsch.`;
       ...messages
     ];
 
-    // OpenAI API Anfrage - Kostenoptimiert mit gpt-3.5-turbo
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
+    // Groq API Anfrage - Sehr schnell mit llama3-8b-8192
+    const completion = await groq.chat.completions.create({
+      model: 'llama3-8b-8192',
       messages: apiMessages,
-      max_tokens: 300, // Reduziert für Kosteneinsparung
+      max_tokens: 300,
       temperature: 0.7,
     });
 
     const reply = completion.choices[0].message.content;
-    console.log('OpenAI response received, length:', reply.length);
+    console.log('Groq response received, length:', reply.length);
 
     // Erfolgreiche Antwort
     return {
@@ -151,56 +151,44 @@ Sei professionell, hilfsbereit und technisch versiert. Antworte auf Deutsch.`;
       stack: error.stack
     });
 
-    // Spezifische Error-Behandlung für OpenAI
-    if (error.code === 'insufficient_quota') {
+    // Spezifische Fehlerbehandlung für Groq API
+    if (error.status === 429) {
       return {
         statusCode: 429,
         headers,
-        body: JSON.stringify({ error: 'API quota exceeded. Please try again later.' }),
+        body: JSON.stringify({
+          error: 'Rate limit exceeded. Please try again later.',
+          retryAfter: 60
+        }),
       };
     }
 
-    if (error.code === 'invalid_api_key') {
+    if (error.status === 401) {
       return {
-        statusCode: 401,
+        statusCode: 500,
         headers,
-        body: JSON.stringify({ error: 'Invalid API configuration' }),
+        body: JSON.stringify({
+          error: 'API authentication failed'
+        }),
       };
     }
 
-    if (error.code === 'model_not_found') {
+    if (error.status >= 400 && error.status < 500) {
       return {
         statusCode: 400,
         headers,
-        body: JSON.stringify({ error: 'AI model not available' }),
+        body: JSON.stringify({
+          error: 'Invalid request to AI service'
+        }),
       };
     }
 
-    // Rate limiting von OpenAI
-    if (error.code === 'rate_limit_exceeded') {
-      return {
-        statusCode: 429,
-        headers,
-        body: JSON.stringify({ error: 'Too many requests. Please wait a moment.' }),
-      };
-    }
-
-    // Network oder andere API Fehler
-    if (error.message && error.message.includes('fetch')) {
-      return {
-        statusCode: 503,
-        headers,
-        body: JSON.stringify({ error: 'Service temporarily unavailable' }),
-      };
-    }
-
-    // Generischer Server Error (keine sensiblen Daten nach außen)
+    // Allgemeine Server-Fehler
     return {
       statusCode: 500,
       headers,
       body: JSON.stringify({
-        error: 'Internal server error',
-        timestamp: new Date().toISOString()
+        error: 'Internal server error. Please try again later.'
       }),
     };
   }

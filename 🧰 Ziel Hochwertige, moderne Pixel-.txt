@@ -1,0 +1,149 @@
+🧰 Ziel: Hochwertige, moderne Pixel-Art aus Video-Frames mit ComfyUI automatisiert erzeugen
+🔹 Anforderungen:
+Keine manuelle GUI-Nutzung → voll CLI & Script-gesteuert
+
+Qualität: modern, keine 8x8 Blöcke, sondern stilisierte hochaufgelöste Pixel-Art (~512–768 px)
+
+Stabiler Style-Transfer → geeignet für Frame-by-Frame-GIFs, Sprite-Sheets oder Video
+
+Iterierbar → Parameter anpassbar pro Job
+
+Fehlertolerant & reproduzierbar
+
+📦 1. Installationsübersicht (Lokal oder Container)
+📁 Projektstruktur
+bash
+Kopieren
+Bearbeiten
+pixelart-project/
+├── ComfyUI/                      # Hauptengine
+├── custom_nodes/
+│   └── ComfyUI-PixelArt-Detector/
+│   └── ComfyUI-Saveaswebp/
+├── models/
+│   ├── checkpoints/
+│   │   ├── sdxl.safetensors
+│   │   └── pixel-art-xl-lora.safetensors
+│   └── vae/
+├── scripts/
+│   └── run_pixel.sh
+├── input/                        # Input-Frames
+├── output/                       # Ergebnis
+🔧 Schritt 1: ComfyUI + Nodes installieren
+passe die Projekstrutkur ggf der auf meinem System an.
+
+bash
+Kopieren
+Bearbeiten
+git clone https://github.com/ComfyUI/ComfyUI.git
+cd ComfyUI
+pip install -r requirements.txt
+cd ..
+
+mkdir custom_nodes
+cd custom_nodes
+git clone https://github.com/dimtoneff/ComfyUI-PixelArt-Detector.git
+git clone https://github.com/Kaharos94/ComfyUI-Saveaswebp.git
+cd ..
+📦 Python-Libs
+bash
+Kopieren
+Bearbeiten
+pip install numpy opencv-python pillow[webp] scipy
+💾 Modelle besorgen
+SDXL Base: https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0
+→ Speichern unter: models/checkpoints/sdxl.safetensors
+
+PixelArt LoRA: z. B. https://civitai.com/models/146970 (z. B. pixelArtStyle_v1.0)
+→ Speichern unter: models/checkpoints/pixel-art-xl-lora.safetensors
+
+🧪 2. Beispielparameter aus bewerteten Workflows
+Parameter	Wert	Erklärung
+Auflösung	512x512	Modern, nicht zu low-res
+Dithering-Stärke	0.75	Guter Kompromiss zwischen Klarheit & Pixelcharme
+Palette	adaptive	Für Echtbilder besser als fixed
+LoRA-Stärke	0.8	Meist optimal für moderne Pixel-Stylization
+Seed	festlegen	Für Wiederholbarkeit
+
+🛠️ 3. Workflow-Konfiguration (.json)
+Du verwendest das mitgelieferte workflow_webp.json (angepasst):
+
+Wichtige Nodes:
+
+Load Image Batch (frames aus input/)
+
+VAE Encode/Decode
+
+SDXL with LoRA Merge
+
+PixelArtDetector
+
+SaveImageBatch (optional: .webp)
+
+Du kannst auch per Skript den JSON patchen (z. B. jq) um z. B. LoRA-Stärke oder Dithering global zu ändern.
+
+🧑‍💻 4. Automatisierter Script-Run
+scripts/run_pixel.sh
+bash
+Kopieren
+Bearbeiten
+#!/bin/bash
+
+cd "$(dirname "$0")/../ComfyUI"
+python main.py \
+  --disable-auto-launch \
+  --workflow ../custom_nodes/ComfyUI-PixelArt-Detector/workflow_webp.json \
+  --input ../input \
+  --output ../output \
+  --ckpt ../models/checkpoints/sdxl.safetensors \
+  --lora ../models/checkpoints/pixel-art-xl-lora.safetensors
+☁️ 5. Kubernetes Deployment-Ansatz (optional)
+Für Batch-Verarbeitung via Job (1 Job = 1 Videoszene → Pixel-Frames)
+
+yaml
+Kopieren
+Bearbeiten
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pixelart-job
+spec:
+  template:
+    spec:
+      containers:
+        - name: comfy-pixel
+          image: deinrepo/comfyui-pixel:latest
+          command: ["/scripts/run_pixel.sh"]
+          volumeMounts:
+            - name: inputvol
+              mountPath: /input
+            - name: outputvol
+              mountPath: /output
+      restartPolicy: Never
+🔄 6. Iterative Feineinstellung
+Für jede Iteration kannst du via Script kontrollieren:
+
+Ziel	Node/Parameter	Anpassung
+Auflösung	ResizeImage	384 → 512 px
+Detaillierung	Denoise Strength	< 0.4 bei stilisierter Klarheit
+Konsistenz	Seed fixieren	gleiche Pose, andere Farben
+Kantentreue	Canny/Depth-ControlNet	optional ergänzen
+Farbkontrolle	Palette-Type & Anzahl	adaptive + 12-16 Farben
+Speicherformat	SaveNode → .webp/.png	je nach Zielsystem
+
+✅ Fehlervermeidung & Tipps
+Erste Tests mit 2–4 Frames durchführen
+
+Nicht direkt auf .mp4 arbeiten → vorher Frames extrahieren via ffmpeg
+
+GPU nicht überfordern: max. 2 parallel laufende Workflows
+
+Output prüfen auf Pixelglättung (→ Dithering erhöhen)
+
+LoRA überschreiben nicht vergessen, falls .json default deaktiviert ist
+
+Einbindung von ControlNet (Canny) für noch klarere Kantenkontrolle (per Node nachrüstbar)
+
+Nutzung von Frame-Synchronisierern, z. B. Loopback oder FrameMatch für Sprite-Sheets
+
+CI/CD-Trigger: z. B. Upload neuer Frames startet automatischen Build-Prozess

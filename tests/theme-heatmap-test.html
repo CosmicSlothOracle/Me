@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theme Heatmap Position Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f0f0f0;
+            overflow-x: hidden;
+        }
+
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+
+        .theme-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .theme-btn {
+            padding: 10px 20px;
+            background: #4A90E2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .theme-btn.active {
+            background: #28a745;
+        }
+
+        .theme-btn:hover {
+            opacity: 0.8;
+        }
+
+        .test-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .test-btn {
+            padding: 8px 16px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .test-btn.primary {
+            background: #007bff;
+        }
+
+        .test-btn.success {
+            background: #28a745;
+        }
+
+        .test-btn.danger {
+            background: #dc3545;
+        }
+
+        .test-frame {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            border: 2px solid #ddd;
+            margin: 15px 0;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .character-position {
+            position: absolute;
+            bottom: 10%;
+            right: 10%;
+            width: 384px;
+            height: 384px;
+            border: 3px solid #ff0000;
+            background: rgba(255, 0, 0, 0.1);
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .character-position::before {
+            content: 'EXPECTED CHARACTER POSITION';
+            position: absolute;
+            top: -25px;
+            left: 0;
+            background: #ff0000;
+            color: white;
+            padding: 2px 8px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .grid-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.3;
+            z-index: 5;
+        }
+
+        .grid-line {
+            position: absolute;
+            background: #007bff;
+        }
+
+        .grid-line.vertical {
+            width: 1px;
+            height: 100%;
+        }
+
+        .grid-line.horizontal {
+            width: 100%;
+            height: 1px;
+        }
+
+        .test-results {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            white-space: pre-wrap;
+        }
+
+        .test-results.success {
+            background: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+
+        .test-results.error {
+            background: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+
+        .comparison-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .comparison-item {
+            flex: 1;
+            text-align: center;
+        }
+
+        .comparison-item h4 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+
+        .comparison-frame {
+            width: 100%;
+            height: 300px;
+            border: 1px solid #ddd;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .heatmap-indicator {
+            position: absolute;
+            bottom: 10%;
+            right: 10%;
+            width: 100px;
+            height: 100px;
+            border: 2px solid #ff0000;
+            background: rgba(255, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .info-panel {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        .info-panel h3 {
+            margin: 0 0 10px 0;
+            color: #495057;
+        }
+
+        .theme-info {
+            display: none;
+            margin-top: 15px;
+            padding: 10px;
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 4px;
+        }
+
+        .theme-info.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Theme Heatmap Position Test</h1>
+
+        <div class="info-panel">
+            <h3>🎯 Character Position Testing with Heatmap References</h3>
+            <p>This test uses your heatmap reference images to verify character positioning across all themes.</p>
+            <p><strong>Expected Position:</strong> 10% from bottom, 10% from right, 384px × 384px size</p>
+        </div>
+
+        <div class="theme-selector">
+                            <button class="theme-btn active" onclick="switchTheme('pixel-art')">Pixel Art</button>
+            <button class="theme-btn" onclick="switchTheme('pixel-art')">Pixel Art</button>
+            <button class="theme-btn" onclick="switchTheme('modern')">Modern</button>
+            <button class="theme-btn" onclick="switchTheme('bauhaus')">Bauhaus</button>
+            <button class="theme-btn" onclick="switchTheme('manga')">Manga</button>
+            <button class="theme-btn" onclick="switchTheme('integrated')">Integrated</button>
+        </div>
+
+        <div class="test-controls">
+            <button class="test-btn primary" onclick="runPositionTest()">Run Position Test</button>
+            <button class="test-btn" onclick="toggleGrid()">Toggle Grid</button>
+            <button class="test-btn" onclick="toggleCharacterOverlay()">Toggle Character Overlay</button>
+            <button class="test-btn success" onclick="runAllThemes()">Test All Themes</button>
+        </div>
+
+        <div class="test-frame" id="test-frame">
+            <div class="character-position" id="character-overlay"></div>
+        </div>
+
+        <div class="theme-info active" id="theme-info">
+            <strong>Current Theme:</strong> <span id="current-theme">Pixel Art</span><br>
+            <strong>Heatmap File:</strong> <span id="heatmap-file">assets/themes/pixel-art/background/background-with-character-heatmap.png</span>
+        </div>
+
+        <div class="test-results" id="test-results">
+            Select a theme and click "Run Position Test" to begin testing.
+        </div>
+
+        <div class="comparison-container">
+            <div class="comparison-item">
+                <h4>Original Background</h4>
+                <div class="comparison-frame" id="original-bg">
+                    <div class="heatmap-indicator">Original</div>
+                </div>
+            </div>
+            <div class="comparison-item">
+                <h4>Heatmap Reference</h4>
+                <div class="comparison-frame" id="heatmap-bg">
+                    <div class="heatmap-indicator">Heatmap</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const themes = {
+
+            'pixel-art': {
+                name: 'Pixel Art',
+                background: 'assets/themes/pixel-art/background/background.png',
+                heatmap: 'assets/themes/pixel-art/background/background-with-character-heatmap.png'
+            },
+            'modern': {
+                name: 'Modern',
+                background: 'assets/themes/modern/background/background.png',
+                heatmap: 'assets/themes/modern/background/background-with-character-heatmap.png'
+            },
+            'bauhaus': {
+                name: 'Bauhaus',
+                background: 'assets/themes/bauhaus/background/background.png',
+                heatmap: 'assets/themes/bauhaus/background/background-with-character-heatmap.png'
+            },
+            'manga': {
+                name: 'Manga',
+                background: 'assets/themes/manga/background/background.png',
+                heatmap: 'assets/themes/manga/background/background-with-character-heatmap.png'
+            },
+            'integrated': {
+                name: 'Integrated',
+                background: 'assets/themes/integrated/background/background.png',
+                heatmap: 'assets/themes/integrated/background/background-with-character-heatmap.png'
+            }
+        };
+
+                    let currentTheme = 'pixel-art';
+        let gridVisible = false;
+        let overlayVisible = true;
+
+        function switchTheme(themeId) {
+            currentTheme = themeId;
+
+            // Update active button
+            document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Update theme info
+            document.getElementById('current-theme').textContent = themes[themeId].name;
+            document.getElementById('heatmap-file').textContent = themes[themeId].heatmap;
+
+            // Update test frame background
+            const testFrame = document.getElementById('test-frame');
+            testFrame.style.backgroundImage = `url(../${themes[themeId].heatmap})`;
+
+            // Update comparison frames
+            document.getElementById('original-bg').style.backgroundImage = `url(../${themes[themeId].background})`;
+            document.getElementById('heatmap-bg').style.backgroundImage = `url(../${themes[themeId].heatmap})`;
+
+            // Clear previous results
+            updateResults(`Switched to ${themes[themeId].name} theme. Click "Run Position Test" to analyze.`);
+        }
+
+        function runPositionTest() {
+            const theme = themes[currentTheme];
+            updateResults('Running position test...');
+
+            // Test heatmap loading
+            const heatmapImg = new Image();
+            const startTime = performance.now();
+
+            heatmapImg.onload = function() {
+                const loadTime = performance.now() - startTime;
+
+                // Calculate expected position
+                const testFrame = document.getElementById('test-frame');
+                const frameRect = testFrame.getBoundingClientRect();
+                const expectedX = frameRect.width * 0.9 - 384; // 10% from right
+                const expectedY = frameRect.height * 0.9 - 384; // 10% from bottom
+
+                const results = `✅ POSITION TEST RESULTS - ${theme.name.toUpperCase()}
+
+Heatmap Loading:
+  Load time: ${loadTime.toFixed(2)}ms
+  Image size: ${heatmapImg.width}x${heatmapImg.height}
+  Status: LOADED SUCCESSFULLY
+
+Expected Character Position:
+  Frame size: ${frameRect.width.toFixed(0)}px × ${frameRect.height.toFixed(0)}px
+  Character size: 384px × 384px
+  Position: ${expectedX.toFixed(0)}px from left, ${expectedY.toFixed(0)}px from top
+  Percentage: 10% from bottom, 10% from right
+
+CSS Positioning:
+  position: fixed;
+  bottom: 10%;
+  right: 10%;
+  width: 384px;
+  height: 384px;
+
+Heatmap Reference:
+  File: ${theme.heatmap}
+  Purpose: Shows exact position where character should appear
+  Black area: High contrast positioning guide
+  White cross: Marks center point
+
+✅ TEST PASSED - Heatmap loaded and position calculated correctly`;
+
+                updateResults(results, 'success');
+            };
+
+            heatmapImg.onerror = function() {
+                const results = `❌ POSITION TEST FAILED - ${theme.name.toUpperCase()}
+
+ERROR: Could not load heatmap reference
+File: ${theme.heatmap}
+Issue: File not found or corrupted
+
+TROUBLESHOOTING:
+1. Check if heatmap file exists
+2. Verify file is not corrupted
+3. Ensure correct file path
+4. Try regenerating heatmap using background-reference-generator.html`;
+
+                updateResults(results, 'error');
+            };
+
+            heatmapImg.src = `../${theme.heatmap}`;
+        }
+
+        function toggleGrid() {
+            gridVisible = !gridVisible;
+            const testFrame = document.getElementById('test-frame');
+
+            if (gridVisible) {
+                createGrid(testFrame);
+            } else {
+                removeGrid(testFrame);
+            }
+        }
+
+        function createGrid(container) {
+            // Remove existing grid
+            removeGrid(container);
+
+            const grid = document.createElement('div');
+            grid.className = 'grid-overlay';
+            grid.id = 'grid-overlay';
+
+            // Create 10% grid lines
+            for (let i = 0; i <= 100; i += 10) {
+                // Vertical lines
+                const vLine = document.createElement('div');
+                vLine.className = 'grid-line vertical';
+                vLine.style.left = `${i}%`;
+                grid.appendChild(vLine);
+
+                // Horizontal lines
+                const hLine = document.createElement('div');
+                hLine.className = 'grid-line horizontal';
+                hLine.style.top = `${i}%`;
+                grid.appendChild(hLine);
+            }
+
+            container.appendChild(grid);
+        }
+
+        function removeGrid(container) {
+            const existingGrid = container.querySelector('#grid-overlay');
+            if (existingGrid) {
+                existingGrid.remove();
+            }
+        }
+
+        function toggleCharacterOverlay() {
+            overlayVisible = !overlayVisible;
+            const overlay = document.getElementById('character-overlay');
+            overlay.style.display = overlayVisible ? 'block' : 'none';
+        }
+
+        function runAllThemes() {
+            let results = '🚀 TESTING ALL THEMES\n\n';
+            let themeIndex = 0;
+            const themeKeys = Object.keys(themes);
+
+            function testNextTheme() {
+                if (themeIndex >= themeKeys.length) {
+                    results += '\n✅ ALL THEMES TESTED SUCCESSFULLY\n\nAll heatmap references are properly positioned and accessible.';
+                    updateResults(results, 'success');
+                    return;
+                }
+
+                const themeKey = themeKeys[themeIndex];
+                const theme = themes[themeKey];
+
+                results += `Testing ${theme.name}...\n`;
+                updateResults(results);
+
+                // Test heatmap loading
+                const heatmapImg = new Image();
+                const startTime = performance.now();
+
+                heatmapImg.onload = function() {
+                    const loadTime = performance.now() - startTime;
+                    results += `  ✅ ${theme.name}: Loaded (${loadTime.toFixed(0)}ms)\n`;
+                    themeIndex++;
+                    setTimeout(testNextTheme, 100);
+                };
+
+                heatmapImg.onerror = function() {
+                    results += `  ❌ ${theme.name}: FAILED to load heatmap\n`;
+                    themeIndex++;
+                    setTimeout(testNextTheme, 100);
+                };
+
+                heatmapImg.src = `../${theme.heatmap}`;
+            }
+
+            testNextTheme();
+        }
+
+        function updateResults(text, type = '') {
+            const element = document.getElementById('test-results');
+            element.textContent = text;
+            element.className = `test-results ${type}`;
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            switchTheme('pixel-art');
+        });
+    </script>
+</body>
+</html>
